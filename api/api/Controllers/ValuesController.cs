@@ -10,21 +10,33 @@ namespace api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+ 
+        /// <summary>
+        /// GET api/values
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        
+        /// <summary>
+        /// GET api/values/5
+        /// </summary>
+        /// <param name="id">ID from value</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return "value " + id;
         }
-
-        // POST api/values
+        
+        /// <summary>
+        /// POST api/values
+        /// </summary>
+        /// <param name="value"></param>
         [HttpPost]
         public void Post([FromBody] string value)
         {
