@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'BGGCST';
+  navigationButtons = [
+    {list: '', displayText: 'Dashboard', icon: 'home'},
+    {link: 'contacts', displayText: 'Ansprechpartner', icon: 'people'},
+    {link: 'calendar', displayText: 'Kalender', icon: 'calendar_today'},
+    {link: 'menu', displayText: 'Speisekarte', icon: 'view_list'},
+    {link: 'news', displayText: 'Newsfeed', icon: 'rss_feed'}
+  ];
+
 }

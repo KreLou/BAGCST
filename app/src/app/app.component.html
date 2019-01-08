@@ -1,8 +1,18 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar >
-  <mat-toolbar-row>BA-Glauchau</mat-toolbar-row>
+<mat-toolbar>
+  <button mat-icon-button (click)="navigation.toggle()"><mat-icon>menu</mat-icon></button>
+  <h1 class="example-app-name">BA Glauchau</h1>
 </mat-toolbar>
 
-<button routerLink="">Home</button>
-<button routerLink="imprint">Impressum</button>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="example-sidenav-container">
+  <mat-sidenav #navigation mode="over" id="navigation">
+      <!-- Navigation List -->
+    <div *ngFor="let button of navigationButtons">
+      <button mat-button routerLink="{{button.link}}" (click)="navigation.toggle()"><mat-icon>{{button.icon}}</mat-icon>{{button.displayText}}</button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- Display Content-->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,3 +1,16 @@
 mat-toolbar {
   background-color: lightcoral;
 }
+#navigation {
+  background-color: lightblue;
+  min-width: 200px;
+  padding: 5px;
+
+}
+mat-sidenav-container {
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
