@@ -67,7 +67,7 @@ namespace api.offlineDB
                 }
 
                 newID++;
-                string content = newID + ";" + item.GroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
+                string content = newID + ";" + item.PostGroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
                 File.AppendAllLines(filename, new String[] { content });
                 item.ID = newID;
                 return item;
@@ -96,7 +96,7 @@ namespace api.offlineDB
                     if (id == item.ID)
                     {
                         //override the line with the new parameters
-                       line = item.ID + ";" + item.GroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
+                       line = item.ID + ";" + item.PostGroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
                     }
                     //Saves the line in the temp.File
                     sw.WriteLine(line);
@@ -134,14 +134,14 @@ namespace api.offlineDB
                     NewsItem item = new NewsItem()
                     {
                         ID = Convert.ToInt32(arr[0]),
-                        GroupID = Convert.ToInt32(arr[1]),
+                        PostGroupID = Convert.ToInt32(arr[1]),
                         Date = Convert.ToDateTime(arr[2]),
                         Title = arr[3],
                         Message = arr[4],
                     };
 
                     if ((item.ID <= startID || startID == 0)
-                        && (groups.Length > 0 && groups.Contains(item.GroupID)))
+                        && (groups.Length > 0 && groups.Contains(item.PostGroupID)))
                     {
                         list.Add(item);
                     };

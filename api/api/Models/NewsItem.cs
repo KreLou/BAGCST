@@ -27,7 +27,7 @@ namespace api.Models
         /// <summary>
         /// ID/ForeignKey of posting group
         /// </summary>
-        public int GroupID { get; set; }
+        public int PostGroupID { get; set; }
 
         /// <summary>
         /// Timestamp of posting
