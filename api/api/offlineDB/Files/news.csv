@@ -1,4 +1,4 @@
-﻿1;1;08.01.2019 18:12:43;Test-News;Hallo hier ist das erste Item
+1;1;08.01.2019 18:12:43;Test-News;Hallo hier ist das erste Item
 2;2;08.01.2019 18:14:11;Neue Kaffeemaschine;Herzlichen Glückwunsch, der Verein der Kaffeesüchtigen (VKS) besitzt eine neue Kaffeemaschine und lädt zur Verkostung ein
 3;2;08.01.2019 18:14:11;Message 3;Ich bin Message 3!2
 4;3;08.01.2019 18:14:11;Message 4;Ich bin Message 4!3
@@ -51,15 +51,14 @@
 51;2;08.01.2019 18:14:11;Message 51;Ich bin Message 51!2
 52;3;08.01.2019 18:14:11;Message 52;Ich bin Message 52!3
 53;4;08.01.2019 18:14:11;Message 53;Ich bin Message 53!4
-54;1;08.01.2019 18:14:11;Message 54;Ich bin Message 54!1
 55;2;08.01.2019 18:14:11;Message 55;Ich bin Message 55!2
 56;3;08.01.2019 18:14:11;Message 56;Ich bin Message 56!3
 57;4;08.01.2019 18:14:11;Message 57;Ich bin Message 57!4
-58;1;08.01.2019 18:14:11;Message 58;Ich bin Message 58!1
+58;1;01.01.0001 00:00:00;Zweite Kaffeemaschine;Herzlichen Glückwunsch, der Verein der Kaffeesüchtigen (VKS) besitzt nun eine zweite Kaffeemaschine und lädt zur Verkostung ein. Für Verpflegung ist gesorgt.
 59;2;08.01.2019 18:14:11;Message 59;Ich bin Message 59!2
 60;3;08.01.2019 18:14:11;Message 60;Ich bin Message 60!3
 61;4;08.01.2019 18:14:11;Message 61;Ich bin Message 61!4
-62;1;08.01.2019 18:14:11;Message 62;Ich bin Message 62!1
 63;2;08.01.2019 18:14:11;Message 63;Ich bin Message 63!2
 64;3;08.01.2019 18:14:11;Message 64;Ich bin Message 64!3
 65;4;08.01.2019 18:14:11;Message 65;Ich bin Message 65!4
+54;1;08.01.2019 18:14:11;Message 54;Ich bin Message 54!1

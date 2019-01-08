@@ -11,24 +11,29 @@ namespace api.Models
         /// unique ID/PK of Post 
         /// </summary>
         public int ID { get; set; }
+
         /// <summary>
         /// Short header
         /// max size: 35 char
         /// </summary>
         public string Title { get; set; }
+
         /// <summary>
         /// Body message of post
         /// plaintext
         /// </summary>
         public string Message { get; set; }
+
         /// <summary>
         /// ID/ForeignKey of posting group
         /// </summary>
-        public int GroupID { get; set; }
+        public int PostGroupID { get; set; }
+
         /// <summary>
         /// Timestamp of posting
         /// </summary>
         public DateTime Date { get; set; }
+
         /*
          * Possible Extension: automatic posting at specific time
          */
