@@ -21,7 +21,6 @@ namespace api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        
         /// <summary>
         /// GET api/values/5
         /// </summary>
