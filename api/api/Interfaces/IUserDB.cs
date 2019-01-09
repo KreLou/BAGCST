@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IPostGroupDB
+    interface IUserDB
     {
         /// <summary>
         /// Create a new News-Item in Database, return the new Item
         /// </summary>
         /// <param name="item"></param>
-        PostGroupItem saveNewGroup(PostGroupItem item);
+        PostGroupItem saveNewUser(PostGroupItem item);
 
         /// <summary>
         /// Delete a News-Item by ID
         /// </summary>
         /// <param name="id"></param>
-        void updateActiveStateGroup(int id, bool isActive);
+        void inactivateUser(int id);
 
         /// <summary>
         /// Update existing News-Item by ID
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        PostGroupItem editGroup(PostGroupItem item);
+        PostGroupItem editUser(PostGroupItem item);
 
         /// <summary>
         /// Return all News-Items starting by startID and returns amount, filtered by groups
@@ -34,7 +34,7 @@ namespace api.Interfaces
         /// <param name="startID">What is the startid, desc</param>
         /// <param name="groups">What groups should loaded</param>
         /// <returns></returns>
-        PostGroupItem[] getGroups();
+        PostGroupItem[] getUser();
     }
 
 }

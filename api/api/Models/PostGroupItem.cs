@@ -23,7 +23,7 @@ namespace api.Models
         /// <summary>
         /// IDs of the participant of the group
         /// </summary>
-        public int[] MIDs { get; set; }
+        public int MemberID { get; set; }
         
         /// <summary>
         /// active state of post group 
