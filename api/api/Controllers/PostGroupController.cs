@@ -37,8 +37,7 @@ namespace api.Controllers
         [HttpGet]
         public PostGroupItem[] getAllPostGroup([FromQuery] int start = 0, [FromQuery] int amount = 10,[FromQuery] int[] groups = null)
         {
-            //TODO Groups settings should be stored in the database
-            return database.getPostGroups();
+            throw new NotImplementedException();
         }
         
         /// <summary>
@@ -50,30 +49,13 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult postPostGroupItem(PostGroupItem item)
         {
-            item.Date = DateTime.Now;
-            try
-            {
-                item = database.saveNewPostGroup(item);
-                return Created("",  item); 
-
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]
         public IActionResult deletePostGroupItem(int id)
         {
-            try
-            {
-                database.deletePostGroup(id);
-                return Ok();
-            }catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -85,20 +67,7 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public IActionResult updatePostGroupItem(int id, [FromBody] PostGroupItem item)
         {
-            if (item == null)
-            {
-                return BadRequest("No PostGroup-item found in body");
-            }
-            item.ID = id;
-            item.Date = DateTime.Now;
-            try
-            {
-                database.editPost(item);
-                return Ok(item);
-            } catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            throw new NotImplementedException();
         }
     }
 }
