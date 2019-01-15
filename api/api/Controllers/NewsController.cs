@@ -50,6 +50,7 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult postNewsItem(NewsItem item)
         {
+            int authorID = 0; //TODO Register the author id by the auth-token
             item.Date = DateTime.Now;
             try
             {
@@ -85,7 +86,8 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public IActionResult updateNewsItem(int id, [FromBody] NewsItem item)
         {
-            if (item == null)
+            //TODO check if age of news less then 10 minutes
+                if (item == null)
             {
                 return BadRequest("No news-item found in body");
             }
