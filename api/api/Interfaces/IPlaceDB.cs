@@ -24,15 +24,21 @@ namespace api.Interfaces
 
         PlaceItem editPlace(PlaceItem place);
         /// <summary>
-        /// Delete a News-Item by ID
+        /// Delete a Place by ID
         /// </summary>
         /// <param name="id"></param>
         void deletePlace(int id);
 
         /// <summary>
-        /// Return all News-Items starting by startID and returns amount, filtered by groups
+        /// Return all Places 
         /// </summary>
         /// <returns></returns>
         PlaceItem[] GetPlaces();
+
+        /// <summary>
+        /// Return a Place 
+        /// </summary>
+        /// <returns></returns>
+        PlaceItem GetPlace(int id );
     }
 }
