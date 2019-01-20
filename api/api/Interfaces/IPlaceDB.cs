@@ -20,9 +20,9 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="place"></param>
         /// <returns></returns>
-
-
         PlaceItem editPlace(PlaceItem place);
+
+
         /// <summary>
         /// Delete a Place by ID
         /// </summary>
