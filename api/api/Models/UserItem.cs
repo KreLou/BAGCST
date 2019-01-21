@@ -9,6 +9,11 @@ namespace api.Models
         public long MemberID { get; set; }
 
         /// <summary>
+        /// User is active?
+        /// </summary>
+        public bool Active { get; set; }
+
+        /// <summary>
         /// username to identify by human
         /// common: Matrikelnummer
         /// </summary>
@@ -43,6 +48,14 @@ namespace api.Models
         /// </summary>
         public string StudyGroup { get; set; }
 
+        /// <summary>
+        /// ID of PostGroups, where user can post news
+        /// </summary>
+        public int[] PostGroups { get; set; }
         
+        /// <summary>
+        /// ID for PostGroups, which user subscribs
+        /// </summary>
+        public int[] SubscribedPostGroups { get; set; }
     }
 }

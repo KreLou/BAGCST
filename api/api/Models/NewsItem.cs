@@ -24,6 +24,7 @@ namespace api.Models
         /// </summary>
         public string Message { get; set; }
 
+        //TODO Musst change to PostGroupItem because we need the name of the postgroup
         /// <summary>
         /// ID/ForeignKey of posting group
         /// </summary>

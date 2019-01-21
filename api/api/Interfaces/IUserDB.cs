@@ -18,7 +18,7 @@ namespace api.Interfaces
         /// Delete a News-Item by ID
         /// </summary>
         /// <param name="id"></param>
-        void inactivateUser(int id);
+        void deleteUser(int id);
 
         /// <summary>
         /// Update existing User-Item by ID
@@ -42,6 +42,13 @@ namespace api.Interfaces
         /// <param name="id"></param>
         /// <returns>Return correct User-Item or null if user not found</returns>
         UserItem getUserByID(int id);
+
+        /// <summary>
+        /// Search for SubscribedPostGroups by the UserID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int[] getSubscribedPostGroupsByUserID(int id);
     }
 
 }

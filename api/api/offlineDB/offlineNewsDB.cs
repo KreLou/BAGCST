@@ -61,7 +61,7 @@ namespace api.offlineDB
                         }
                         catch (Exception e)
                         {
-                            throw new Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {e.Message}");
+                            throw new Exception($"{MethodInfo.GetCurrentMethod()}-Error: {e.Message}");
                         }
                     }
                 }
@@ -73,7 +73,6 @@ namespace api.offlineDB
                 return item;
             }
             throw new FileNotFoundException("File " + filename + " not found");
-            return null;
         }
 
         /// <summary>
