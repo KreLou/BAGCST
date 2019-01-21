@@ -34,6 +34,11 @@ namespace api.Models
         /// Timestamp of creation
         /// </summary>
         public DateTime CreationDate { get; set; }
+
+        /// <summary>
+        /// Timestamp of edit
+        /// </summary>
+        public DateTime EditDate { get; set; }
         
     }
 }

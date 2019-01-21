@@ -12,20 +12,25 @@ namespace api.Interfaces
         /// Create a new News-Item in Database, return the new Item
         /// </summary>
         /// <param name="item"></param>
-        PostGroupItem saveNewGroup(PostGroupItem item);
+        PostGroupItem saveNewPostGroup(PostGroupItem item);
 
         /// <summary>
         /// Delete a News-Item by ID
         /// </summary>
         /// <param name="id"></param>
-        void updateActiveStateGroup(int id, bool isActive);
+        void updateActiveStatePostGroup(int id, bool isActive);
 
         /// <summary>
         /// Update existing News-Item by ID
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        PostGroupItem editGroup(PostGroupItem item);
+        PostGroupItem editPostGroup(PostGroupItem item);
+
+        /// <summary>
+        /// deletes POstGroup by given ID
+        /// </summary>
+        void deletePostGroupItem(int PostGroupID);
 
         /// <summary>
         /// Return all News-Items starting by startID and returns amount, filtered by groups
@@ -34,7 +39,6 @@ namespace api.Interfaces
         /// <param name="startID">What is the startid, desc</param>
         /// <param name="groups">What groups should loaded</param>
         /// <returns></returns>
-        PostGroupItem[] getGroups();
+        PostGroupItem[] getPostGroups();
     }
-
 }

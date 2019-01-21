@@ -11,8 +11,36 @@ namespace api.offlineDB
     {
         private string filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroups.csv";
         
+        /// <summary>
+        /// deletes PostGroup by PostGroupID
+        /// </summary>
+        /// <param name="PostGroupID"></param>
+        public void deletePostGroupItem(int PostGroupID)
+        {
+            string tempfile = Path.GetTempFileName();
 
-        public PostGroupItem editGroup(PostGroupItem item)
+            using (StreamReader sr = new StreamReader(filename))
+            using (StreamWriter sw = new StreamWriter(tempfile))
+            {
+                string[] lineparams;
+                string line = string.Empty;
+
+                while(!sr.EndOfStream)
+                {
+                    lineparams = sr.ReadLine().Split(";");
+                    int id = Convert.ToInt32(lineparams[0]);
+                    if (id != PostGroupID)
+                    {
+                        sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));                        
+                    }
+                }
+            }
+
+            File.Delete(filename);
+            File.Move(tempfile, filename);
+        }
+
+        public PostGroupItem editPostGroup(PostGroupItem item)
         {
             string tempfile = Path.GetTempFileName();
 
@@ -58,7 +86,7 @@ namespace api.offlineDB
         /// return all groups
         /// </summary>
         /// <returns></returns>
-        public PostGroupItem[] getGroups()
+        public PostGroupItem[] getPostGroups()
         {
             List<PostGroupItem> lstPGI = new List<PostGroupItem>();
 
@@ -90,7 +118,7 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="id">concrete ID of group</param>
         /// <param name="isActive">state of active</param>
-        public void updateActiveStateGroup(int id, bool isActive)
+        public void updateActiveStatePostGroup(int id, bool isActive)
         {
             string tempname = Path.GetTempFileName();
             string[] lineparams = null;
@@ -114,7 +142,7 @@ namespace api.offlineDB
             File.Move(tempname, filename);
         }
 
-        public PostGroupItem saveNewGroup(PostGroupItem item)
+        public PostGroupItem saveNewPostGroup(PostGroupItem item)
         {
             throw new System.NotImplementedException();
         }
