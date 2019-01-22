@@ -25,7 +25,7 @@ namespace api.Models
         /// <summary>
         /// Telephone number of the person
         /// </summary>
-        public int TelNumber { get; set; }
+        public string TelNumber { get; set; }
 
         /// <summary>
         /// E-Mail-Adress of the person

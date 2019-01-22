@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
+using api.Databases;
 
 namespace api.Controllers
 {
@@ -13,7 +14,12 @@ namespace api.Controllers
     [ApiController]
     public class ContactsController : ControllerBase
     {
-        private IContactsDB database = null;
+        private IContactsDB database = getDatabase();
+        private static IContactsDB getDatabase()
+        {
+            //TODO set environment
+            return new offlineDB_contacts();
+        }
 
         /// <summary>
         /// returns the ContactItem for the given ID. If the ID is not found, it returns NotFound.
