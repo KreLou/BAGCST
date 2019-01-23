@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using api.Interfaces;
 using api.Models;
 
@@ -9,17 +10,19 @@ namespace api.offlineDB
 {
     public class offlinePostGroupDB : IPostGroupDB
     {
-        private string filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroups.csv";
-        
+        private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
+        private static string filename_postgroup = path_offlineDBFiles + "postgroups.csv";
+        private static string filename_postgroupuser = path_offlineDBFiles + "postgroupuser.csv";
+
         /// <summary>
         /// deletes PostGroup by PostGroupID
         /// </summary>
         /// <param name="PostGroupID"></param>
-        public void deletePostGroupItem(int PostGroupID)
+        public void deletePostGroupItem(int id)
         {
             string tempfile = Path.GetTempFileName();
 
-            using (StreamReader sr = new StreamReader(filename))
+            using (StreamReader sr = new StreamReader(filename_postgroup))
             using (StreamWriter sw = new StreamWriter(tempfile))
             {
                 string[] lineparams;
@@ -28,69 +31,63 @@ namespace api.offlineDB
                 while(!sr.EndOfStream)
                 {
                     lineparams = sr.ReadLine().Split(";");
-                    int id = Convert.ToInt32(lineparams[0]);
-                    if (id != PostGroupID)
-                    {
+                    int _id = Convert.ToInt32(lineparams[0]);
+                    if (_id != id)
+                    { 
                         sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));                        
                     }
                 }
             }
 
-            File.Delete(filename);
-            File.Move(tempfile, filename);
+            File.Delete(filename_postgroup);
+            File.Move(tempfile, filename_postgroup);
         }
 
-        public PostGroupItem editPostGroup(PostGroupItem item)
+        public PostGroupItem editPostGroupItem(int id, PostGroupItem item)
         {
-            string tempfile = Path.GetTempFileName();
+            string tempfile_postgroup = Path.GetTempFileName();
+            string tempfile_postgroupuser = Path.GetTempFileName();
 
-            using (StreamReader sr = new StreamReader(filename))
-            using (StreamWriter sw = new StreamWriter(tempfile))
+            using (StreamReader sr_pg = new StreamReader(filename_postgroup))
+            using (StreamWriter sw_pg = new StreamWriter(tempfile_postgroup))
             {
                 string[] lineparams;
                 string line = string.Empty;
 
-                while(!sr.EndOfStream)
+                while(!sr_pg.EndOfStream)
                 {
-                    lineparams = sr.ReadLine().Split(";");
-                    int id = Convert.ToInt32(lineparams[0]);
-                    if (id == item.PostGroupID)
-                    {
-                        
-                        // override the line with the new parameters
-                        // linq to combine strings
-                        // foreach (int MID in item.MemberID)
-                        // {
-                        //     line = new string[]
-                        //     {
-                        //             item.PostGroupID.ToString(),
-                        //             item.Name,
-                        //             MID.ToString(),
-                        //             item.IsActive.ToString(),
-                        //             item.CreationDate.ToString()
-                        //     }.Aggregate((linepart, word) => $"{linepart};{word}");
+                    lineparams = sr_pg.ReadLine().Split(";");
+                    int _id = Convert.ToInt32(lineparams[0]);
 
-                        //     //Saves the line in the temp.File
-                        //     sw.WriteLine(line);
-                        // }
-                    }
+                    lineparams = _id == id ? item.getStringArray() : lineparams;
+                    
+                    sw_pg.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));
                 }
             }
 
-            File.Delete(filename);
-            File.Move(tempfile, filename);
+            File.Delete(filename_postgroup);
+            File.Move(tempfile_postgroup, filename_postgroup);
+            
+            File.Delete(filename_postgroupuser);
+            File.Move(tempfile_postgroupuser, filename_postgroupuser);
+            
             return item;
+        }
+
+        public PostGroupItem getPostGroupItem(int id)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// return all groups
         /// </summary>
         /// <returns></returns>
-        public PostGroupItem[] getPostGroups()
+        public PostGroupItem[] getPostGroupItems()
         {
             List<PostGroupItem> lstPGI = new List<PostGroupItem>();
 
-            using (StreamReader sr = new StreamReader(filename))
+            using (StreamReader sr = new StreamReader(filename_postgroup))
             {
                 string currentline = string.Empty;
                 while ((currentline = sr.ReadLine()) != null)
@@ -102,9 +99,10 @@ namespace api.offlineDB
                         {
                             PostGroupID = Convert.ToInt32(arr[0]),
                             Name = arr[1],
-                            MemberID = Convert.ToInt32(sMID),
-                            IsActive = Convert.ToBoolean(arr[3]),
-                            CreationDate = Convert.ToDateTime(arr[4])
+                            //IDs prüfen, MemberID wird nicht hier verküpft mit Struct
+                            //MemberID = Convert.ToInt32(sMID),
+                            IsActive = Convert.ToBoolean(arr[2]),
+                            CreationDate = Convert.ToDateTime(arr[3])
                         };
                     }
                 }
@@ -114,37 +112,60 @@ namespace api.offlineDB
         }
 
         /// <summary>
-        /// modify active state of a group
+        /// save complete new Item
         /// </summary>
-        /// <param name="id">concrete ID of group</param>
-        /// <param name="isActive">state of active</param>
-        public void updateActiveStatePostGroup(int id, bool isActive)
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public PostGroupItem saveNewPostGroupItem(PostGroupItem item)
         {
-            string tempname = Path.GetTempFileName();
-            string[] lineparams = null;
+            PostGroupItem RetItem = new PostGroupItem();
 
-            using (StreamReader sr = new StreamReader(filename))
-            using (StreamWriter sw = new StreamWriter(tempname))
-            {
-                while (!sr.EndOfStream)
+            try
+            { 
+                if (File.Exists(filename_postgroup))
                 {
-                    lineparams = sr.ReadLine().Split(";");
-                    int _id = Convert.ToInt32(lineparams[0]);
-                    if (_id == id)
+                    int NewID = 0;
+
+                    // read last PostGroup
+                    // get last given ID from DB to calc a new ID
+                    using (StreamReader sr = new StreamReader(filename_postgroup))
                     {
-                        lineparams[3] = isActive.ToString();
+                        string currentLine;
+                        while ((currentLine = sr.ReadLine()) != null)
+                        {
+                            try 
+                            {
+                                NewID = Convert.ToInt32(currentLine.Split(";")[0]);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception($"ReadLastPostGroupID-Fehler: {ex.Message}");
+                            }
+                        }
                     }
-                    sw.WriteLine(lineparams.Aggregate((linepart, param) => $"{linepart};{param}"));
+
+                    using (StreamWriter sw = new StreamWriter(filename_postgroup))
+                    {
+                        RetItem = new PostGroupItem()
+                        {
+                            PostGroupID     = (NewID + 1),
+                            Name            = item.Name,
+                            IsActive        = item.IsActive,
+                            CreationDate    = item.CreationDate,
+                            EditDate        = item.EditDate
+                        };
+                        sw.WriteLine(RetItem);
+                    }
+
                 }
             }
-            
-            File.Delete(filename);
-            File.Move(tempname, filename);
-        }
+            catch (Exception ex)
+            {
+                throw new Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
+            }
 
-        public PostGroupItem saveNewPostGroup(PostGroupItem item)
-        {
-            throw new System.NotImplementedException();
+            return RetItem;
+ 
         }
     }
 }

@@ -3,13 +3,15 @@ using api.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace api.offlineDB
 {
     public class offlineUserDB : IUserDB
     {
 
-        private string user_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\users.csv";
+        private static string offlineDBPath = Environment.CurrentDirectory + "\\offlineDB";
+        private string user_filename = offlineDBPath + "\\Files\\users.csv";
 
         /// <summary>
         /// Creates the string output for User
@@ -123,7 +125,78 @@ namespace api.offlineDB
 
         public void deleteUser(int id)
         {
+            string user_temp_filename = Path.GetTempFileName();
+
+            // deletes Users from DB
+            using (StreamReader sr = new StreamReader(user_filename))
+            using (StreamWriter sw = new StreamWriter(user_temp_filename))
+            {
+                string[] lines = sr.ReadToEnd().Split(Environment.NewLine.ToCharArray(),StringSplitOptions.RemoveEmptyEntries);
+                List<string> output_lines = lines.OfType<string>().ToList();
+
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+
+                    //divide read line into several params
+                    string[] lineparams = line.Split(';');
+                    if (Convert.ToInt32(lineparams[0]) != id)
+                    {
+                        output_lines.Add(line);
+                    }
+                }  
+                output_lines.Where(wi => Convert.ToInt32(wi.Split(';')[0]) != id).ToList()
+                    .ForEach(e => sw.WriteLine(e));
+            }
+        }
+
+        public void addToPostGroup(int UserID, int PostGroupID)
+        {
+            bool Exists = false;
+            string pth_postgroupuser = offlineDBPath + "\\files\\BindPOstGroupUser.csv";
+            //check, if connection already exists, to avoid duplicates
+            using(StreamReader sr = new StreamReader(pth_postgroupuser))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string[] lineparams = sr.ReadLine().Split(';');
+                    if (Convert.ToInt32(lineparams[0]) == PostGroupID 
+                    && Convert.ToInt32(lineparams[1]) == UserID)
+                    {
+                        Exists = true;
+                    }
+                }
+            }
+
+            // if non existing in this combination add combination
+            if (!Exists)
+            {
+                using(StreamWriter sw = new StreamWriter(offlineDBPath + "\\files\\BindPOstGroupUser.csv", true))
+                {
+                    sw.WriteLine($"{PostGroupID};{UserID}");
+                }
+            }
+
             throw new NotImplementedException();
+        }
+
+        public void deleteFromPostGroup(int UserID, int PostGroupID)
+        {
+            string pth_temp = Path.GetTempFileName();
+
+            using (StreamWriter sw = new StreamWriter(pth_temp))
+            using(StreamReader sr = new StreamReader(user_filename))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string[] lineparams = sr.ReadLine().Split(';');
+                    if (!(Convert.ToInt32(lineparams[0]) == PostGroupID 
+                        && Convert.ToInt32(lineparams[1]) == UserID))
+                    {
+                        sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));
+                    }
+                }
+            }
         }
     }
 }

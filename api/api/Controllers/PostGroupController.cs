@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 using System;
-=======
-﻿using System;
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,10 +14,6 @@ namespace api.Controllers
     [ApiController]
     public class PostGroupController : ControllerBase
     {
-<<<<<<< HEAD
-=======
-
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
         private IPostGroupDB database = getDatabase();
 
         /// <summary>
@@ -35,35 +27,18 @@ namespace api.Controllers
         }
 
         /// <summary>
-<<<<<<< HEAD
         /// Get all existing PostGroups
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public PostGroupItem[] getAllPostGroups()
+        public PostGroupItem[] getAllPostGroupItems()
         {
             //TODO Groups settings should be stored in the database
-            return database.getPostGroups();
+            return database.getPostGroupItems();
         }
         
         /// <summary>
         /// Posts a new news-item
-=======
-        /// Get all PostGroup-Post by filtering
-        /// </summary>
-        /// <param name="start" default="0">Start index, search is desc.</param>
-        /// <param name="amount" default="10">How many PostGroup should load...</param>
-        /// <param name="groups">Which group-id should loaded</param>
-        /// <returns></returns>
-        [HttpGet]
-        public PostGroupItem[] getAllPostGroup([FromQuery] int start = 0, [FromQuery] int amount = 10,[FromQuery] int[] groups = null)
-        {
-            throw new NotImplementedException();
-        }
-        
-        /// <summary>
-        /// Posts a new PostGroup-item
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
         /// ID and Date will set by api
         /// </summary>
         /// <param name="item"></param>
@@ -71,11 +46,10 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult postPostGroupItem(PostGroupItem item)
         {
-<<<<<<< HEAD
             item.EditDate = DateTime.Now;
             try
             {
-                item = database.saveNewPostGroup(item);
+                item = database.saveNewPostGroupItem(item);
                 return Created("",  item); 
 
             }
@@ -83,15 +57,11 @@ namespace api.Controllers
             {
                 return BadRequest(e.Message);
             }
-=======
-            throw new NotImplementedException();
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
         }
 
         [HttpDelete("{id}")]
         public IActionResult deletePostGroupItem(int id)
         {
-<<<<<<< HEAD
             try
             {
                 database.deletePostGroupItem(id);
@@ -101,9 +71,6 @@ namespace api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-=======
-            throw new NotImplementedException();
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
         }
 
         /// <summary>
@@ -113,28 +80,23 @@ namespace api.Controllers
         /// <param name="item"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-<<<<<<< HEAD
-        public IActionResult updateNewsItem(int id, [FromBody] PostGroupItem item)
+        public IActionResult updatePostGroupItem(int id, [FromBody] PostGroupItem item)
         {
             if (item == null)
             {
-                return BadRequest("No news-item found in body");
+                return BadRequest($"No {nameof(PostGroupItem)} found in body");
             }
             item.PostGroupID = id;
             item.EditDate = DateTime.Now;
             try
             {
-                database.editPostGroup(item);
+                database.editPostGroupItem(id, item);
                 return Ok(item);
-            } catch(Exception ex)
+            } 
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-=======
-        public IActionResult updatePostGroupItem(int id, [FromBody] PostGroupItem item)
-        {
-            throw new NotImplementedException();
->>>>>>> c71de8ea970c1e17e86f769f13ea45f6ec7724f5
         }
     }
 }

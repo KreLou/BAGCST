@@ -49,6 +49,18 @@ namespace api.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         int[] getSubscribedPostGroupsByUserID(int id);
+
+        /// <summary>
+        /// add user to postgroup to make them possible to post
+        /// </summary>
+        /// <param name="id"></param>
+        void addToPostGroup(int UserID, int PostGroupID);
+
+        /// <summary>
+        /// delete User from PostGroup
+        /// </summary>
+        /// <param name="id"></param>
+        void deleteFromPostGroup(int UserID, int PostGroupID);
     }
 
 }

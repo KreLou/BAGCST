@@ -12,33 +12,30 @@ namespace api.Interfaces
         /// Create a new News-Item in Database, return the new Item
         /// </summary>
         /// <param name="item"></param>
-        PostGroupItem saveNewPostGroup(PostGroupItem item);
-
-        /// <summary>
-        /// Delete a News-Item by ID
-        /// </summary>
-        /// <param name="id"></param>
-        void updateActiveStatePostGroup(int id, bool isActive);
+        PostGroupItem saveNewPostGroupItem(PostGroupItem item);
 
         /// <summary>
         /// Update existing News-Item by ID
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        PostGroupItem editPostGroup(PostGroupItem item);
+        PostGroupItem editPostGroupItem(int id, PostGroupItem item);
 
         /// <summary>
         /// deletes POstGroup by given ID
         /// </summary>
-        void deletePostGroupItem(int PostGroupID);
+        void deletePostGroupItem(int id);
 
         /// <summary>
-        /// Return all News-Items starting by startID and returns amount, filtered by groups
+        /// Return all PostGroupItems
         /// </summary>
-        /// <param name="amount">How many items should found</param>
-        /// <param name="startID">What is the startid, desc</param>
-        /// <param name="groups">What groups should loaded</param>
         /// <returns></returns>
-        PostGroupItem[] getPostGroups();
+        PostGroupItem[] getPostGroupItems();
+
+        /// <summary>
+        /// returns a single postgroup
+        /// </summary>
+        /// <returns></returns>
+        PostGroupItem getPostGroupItem(int id);
     }
 }
