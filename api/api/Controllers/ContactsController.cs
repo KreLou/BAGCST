@@ -69,9 +69,9 @@ namespace api.Controllers
             }
 
             //Check if item not null
-            if(item_in == null)
+            if(!ModelState.IsValid)
             {
-                return BadRequest("ContactItem not found");
+                return BadRequest(ModelState);
             }
 
             //update existing item
@@ -112,6 +112,10 @@ namespace api.Controllers
                 return BadRequest("ContactItem not found");
             }
             
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             ContactItem item_out = database.createContactItem(item_in);
             return Created("", item_out);
         }

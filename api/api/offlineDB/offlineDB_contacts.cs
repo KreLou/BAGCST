@@ -12,50 +12,11 @@ namespace api.Databases
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
-        //public ContactItem item_packed = new ContactItem();
-        //List<string[]> itemList = new List<string[]>();
-
-        //public void addToItemList(ContactItem item_packed)
-        //{
-        //    string[] item_splitted = {item_packed.ContactID.ToString() + ";", item_packed.Firstname + ";", item_packed.Lastname+ ";",
-        //                         item_packed.Room.ToString() + ";", item_packed.TelNumber.ToString() + ";", item_packed.Type + ";",
-        //                         item_packed.Responsibility + ";", item_packed.Course};
-
-            
-        //    itemList.Add(item_splitted);
-        //}
-
-        //private bool filesIsUsed(string file)
-        //{
-        //    try
-        //    {
-        //        File.Open(file, FileMode.Open);
-        //    }
-        //    catch
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public void updateCsv()
-        //{
-        //    using (StreamWriter writer = new StreamWriter(csvFile))
-        //    {
-        //        if (!filesIsUsed(csvFile))
-        //        {
-        //            foreach (string[] item in itemList)
-        //            {
-        //                writer.WriteLine(item);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new FileLoadException("The file can"t be updated because it"s used");
-        //        }
-        //    }
-        //}
-
+        /// <summary>
+        /// returns a ContactItem based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>ContactItem|null</returns>
         public ContactItem getContactItem(int id)
         {
             ContactItem[] contacts = getAllContactItems();
@@ -69,6 +30,10 @@ namespace api.Databases
             return null;
         }
 
+        /// <summary>
+        /// returns array of ContactItems
+        /// </summary>
+        /// <returns>ContactItem[]</returns>
         public ContactItem[] getAllContactItems()
         {
             List<ContactItem> list = new List<ContactItem>();
@@ -96,6 +61,11 @@ namespace api.Databases
                 return list.ToArray();
         }
 
+        /// <summary>
+        /// creates a ContactItem based on the given ContactItem
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>ContactItem</returns>
         public ContactItem createContactItem(ContactItem item)
         {
             //1. Generate ID
@@ -118,6 +88,12 @@ namespace api.Databases
             return getContactItem(id);
         }
 
+        /// <summary>
+        /// edits the ContactItem based on the given ContactItem except for the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns>ContactItem</returns>
         public ContactItem editContactItem(int id, ContactItem item)
         {
             string tempFile = Path.GetTempFileName();
@@ -129,7 +105,7 @@ namespace api.Databases
                 {
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
-                        writer.WriteLine(item.ContactID + ";" + item.Firstname + ";" + item.Lastname + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type);
+                        writer.WriteLine(id + ";" + item.Firstname + ";" + item.Lastname + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type);
                     }
                     else
                     {
@@ -142,6 +118,10 @@ namespace api.Databases
             return getContactItem(id);
         }
 
+        /// <summary>
+        /// deletes the ContactItem based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
         public void deleteContactItem(int id)
         {
             string tempFile = Path.GetTempFileName();
