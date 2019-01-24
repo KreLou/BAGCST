@@ -14,6 +14,31 @@ namespace api.offlineDB
         private static string filename_postgroup = path_offlineDBFiles + "postgroups.csv";
         private static string filename_postgroupuser = path_offlineDBFiles + "postgroupuser.csv";
 
+        #region DEBUG Funktion -- am Ende entfernen
+        public string[] getStringArray(PostGroupItem item)
+        {
+            List<string> ret = new List<string>();
+            ret.Add(item.PostGroupID.ToString());
+            ret.Add(item.Name.ToString());
+            ret.Add(item.IsActive.ToString());
+            ret.Add(item.CreationDate.ToString());
+            ret.Add(item.EditDate.ToString());
+            return ret.ToArray();
+        }
+        public PostGroupItem getItemFromStringArray(string[] inputarray)
+        {
+            return new PostGroupItem()
+            {
+                PostGroupID = Convert.ToInt32(inputarray[0]),
+                Name = inputarray[1],
+                IsActive = Convert.ToBoolean(inputarray[2]),
+                EditDate = Convert.ToDateTime(inputarray[3]),
+                CreationDate = Convert.ToDateTime(inputarray[4])
+            };
+        }
+        #endregion
+        
+
         /// <summary>
         /// deletes PostGroup by PostGroupID
         /// </summary>
@@ -59,7 +84,7 @@ namespace api.offlineDB
                     lineparams = sr_pg.ReadLine().Split(";");
                     int _id = Convert.ToInt32(lineparams[0]);
 
-                    lineparams = _id == id ? item.getStringArray() : lineparams;
+                    lineparams = _id == id ? this.getStringArray(item) : lineparams;
                     
                     sw_pg.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));
                 }
@@ -73,7 +98,6 @@ namespace api.offlineDB
             
             return item;
         }
-
         public PostGroupItem getPostGroupItem(int id)
         {
             throw new NotImplementedException();
