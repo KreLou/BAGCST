@@ -6,7 +6,7 @@ namespace api.Models
         /// PK of User
         /// </summary>
         /// <value></value>
-        public long MemberID { get; set; }
+        public long UserID { get; set; }
 
         /// <summary>
         /// User is active?

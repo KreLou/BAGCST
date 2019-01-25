@@ -45,6 +45,7 @@ namespace api.offlineDB
         /// <param name="PostGroupID"></param>
         public void deletePostGroupItem(int id)
         {
+            //TODO delete all references in reference table
             string tempfile = Path.GetTempFileName();
 
             using (StreamReader sr = new StreamReader(filename_postgroup))
@@ -56,8 +57,7 @@ namespace api.offlineDB
                 while(!sr.EndOfStream)
                 {
                     lineparams = sr.ReadLine().Split(";");
-                    int _id = Convert.ToInt32(lineparams[0]);
-                    if (_id != id)
+                    if (Convert.ToInt32(lineparams[0]) != id)
                     { 
                         sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));                        
                     }

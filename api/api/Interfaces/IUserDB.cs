@@ -12,43 +12,41 @@ namespace api.Interfaces
         /// Create a new News-Item in Database, return the new Item
         /// </summary>
         /// <param name="item"></param>
-        UserItem saveNewUser(UserItem item);
+        UserItem saveNewUserItem(UserItem item);
+
+        /// <summary>
+        /// Update existing User-Item by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        UserItem editUserItem(int id, UserItem item);
 
         /// <summary>
         /// Delete a News-Item by ID
         /// </summary>
         /// <param name="id"></param>
-        void deleteUser(int id);
-
-        /// <summary>
-        /// Update existing User-Item by ID
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        UserItem editUser(UserItem item);
+        void deleteUserItem(int id);
 
         /// <summary>
         /// Return all User-Items
         /// </summary>
-        /// <param name="amount">How many items should found</param>
-        /// <param name="startID">What is the startid, desc</param>
-        /// <param name="groups">What groups should loaded</param>
-        /// <returns></returns>
-        UserItem[] getUser();
+        /// <returns>Array of UserItems</returns>
+        UserItem[] getUserItems();
 
         /// <summary>
         /// Search for User with specific ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Return correct User-Item or null if user not found</returns>
-        UserItem getUserByID(int id);
+        UserItem getUserItem(int id);
 
         /// <summary>
         /// Search for SubscribedPostGroups by the UserID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        int[] getSubscribedPostGroupsByUserID(int id);
+        /// <returns>Array of PostGroupIDs</returns>
+        int[] getSubscribedPostGroups(int UserID);
 
         /// <summary>
         /// add user to postgroup to make them possible to post

@@ -20,15 +20,37 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(UserItem user)
         {
-            return user.MemberID + ";" + user.Active + ";" + user.Username + ";" + user.Firstname + ";" + user.Lastname + ";" + user.Email + ";" + user.StudyCourse + ";" + user.StudyGroup; 
+            return user.UserID + ";" + user.Active + ";" + user.Username + ";" + user.Firstname + ";" + user.Lastname + ";" + user.Email + ";" + user.StudyCourse + ";" + user.StudyGroup; 
         }
 
-        public UserItem editUser(UserItem item)
+        public UserItem editUserItem(int id, UserItem item)
         {
-            throw new System.NotImplementedException();
+            string pth_tmp = Path.GetTempFileName();
+
+            using(StreamWriter sw = new StreamWriter(pth_tmp))
+            using(StreamReader sr = new StreamReader(user_filename))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    List<string> lstLineParams = line.Split(';').ToList();
+                    UserItem UItm = new UserItem();
+
+                    // anhand ID entweder existerendes oder verändertes Element schreiben
+                    sw.WriteLine(Convert.ToInt32(lstLineParams[0]) == item.UserID ?
+                        this.writeLine(item):
+                        lstLineParams.Aggregate((phrase, word) => $"{phrase},{word}"));                    
+                }
+
+                File.Delete(user_filename);
+                File.Move(pth_tmp,user_filename);
+            }
+
+//            return database.getUserItem(item);
+            return new UserItem();
         }
 
-        public int[] getSubscribedPostGroupsByUserID(int id)
+        public int[] getSubscribedPostGroups(int id)
         {
             throw new System.NotImplementedException();
         }
@@ -37,7 +59,7 @@ namespace api.offlineDB
         /// Search for all active users in file 
         /// </summary>
         /// <returns></returns>
-        public UserItem[] getUser()
+        public UserItem[] getUserItems()
         {
             List<UserItem> list = new List<UserItem>();
 
@@ -49,7 +71,7 @@ namespace api.offlineDB
                     string[] args = line.Split(";");
                     UserItem user = new UserItem()
                     {
-                        MemberID = (long)Convert.ToInt64(args[0]),
+                        UserID = (long)Convert.ToInt64(args[0]),
                         Active = Convert.ToBoolean(args[1]),
                         Username = args[2],
                         Firstname = args[3],
@@ -70,7 +92,7 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public UserItem getUserByID(int id)
+        public UserItem getUserItem(int id)
         {
             UserItem user = null;
 
@@ -86,7 +108,7 @@ namespace api.offlineDB
                         string[] args = line.Split(";");
                         user = new UserItem()
                         {
-                            MemberID = user_id,
+                            UserID = user_id,
                             Active = Convert.ToBoolean(args[1]),
                             Username = args[2],
                             Firstname = args[3],
@@ -108,22 +130,20 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public UserItem saveNewUser(UserItem item)
+        public UserItem saveNewUserItem(UserItem item)
         {
-            UserItem[] existinguser = getUser();
+            UserItem existinguser = this.getUserItem(item.UserID);
             long max = 1;
-            foreach (UserItem exUser in existinguser)
-            {
-                max = exUser.MemberID > max ? exUser.MemberID +1  : max;
-            }
+            NewID = existinguser.UserID +1;
+            
 
-            item.MemberID = max;
+            item.UserID = max;
 
             File.AppendAllLines(user_filename, new String[] { this.writeLine(item) });
             return item;
         }
 
-        public void deleteUser(int id)
+        public void deleteUserItem(int id)
         {
             string user_temp_filename = Path.GetTempFileName();
 
