@@ -31,6 +31,24 @@ namespace api.Databases
         }
 
         /// <summary>
+        /// returns a ContactItem based on the given E-Mail-Address
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>ContactItem|null</returns>
+        public ContactItem GetContactItem(string email)
+        {
+            ContactItem[] contacts = getAllContactItems();
+            foreach (ContactItem item in contacts)
+            {
+                if (item.Email == email)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// returns array of ContactItems
         /// </summary>
         /// <returns>ContactItem[]</returns>

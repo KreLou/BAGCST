@@ -61,12 +61,24 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public ActionResult<ContactItem> editContactItem(int id, [FromBody]ContactItem item_in)
         {
-            //TODO check for permission
             //Check if id is valid
             if (database.getContactItem(id) == null)
             {
                 return NotFound(($"No ContactItem found for id: {id}"));
             }
+
+            //Check if ContactItems email fits to the given id. Probably wrong. First try
+            //if(item_in.Email == database.getContactItem(item_in.Email).Email)
+            //{
+            //    return BadRequest("ContactItem is already existing");
+            //}
+
+            //second try
+            if(database.getContactItem(id).Email == database.getContactItem(item_in.Email).Email)
+            {
+                return BadRequest("ContactItem with this E-Mail-Address is already existing");
+            }
+
 
             //Check if item not null
             if(!ModelState.IsValid)
@@ -111,8 +123,14 @@ namespace api.Controllers
             {
                 return BadRequest("ContactItem not found");
             }
-            
-            if(!ModelState.IsValid)
+
+            if (item_in.Email == database.getContactItem(item_in.ContactID).Email)
+            {
+                return BadRequest("ContactItem is already existing");
+            }
+
+
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

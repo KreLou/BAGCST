@@ -16,6 +16,13 @@ namespace api.Interfaces
         ContactItem getContactItem(int id);
 
         /// <summary>
+        /// search for ContactItem by E-Mail-Address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>ContactItem|null</returns>
+        ContactItem getContactItem(string email);
+
+        /// <summary>
         /// get all ContactItems
         /// </summary>
         /// <returns>Array of ContactItems with length>=0</returns>
@@ -41,5 +48,7 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id">ID</param>
         void deleteContactItem(int id);
+
+        
     }
 }
