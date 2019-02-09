@@ -49,7 +49,7 @@ namespace api.offlineDB
                         menu = new MenuItem()
                         {
                             MenuID = menu_id,
-                            Meal = args[1],
+                          //  Meal = args[1],
                             Price = (decimal)Convert.ToInt64( args[2]),
                             Date = DateTime.Parse(args[3])
 
@@ -103,7 +103,7 @@ namespace api.offlineDB
                     MenuItem menu = new MenuItem()
                     {
                         MenuID = (int) Convert.ToInt64(args[0]),
-                        Meal = args[1],
+                       // Meal = args[1],
                         Price = (decimal)Convert.ToInt64(args[2]),
                         Date = date
                     };
@@ -187,7 +187,7 @@ namespace api.offlineDB
                     MenuItem menu = new MenuItem()
                     {
                         MenuID = id,
-                        Meal = args[1],
+                       // Meal = args[1],
                         Price = (decimal)Convert.ToInt64(args[2]),
                         Date = date
                     };

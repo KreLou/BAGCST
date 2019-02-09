@@ -6,12 +6,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
+using api.offlineDB;
 
 namespace api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PlaceController : ControllerBase
     {
-        private IPlaceDB database = null;
+        private IPlaceDB database = getDatabase();
+
+        /// <summary>
+        /// Returns the current database
+ 
+        /// </summary>
+        /// <returns></returns>
+        private static IPlaceDB getDatabase()
+        {
+            return new OfflinePlaceDB();
+        }
 
         /// <summary>
         /// returns the Place for the given ID. If the ID is not found, it returns NotFound.
@@ -86,7 +99,7 @@ namespace api.Controllers
   
             if (database.GetPlace(id) == null)
             {
-                return NotFound(($"No Plac found for id: {id}"));
+                return NotFound(($"No Place found for id: {id}"));
             }
             database.deletePlace(id);
             return Ok();
@@ -97,7 +110,7 @@ namespace api.Controllers
         /// <param name="place"></param>
         /// <returns>PlaceItem|BadRequest</returns>
         [HttpPost]
-        public ActionResult<PlaceItem> createPlace(PlaceItem place)
+        public ActionResult<PlaceItem> createPlace([FromBody] PlaceItem place)
         {
             
             if (place == null)

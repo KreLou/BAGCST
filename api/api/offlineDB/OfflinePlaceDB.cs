@@ -19,7 +19,7 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(PlaceItem place)
         {
-            return place.PalceID + ";" + place.Name ;
+            return place.PlaceID + ";" + place.Name ;
         }
 
         public PlaceItem editPlace(PlaceItem item)
@@ -43,11 +43,12 @@ namespace api.offlineDB
                     string[] args = line.Split(";");
                     PlaceItem place = new PlaceItem()
                     {
-                        PalceID = (int)Convert.ToInt64(args[0]),
+                        PlaceID = (int)Convert.ToInt64(args[0]),
             
                         Name = args[1]
               
                     };
+                    list.Add(place);
 
      
                 }
@@ -77,9 +78,9 @@ namespace api.offlineDB
                         string[] args = line.Split(";");
                         place = new PlaceItem()
                         {
-                            PalceID = place_ID,
+                            PlaceID = place_ID,
                     
-                            Name = args[2]
+                            Name = args[1]
                       
                         };
                     }
@@ -95,14 +96,14 @@ namespace api.offlineDB
         /// <returns></returns>
         public PlaceItem saveNewPlace(PlaceItem item)
         {
-            PlaceItem[] existinguser = GetPlaces();
-            int max = 1;
-            foreach (PlaceItem exPlace in existinguser)
+            PlaceItem[] existingplace = GetPlaces();
+            int max = 0;
+            foreach (PlaceItem exPlace in existingplace)
             {
-                max = exPlace.PalceID > max ? exPlace.PalceID + 1 : max;
+                max = exPlace.PlaceID > max ? exPlace.PlaceID  : max;
             }
 
-            item.PalceID = max;
+            item.PlaceID = max+1;
 
             File.AppendAllLines(place_filename, new String[] { this.writeLine(item) });
             return item;
@@ -110,7 +111,22 @@ namespace api.offlineDB
 
         public void deletePlace(int id)
         {
-            throw new NotImplementedException();
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(csvFile))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(line.Split(";")[0]) != id)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(csvFile);
+            File.Move(tempFile, csvFile);
+
         }
     }
 }

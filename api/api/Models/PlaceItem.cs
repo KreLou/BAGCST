@@ -11,7 +11,7 @@ namespace api.Models
         /// <summary>
         /// unique ID/PK of place 
         /// </summary>
-        public int PalceID { get; set; }
+        public int PlaceID { get; set; }
 
         /// <summary>
         /// String name 

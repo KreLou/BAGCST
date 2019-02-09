@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.IO;
 using api.Interfaces;
 using api.Models;
+using System.Reflection;
 
 namespace api.offlineDB
 {
@@ -12,6 +13,9 @@ namespace api.offlineDB
     {
 
         private string meal_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\meals.csv";
+
+        private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
+        private static string filename_place = path_offlineDBFiles + "places.csv";
 
         /// <summary>
         /// Creates the string output for Meal
@@ -47,7 +51,7 @@ namespace api.offlineDB
                     {
                         MealID = (int)Convert.ToInt64(args[0]),
                         MealName = args[1],
-                        Place = meal.Place ,
+                        //Place = filename_place.,
                         description = args[3],
                  
                     };
