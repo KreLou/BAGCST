@@ -35,7 +35,7 @@ namespace api.Databases
         /// </summary>
         /// <param name="id"></param>
         /// <returns>ContactItem|null</returns>
-        public ContactItem GetContactItem(string email)
+        public ContactItem getContactItem(string email)
         {
             ContactItem[] contacts = getAllContactItems();
             foreach (ContactItem item in contacts)
