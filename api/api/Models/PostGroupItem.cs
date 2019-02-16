@@ -21,11 +21,11 @@ namespace api.Models
         /// </summary>
         [Required]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// active state of post group 
         /// </summary>
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         /// <summary>
         /// Timestamp of creation
