@@ -16,6 +16,18 @@ namespace api.Controllers
     {
 
         private INewsDB database = getDatabase();
+        private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
+        private IUserSettings userSettingsDatabase = getUserSettingsDatabase();
+
+        private static IUserSettings getUserSettingsDatabase()
+        {
+            return new offlineUserSettings();
+        }
+
+        private static IPostGroupDB getPostGroupDatabase()
+        {
+            return new offlinePostGroupDB();
+        }
 
         /// <summary>
         /// Returns the current database
@@ -35,8 +47,10 @@ namespace api.Controllers
         /// <param name="groups">Which group-id should loaded</param>
         /// <returns></returns>
         [HttpGet]
-        public NewsItem[] getAllNews([FromQuery] int start = 0, [FromQuery] int amount = 10,[FromQuery] int[] groups = null)
+        public NewsItem[] getAllNews([FromQuery] int start = 0, [FromQuery] int amount = 10)
         {
+            long userID = 1; //TODO Get User-ID by Token
+            int[] groups = userSettingsDatabase.getSubscribedPostGroupsIDs(userID);
             //TODO Groups settings should be stored in the database
             return database.getPosts(amount, start, groups);
         }
@@ -48,8 +62,9 @@ namespace api.Controllers
         /// <param name="item"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult postNewsItem(NewsItem item)
+        public IActionResult postNewsItem(NewsItem item, [FromQuery] int postGroupID)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             int authorID = 0; //TODO Register the author id by the auth-token
             item.Date = DateTime.Now;
             try
