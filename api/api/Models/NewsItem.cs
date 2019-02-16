@@ -31,7 +31,6 @@ namespace api.Models
         /// <summary>
         /// ID/ForeignKey of posting group
         /// </summary>
-        [Required]
         public PostGroupItem PostGroup { get; set; }
 
         /// <summary>
