@@ -12,6 +12,8 @@ namespace api.offlineDB
     public class offlineNewsDB : INewsDB
     {
 
+        private IPostGroupDB postGroupDatabase = new offlinePostGroupDB();
+
         private string filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\news.csv";
 
         /// <summary>
@@ -48,28 +50,9 @@ namespace api.offlineDB
             if (File.Exists(filename))
             {
                 //Need new id
-                int newID = 0;
+                item.ID = getMaxUsedNewsID() + 1;
 
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    string currentLine;
-                    while ((currentLine = sr.ReadLine()) != null)
-                    {
-                        try
-                        {
-                            newID = Convert.ToInt32(currentLine.Split(";")[0]);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception($"{MethodInfo.GetCurrentMethod()}-Error: {e.Message}");
-                        }
-                    }
-                }
-
-                newID++;
-                string content = newID + ";" + item.PostGroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
-                File.AppendAllLines(filename, new String[] { content });
-                item.ID = newID;
+                File.AppendAllLines(filename, new String[] { ConvertFromNewsItemToString(item) });
                 return item;
             }
             throw new FileNotFoundException("File " + filename + " not found");
@@ -95,7 +78,7 @@ namespace api.offlineDB
                     if (id == item.ID)
                     {
                         //override the line with the new parameters
-                       line = item.ID + ";" + item.PostGroupID + ";" + item.Date + ";" + item.Title + ";" + item.Message;
+                        line = ConvertFromNewsItemToString(item);
                     }
                     //Saves the line in the temp.File
                     sw.WriteLine(line);
@@ -133,14 +116,15 @@ namespace api.offlineDB
                     NewsItem item = new NewsItem()
                     {
                         ID = Convert.ToInt32(arr[0]),
-                        PostGroupID = Convert.ToInt32(arr[1]),
+                        PostGroup = postGroupDatabase.getPostGroupItem( Convert.ToInt32(arr[1])),
                         Date = Convert.ToDateTime(arr[2]),
                         Title = arr[3],
                         Message = arr[4],
                     };
 
+                    //TODO What is with PostGroup == null?
                     if ((item.ID <= startID || startID == 0)
-                        && (groups.Length > 0 && groups.Contains(item.PostGroupID)))
+                        && (groups.Length > 0 && groups.Contains(item.PostGroup.PostGroupID)))
                     {
                         list.Add(item);
                     };
@@ -155,6 +139,44 @@ namespace api.offlineDB
             }
 
             return list.ToArray();
+        }
+
+        private string ConvertFromNewsItemToString(NewsItem item)
+        {
+            return item.ID + ";"
+                + item.Title + ";"
+                + item.Message + ";"
+                + item.PostGroup.PostGroupID + ";"
+                + item.Date;
+        }
+
+        private NewsItem ConvertFromStringToNewsItem(string line)
+        {
+            string[] args = line.Split(";");
+            NewsItem item = new NewsItem
+            {
+                ID = Convert.ToInt32(args[0]),
+                Title = args[1],
+                Message = args[2],
+                PostGroup = postGroupDatabase.getPostGroupItem(Convert.ToInt32(args[3])),
+                Date = Convert.ToDateTime(args[4])
+            };
+            return item;
+        }
+
+        private int getMaxUsedNewsID()
+        {
+            int max = 0;
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                string currentLine = null;
+                while ((currentLine = sr.ReadLine()) != null)
+                {
+                    NewsItem item = ConvertFromStringToNewsItem(currentLine);
+                    if (item.ID > max) max = item.ID;
+                }
+            }
+            return max;
         }
     }
 }
