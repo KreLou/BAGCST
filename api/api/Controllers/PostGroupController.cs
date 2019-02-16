@@ -36,6 +36,14 @@ namespace api.Controllers
             //TODO Groups settings should be stored in the database
             return database.getPostGroupItems();
         }
+
+        [HttpGet("{id}")]
+        public IActionResult getPostGroupItem(int id)
+        {
+            PostGroupItem item = database.getPostGroupItem(id);
+            if (item == null) return NotFound($"No PostGroupItem found for ID {id}");
+            return Ok(item);
+        }
         
         /// <summary>
         /// Posts a new news-item
@@ -46,11 +54,12 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult postPostGroupItem(PostGroupItem item)
         {
+            //TODO Should the Name be unique?
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            item.EditDate = DateTime.Now;
+            item.CreationDate = DateTime.Now;
             try
             {
                 item = database.saveNewPostGroupItem(item);
@@ -66,6 +75,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public IActionResult deletePostGroupItem(int id)
         {
+            //TODO What should happen, when the amount of posts > 0?
             try
             {
                 database.deletePostGroupItem(id);
