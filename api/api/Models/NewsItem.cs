@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,19 +17,22 @@ namespace api.Models
         /// Short header
         /// max size: 35 char
         /// </summary>
+        [Required]
         public string Title { get; set; }
 
         /// <summary>
         /// Body message of post
         /// plaintext
         /// </summary>
+        [Required]
         public string Message { get; set; }
 
         //TODO Musst change to PostGroupItem because we need the name of the postgroup
         /// <summary>
         /// ID/ForeignKey of posting group
         /// </summary>
-        public int PostGroupID { get; set; }
+        [Required]
+        public PostGroupItem PostGroup { get; set; }
 
         /// <summary>
         /// Timestamp of posting
