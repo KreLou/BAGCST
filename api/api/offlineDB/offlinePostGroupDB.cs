@@ -37,7 +37,7 @@ namespace api.offlineDB
             };
         }
         #endregion
-        
+
 
         /// <summary>
         /// deletes PostGroup by PostGroupID
@@ -54,12 +54,12 @@ namespace api.offlineDB
                 string[] lineparams;
                 string line = string.Empty;
 
-                while(!sr.EndOfStream)
+                while (!sr.EndOfStream)
                 {
                     lineparams = sr.ReadLine().Split(";");
                     if (Convert.ToInt32(lineparams[0]) != id)
-                    { 
-                        sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));                        
+                    {
+                        sw.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));
                     }
                 }
             }
@@ -79,28 +79,39 @@ namespace api.offlineDB
                 string[] lineparams;
                 string line = string.Empty;
 
-                while(!sr_pg.EndOfStream)
+                while (!sr_pg.EndOfStream)
                 {
                     lineparams = sr_pg.ReadLine().Split(";");
                     int _id = Convert.ToInt32(lineparams[0]);
 
                     lineparams = _id == id ? this.getStringArray(item) : lineparams;
-                    
+
                     sw_pg.WriteLine(lineparams.Aggregate((phrase, word) => $"{phrase};{word}"));
                 }
             }
 
             File.Delete(filename_postgroup);
             File.Move(tempfile_postgroup, filename_postgroup);
-            
+
             File.Delete(filename_postgroupuser);
             File.Move(tempfile_postgroupuser, filename_postgroupuser);
-            
+
             return item;
         }
         public PostGroupItem getPostGroupItem(int id)
         {
-            throw new NotImplementedException();
+            PostGroupItem item = null;
+
+            using (StreamReader sr = new StreamReader(filename_postgroup))
+            {
+                string currentLine = null;
+                while((currentLine = sr.ReadLine()) != null)
+                {
+                    PostGroupItem foundedItem = getPostGroupItemFromStringLine(currentLine);
+                    if (foundedItem.PostGroupID == id) item = foundedItem;
+                }
+            }
+            return item;
         }
 
         /// <summary>
@@ -116,19 +127,7 @@ namespace api.offlineDB
                 string currentline = string.Empty;
                 while ((currentline = sr.ReadLine()) != null)
                 {
-                    string[] arr = currentline.Split(";");
-                    foreach (string sMID in arr[2].Split(";"))
-                    {
-                        PostGroupItem item = new PostGroupItem() 
-                        {
-                            PostGroupID = Convert.ToInt32(arr[0]),
-                            Name = arr[1],
-                            //IDs prüfen, MemberID wird nicht hier verküpft mit Struct
-                            //MemberID = Convert.ToInt32(sMID),
-                            IsActive = Convert.ToBoolean(arr[2]),
-                            CreationDate = Convert.ToDateTime(arr[3])
-                        };
-                    }
+                    lstPGI.Add(getPostGroupItemFromStringLine(currentline));
                 }
             }
 
@@ -142,44 +141,13 @@ namespace api.offlineDB
         /// <returns></returns>
         public PostGroupItem saveNewPostGroupItem(PostGroupItem item)
         {
-            PostGroupItem RetItem = new PostGroupItem();
-
             try
-            { 
+            {
                 if (File.Exists(filename_postgroup))
                 {
-                    int NewID = 0;
+                    item.PostGroupID = getMaxUsedPostGroupID() + 1;
 
-                    // read last PostGroup
-                    // get last given ID from DB to calc a new ID
-                    using (StreamReader sr = new StreamReader(filename_postgroup))
-                    {
-                        string currentLine;
-                        while ((currentLine = sr.ReadLine()) != null)
-                        {
-                            try 
-                            {
-                                NewID = Convert.ToInt32(currentLine.Split(";")[0]);
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new Exception($"ReadLastPostGroupID-Fehler: {ex.Message}");
-                            }
-                        }
-                    }
-
-                    using (StreamWriter sw = new StreamWriter(filename_postgroup))
-                    {
-                        RetItem = new PostGroupItem()
-                        {
-                            PostGroupID     = (NewID + 1),
-                            Name            = item.Name,
-                            IsActive        = item.IsActive,
-                            CreationDate    = item.CreationDate,
-                            EditDate        = item.EditDate
-                        };
-                        sw.WriteLine(RetItem);
-                    }
+                    File.AppendAllLines(filename_postgroup, new string[] { getStringFromPostGroupItem(item) });
 
                 }
             }
@@ -188,8 +156,44 @@ namespace api.offlineDB
                 throw new Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
             }
 
-            return RetItem;
- 
+            return item;
+
+        }
+
+        private string getStringFromPostGroupItem(PostGroupItem item)
+        {
+            return item.PostGroupID + ";"
+                + item.Name + ";"
+                + item.IsActive + ";"
+                + item.CreationDate + ";"
+                + item.EditDate;
+        }
+
+        private PostGroupItem getPostGroupItemFromStringLine(string line)
+        {
+            string[] args = line.Split(";");
+            PostGroupItem item = new PostGroupItem
+            {
+                PostGroupID = Convert.ToInt32(args[0]),
+                Name = args[1],
+                IsActive = Convert.ToBoolean(args[2]),
+                CreationDate = Convert.ToDateTime(args[3]),
+                EditDate = Convert.ToDateTime(args[4])
+            };
+            return item;
+        }
+
+
+        private int getMaxUsedPostGroupID()
+        {
+            int max = 0;
+            PostGroupItem[] postGroupItems = getPostGroupItems();
+            foreach(PostGroupItem postGroup in postGroupItems)
+            {
+                if (postGroup.PostGroupID > max) max = postGroup.PostGroupID;
+            }
+
+            return max;
         }
     }
 }
