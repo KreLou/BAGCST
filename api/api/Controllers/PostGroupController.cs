@@ -46,6 +46,10 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult postPostGroupItem(PostGroupItem item)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             item.EditDate = DateTime.Now;
             try
             {

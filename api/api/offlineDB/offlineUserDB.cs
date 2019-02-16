@@ -23,7 +23,7 @@ namespace api.offlineDB
             return user.UserID + ";" + user.Active + ";" + user.Username + ";" + user.Firstname + ";" + user.Lastname + ";" + user.Email + ";" + user.StudyCourse + ";" + user.StudyGroup; 
         }
 
-        public UserItem editUserItem(int id, UserItem item)
+        public UserItem editUserItem(long id, UserItem item)
         {
             string pth_tmp = Path.GetTempFileName();
 
@@ -50,7 +50,7 @@ namespace api.offlineDB
             return new UserItem();
         }
 
-        public int[] getSubscribedPostGroups(int id)
+        public int[] getSubscribedPostGroups(long id)
         {
             throw new System.NotImplementedException();
         }
@@ -92,7 +92,7 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public UserItem getUserItem(int id)
+        public UserItem getUserItem(long id)
         {
             UserItem user = null;
 
@@ -133,8 +133,7 @@ namespace api.offlineDB
         public UserItem saveNewUserItem(UserItem item)
         {
             UserItem existinguser = this.getUserItem(item.UserID);
-            long max = 1;
-            NewID = existinguser.UserID +1;
+            long max = getMaxUsedUserId() + 1;
             
 
             item.UserID = max;
@@ -143,7 +142,18 @@ namespace api.offlineDB
             return item;
         }
 
-        public void deleteUserItem(int id)
+        private long getMaxUsedUserId()
+        {
+            long max = 0;
+            UserItem[] users = getUserItems();
+            foreach(UserItem user in users)
+            {
+                if (user.UserID > max) max = user.UserID;
+            }
+            return max;
+        }
+
+        public void deleteUserItem(long id)
         {
             string user_temp_filename = Path.GetTempFileName();
 
@@ -170,7 +180,7 @@ namespace api.offlineDB
             }
         }
 
-        public void addToPostGroup(int UserID, int PostGroupID)
+        public void addToPostGroup(long UserID, int PostGroupID)
         {
             bool Exists = false;
             string pth_postgroupuser = offlineDBPath + "\\files\\BindPOstGroupUser.csv";
@@ -200,7 +210,7 @@ namespace api.offlineDB
             throw new NotImplementedException();
         }
 
-        public void deleteFromPostGroup(int UserID, int PostGroupID)
+        public void deleteFromPostGroup(long UserID, int PostGroupID)
         {
             string pth_temp = Path.GetTempFileName();
 

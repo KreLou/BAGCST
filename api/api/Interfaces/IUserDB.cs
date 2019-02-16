@@ -20,13 +20,13 @@ namespace api.Interfaces
         /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        UserItem editUserItem(int id, UserItem item);
+        UserItem editUserItem(long id, UserItem item);
 
         /// <summary>
         /// Delete a News-Item by ID
         /// </summary>
         /// <param name="id"></param>
-        void deleteUserItem(int id);
+        void deleteUserItem(long id);
 
         /// <summary>
         /// Return all User-Items
@@ -39,26 +39,26 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Return correct User-Item or null if user not found</returns>
-        UserItem getUserItem(int id);
+        UserItem getUserItem(long id);
 
         /// <summary>
         /// Search for SubscribedPostGroups by the UserID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Array of PostGroupIDs</returns>
-        int[] getSubscribedPostGroups(int UserID);
+        int[] getSubscribedPostGroups(long UserID);
 
         /// <summary>
         /// add user to postgroup to make them possible to post
         /// </summary>
         /// <param name="id"></param>
-        void addToPostGroup(int UserID, int PostGroupID);
+        void addToPostGroup(long UserID, int PostGroupID);
 
         /// <summary>
         /// delete User from PostGroup
         /// </summary>
         /// <param name="id"></param>
-        void deleteFromPostGroup(int UserID, int PostGroupID);
+        void deleteFromPostGroup(long UserID, int PostGroupID);
     }
 
 }
