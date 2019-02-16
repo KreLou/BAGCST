@@ -61,12 +61,13 @@ namespace api.Controllers
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        [HttpPost]
-        public IActionResult postNewsItem(NewsItem item, [FromQuery] int postGroupID)
+        [HttpPost("{postGroupID}")]
+        public IActionResult postNewsItem(NewsItem item, int postGroupID)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             int authorID = 0; //TODO Register the author id by the auth-token
             item.Date = DateTime.Now;
+            item.PostGroup = new PostGroupItem { PostGroupID = postGroupID };
             try
             {
                 item = database.saveNewPost(item);
