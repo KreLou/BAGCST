@@ -51,6 +51,7 @@ namespace api.offlineDB
             {
                 //Need new id
                 item.ID = getMaxUsedNewsID() + 1;
+                item.PostGroup = postGroupDatabase.getPostGroupItem(item.PostGroup.PostGroupID);
 
                 File.AppendAllLines(filename, new String[] { ConvertFromNewsItemToString(item) });
                 return item;
@@ -112,15 +113,7 @@ namespace api.offlineDB
                 string currentline;
                 while ((currentline = sr.ReadLine()) != null)
                 {
-                    string[] arr = currentline.Split(";");
-                    NewsItem item = new NewsItem()
-                    {
-                        ID = Convert.ToInt32(arr[0]),
-                        PostGroup = postGroupDatabase.getPostGroupItem( Convert.ToInt32(arr[1])),
-                        Date = Convert.ToDateTime(arr[2]),
-                        Title = arr[3],
-                        Message = arr[4],
-                    };
+                    NewsItem item = ConvertFromStringToNewsItem(currentline);
 
                     //TODO What is with PostGroup == null?
                     if ((item.ID <= startID || startID == 0)
@@ -138,16 +131,17 @@ namespace api.offlineDB
                 list.RemoveAt(0);
             }
 
+            list.Reverse();
             return list.ToArray();
         }
 
         private string ConvertFromNewsItemToString(NewsItem item)
         {
             return item.ID + ";"
-                + item.Title + ";"
-                + item.Message + ";"
                 + item.PostGroup.PostGroupID + ";"
-                + item.Date;
+                + item.Date + ";"
+                + item.Title + ";"
+                + item.Message;
         }
 
         private NewsItem ConvertFromStringToNewsItem(string line)
@@ -156,10 +150,10 @@ namespace api.offlineDB
             NewsItem item = new NewsItem
             {
                 ID = Convert.ToInt32(args[0]),
-                Title = args[1],
-                Message = args[2],
-                PostGroup = postGroupDatabase.getPostGroupItem(Convert.ToInt32(args[3])),
-                Date = Convert.ToDateTime(args[4])
+                PostGroup = postGroupDatabase.getPostGroupItem(Convert.ToInt32(args[1])),
+                Date = Convert.ToDateTime(args[2]),
+                Title = args[3],
+                Message = args[4]
             };
             return item;
         }
