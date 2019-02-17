@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.offlineDB;
@@ -65,9 +61,15 @@ namespace api.Controllers
         public IActionResult postNewsItem(NewsItem item, int postGroupID)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            int authorID = 0; //TODO Register the author id by the auth-token
+            long authorID = 1; //TODO Register the author id by the auth-token
             item.Date = DateTime.Now;
             item.PostGroup = new PostGroupItem { PostGroupID = postGroupID };
+            item.AuthorID = authorID;
+
+            if (!postGroupDatabase.checkIfUserIsPostGroupAuthor(postGroupID, authorID))
+            {
+                return BadRequest($"User {authorID} is not allowed to post for PostGroup {postGroupID}");
+            }
             try
             {
                 item = database.saveNewPost(item);
