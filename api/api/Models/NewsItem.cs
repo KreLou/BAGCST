@@ -38,6 +38,11 @@ namespace api.Models
         /// </summary>
         public DateTime Date { get; set; }
 
+        /// <summary>
+        /// ID of User, who posted this NewsItem
+        /// </summary>
+        public long AuthorID { get; set; }
+
         /*
          * Possible Extension: automatic posting at specific time
          */

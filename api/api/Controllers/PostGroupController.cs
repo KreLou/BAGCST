@@ -112,5 +112,56 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost("{postGroupID}/author/{userID}")]
+        public IActionResult postAuthorOfPostGroup(int postGroupID, long userID)
+        {
+            if (database.getPostGroupItem(postGroupID) == null)
+            {
+                return NotFound($"No PostGroupItem found for ID: {postGroupID}");
+            }
+            database.addUserToPostGroupAuthors(postGroupID, userID);
+
+            if (database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
+            {
+                return Ok();
+            }
+            return BadRequest($"Could not add the User with the ID: {userID} to the PostGroup by ID: {postGroupID}");
+            
+        }
+
+        [HttpDelete("{postGroupID}/author/{userID}")]
+        public IActionResult deleteUserFromPostGroupAuthors(int postGroupID, long userID)
+        {
+            if (database.getPostGroupItem(postGroupID) == null)
+            {
+                return NotFound($"No PostGroupItem found for ID: {postGroupID}");
+            }
+
+            database.deleteUserFromPostGroupAuthors(postGroupID, userID);
+
+            if (!database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
+            {
+                return Ok();
+            }
+            return BadRequest($"Could not delete User {userID} from PostGroupItem {postGroupID}");
+         }
+
+        [HttpGet("mygroups")]
+        public IActionResult getMyPostGroups()
+        {
+            long authorID = 1; //TODO Get userID from Token
+
+            PostGroupItem[] myGroups = database.getPostGroupsWhereUserIsAuthor(authorID);
+
+            if (myGroups.Length == 0)
+            {
+                return NotFound("No PostGroups found");
+            }
+
+            return Ok(myGroups);
+        }
+
     }
 }

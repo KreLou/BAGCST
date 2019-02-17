@@ -37,5 +37,16 @@ namespace api.Interfaces
         /// </summary>
         /// <returns></returns>
         PostGroupItem getPostGroupItem(int id);
+
+
+        #region Allowed User
+        void addUserToPostGroupAuthors(int postGroupID, long userID);
+
+        void deleteUserFromPostGroupAuthors(int postGroupID, long userID);
+
+        bool checkIfUserIsPostGroupAuthor(int postGroupID, long userID);
+
+        PostGroupItem[] getPostGroupsWhereUserIsAuthor(long userID);
+        #endregion
     }
 }
