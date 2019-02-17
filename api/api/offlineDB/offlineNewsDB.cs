@@ -141,6 +141,7 @@ namespace api.offlineDB
         {
             return item.ID + ";"
                 + item.PostGroup.PostGroupID + ";"
+                + item.AuthorID + ";"
                 + item.Date + ";"
                 + item.Title + ";"
                 + item.Message;
@@ -153,9 +154,10 @@ namespace api.offlineDB
             {
                 ID = Convert.ToInt32(args[0]),
                 PostGroup = postGroupDatabase.getPostGroupItem(Convert.ToInt32(args[1])),
-                Date = Convert.ToDateTime(args[2]),
-                Title = args[3],
-                Message = args[4]
+                AuthorID = Convert.ToInt64(args[2]),
+                Date = Convert.ToDateTime(args[3]),
+                Title = args[4],
+                Message = args[5]
             };
             return item;
         }

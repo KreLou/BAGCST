@@ -12,7 +12,7 @@ namespace api.offlineDB
     {
         private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
         private static string filename_postgroup = path_offlineDBFiles + "postgroups.csv";
-        private static string filename_postgroupuser = path_offlineDBFiles + "postgroupuser.csv";
+        private static string filename_postgroupauthor = path_offlineDBFiles + "postgroupauthors.csv";
 
         #region DEBUG Funktion -- am Ende entfernen
         public string[] getStringArray(PostGroupItem item)
@@ -93,8 +93,8 @@ namespace api.offlineDB
             File.Delete(filename_postgroup);
             File.Move(tempfile_postgroup, filename_postgroup);
 
-            File.Delete(filename_postgroupuser);
-            File.Move(tempfile_postgroupuser, filename_postgroupuser);
+            //File.Delete(filename_postgroupuser);
+            //File.Move(tempfile_postgroupuser, filename_postgroupuser);
 
             return item;
         }
@@ -194,6 +194,88 @@ namespace api.offlineDB
             }
 
             return max;
+        }
+
+        public void addUserToPostGroupAuthors(int postGroupID, long userID)
+        {
+            string[] lines = new string[] { postGroupID + ";" + userID };
+            File.AppendAllLines(filename_postgroupauthor, lines);
+        }
+
+        public void deleteUserFromPostGroupAuthors(int postGroupID, long userID)
+        {
+            string tempfile = Path.GetTempFileName();
+
+            using (StreamReader sr = new StreamReader(filename_postgroupauthor))
+            using (StreamWriter sw = new StreamWriter(tempfile))
+            {
+                string currentReadLine;
+                while ((currentReadLine = sr.ReadLine()) != null)
+                {
+                    string[] args = currentReadLine.Split(";");
+                    int currentPostGroupID = Convert.ToInt32(args[0]);
+                    long currentUserID = Convert.ToInt64(args[1]);
+
+                    //IF the IDs not fit, the line will written to the tempfile
+                    if (!((currentPostGroupID == postGroupID) 
+                        && (currentUserID == userID)))
+                    {
+                        sw.WriteLine(currentReadLine);
+                    }
+                }
+            }
+            File.Delete(filename_postgroupauthor);
+            File.Move(tempfile, filename_postgroupauthor);
+        }
+
+        public bool checkIfUserIsPostGroupAuthor(int postGroupID, long userID)
+        {
+            using (StreamReader sr = new StreamReader(filename_postgroupauthor))
+            {
+                string currentLine;
+
+                while((currentLine = sr.ReadLine()) != null)
+                {
+                    string[] args = currentLine.Split(";");
+                    int currentPostGroupID = Convert.ToInt32(args[0]);
+                    long currentUserID = Convert.ToInt64(args[1]);
+
+                    if ((currentPostGroupID == postGroupID)
+                        && (currentUserID == userID))
+                    {
+                        //Return true if both IDs fit and end the while
+                        return true;
+                    }
+
+                }
+            }
+            return false; //Return false as fallback, if not found
+        }
+
+        public PostGroupItem[] getPostGroupsWhereUserIsAuthor(long userID)
+        {
+            List<PostGroupItem> usersGroups = new List<PostGroupItem>();
+
+            using (StreamReader sr = new StreamReader(filename_postgroupauthor))
+            {
+                string currentLine;
+
+                while ((currentLine = sr.ReadLine()) != null)
+                {
+                    string[] args = currentLine.Split(";");
+                    int currentPostGroupID = Convert.ToInt32(args[0]);
+                    long currentUserID = Convert.ToInt64(args[1]);
+                    
+                    if (currentUserID == userID)
+                    {
+                        // Move this postgroup to the list
+                        usersGroups.Add(getPostGroupItem(currentPostGroupID));
+                    }
+
+                }
+            }
+
+                return usersGroups.ToArray();
         }
     }
 }
