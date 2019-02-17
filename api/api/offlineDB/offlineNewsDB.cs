@@ -117,7 +117,9 @@ namespace api.offlineDB
 
                     //TODO What is with PostGroup == null?
                     if ((item.ID <= startID || startID == 0)
-                        && (groups.Length > 0 && groups.Contains(item.PostGroup.PostGroupID)))
+                        && (item.PostGroup != null) //If no postgroup found (because pg is deleted)
+                        && (groups.Length > 0 && groups.Contains(item.PostGroup.PostGroupID))
+                        && (item.PostGroup.IsActive)) //Only Articles from active post-groups
                     {
                         list.Add(item);
                     };
