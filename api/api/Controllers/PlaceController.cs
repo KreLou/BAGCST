@@ -10,6 +10,7 @@ using api.offlineDB;
 
 namespace api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class PlaceController : ControllerBase
@@ -34,7 +35,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<PlaceItem> getPlace(int id)
         {
-
+           
             PlaceItem item = database.GetPlace(id);
             if (item != null)
             {
@@ -67,7 +68,7 @@ namespace api.Controllers
         /// <param name="place"></param>
         /// <returns>PlaceItem|NotFound|BadRequest</returns>
         [HttpPut("{id}")]
-        public ActionResult<PlaceItem> editContactItem(int id, [FromBody]PlaceItem place)
+        public ActionResult<PlaceItem> editPlaceItem(int id, [FromBody]PlaceItem place)
         {
            
             //Check if id is valid

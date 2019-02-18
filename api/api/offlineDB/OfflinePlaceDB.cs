@@ -22,9 +22,34 @@ namespace api.offlineDB
             return place.PlaceID + ";" + place.Name ;
         }
 
+        /// <summary>
+        /// edits the Place based on the given ContactItem except for the ID
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>Place</returns>
         public PlaceItem editPlace(PlaceItem item)
         {
-            throw new System.NotImplementedException();
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(place_filename))
+            {
+                string line;
+                while ((line= reader.ReadLine()) != null)
+                {
+                    if(Convert.ToInt32(line.Split(";")[0]   )== item.PlaceID)
+                    {
+                        writer.WriteLine(item.PlaceID + ";" + item.Name);
+                    }
+                    else
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(place_filename);
+            File.Move(tempFile, place_filename);
+            return GetPlace(item.PlaceID);
+
         }
 
         /// <summary>
@@ -109,11 +134,15 @@ namespace api.offlineDB
             return item;
         }
 
+        /// <summary>
+        /// deletes the Place based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
         public void deletePlace(int id)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
-            using (StreamReader reader = new StreamReader(csvFile))
+            using (StreamReader reader = new StreamReader(place_filename))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -124,8 +153,8 @@ namespace api.offlineDB
                     }
                 }
             }
-            File.Delete(csvFile);
-            File.Move(tempFile, csvFile);
+            File.Delete(place_filename);
+            File.Move(tempFile, place_filename);
 
         }
     }
