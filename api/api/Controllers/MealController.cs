@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
+using api.offlineDB;
 
 namespace api.Controllers
 {
@@ -14,8 +15,12 @@ namespace api.Controllers
     [ApiController]
     public class MealController : ControllerBase 
     {
-        private IMealDB database = null;
+        private IMealDB database = getDatabase();
 
+        private static IMealDB getDatabase()
+        {
+            return new OfflineMealDB();
+        }
         /// <summary>
         /// returns the MealItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>

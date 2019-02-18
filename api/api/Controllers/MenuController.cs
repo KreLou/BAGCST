@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
-
+using api.offlineDB;
 using api.Models;
 
 namespace api.Controllers
@@ -14,7 +14,18 @@ namespace api.Controllers
     [ApiController]
     public class MenuController : ControllerBase
     {
-        private IMenuDB database = null;
+        private IMenuDB database = getDatabase();
+
+
+        /// <summary>
+        /// Returns the current database
+
+        /// </summary>
+        /// <returns></returns>
+        private static IMenuDB getDatabase()
+        {
+            return new OfflineMenuDB();
+        }
 
         /// <summary>
         /// returns the MenuItem for the given ID. If the ID is not found, it returns NotFound.

@@ -10,7 +10,8 @@ namespace api.offlineDB
 {
     public class OfflineMenuDB:IMenuDB
     {
-
+        IMealDB mealDB;
+        MealItem mealItem;
         private string menu_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\menus.csv";
 
         /// <summary>
@@ -21,11 +22,6 @@ namespace api.offlineDB
         private string writeLine(MenuItem menu)
         {
             return menu.MenuID + ";" + menu.Meal + ";" + menu.Price + ";" + menu.Date ;
-        }
-
-        public MenuItem editMenu(MenuItem item)
-        {
-            throw new System.NotImplementedException();
         }
         /// <summary>
         /// Search for Menu in file, return menu or null
@@ -49,7 +45,7 @@ namespace api.offlineDB
                         menu = new MenuItem()
                         {
                             MenuID = menu_id,
-                          //  Meal = args[1],
+                            Meal = mealDB.GetMeal(mealItem.MealID),
                             Price = (decimal)Convert.ToInt64( args[2]),
                             Date = DateTime.Parse(args[3])
 
@@ -68,22 +64,80 @@ namespace api.offlineDB
         /// <returns></returns>
         public MenuItem saveNewMenu(MenuItem item)
         {
-            MenuItem[] existinguser = GetMenus(item.Date);
-            int max = 1;
-            foreach (MenuItem exMenu in existinguser)
+            MenuItem[] menus = GetMenus(item.Date);
+            int max = 0;
+            foreach (MenuItem menu in menus)
             {
-                max = exMenu.MenuID > max ? exMenu.MenuID + 1 : max;
+                if(menu.MenuID >= max)
+                {
+                    max = menu.MenuID;
+                }
+               
             }
-
+            max++;
             item.MenuID = max;
 
+            // save item 
             File.AppendAllLines(menu_filename, new String[] { this.writeLine(item) });
+
+            // return item 
             return item;
         }
 
+        /// <summary>
+        /// edits the Menu based on the given Menu except for the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns>menu</returns>
+
+        public MenuItem editMenu(MenuItem item)
+        {
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(menu_filename))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(line.Split(";")[0]) == item.MenuID)
+                    {
+
+                      
+                        writer.WriteLine(item.MenuID + ";" + item.Meal + ";" + item.Price + ";" + item.Date  );
+                    }
+                    else
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(menu_filename);
+            File.Move(tempFile, menu_filename);
+            return GetMenuItem(item.MenuID);
+        }
+
+        /// <summary>
+        /// deletes the Menu based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
         public void deleteMenu(int id)
         {
-            throw new NotImplementedException();
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(menu_filename))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(line.Split(";")[0]) != id)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(menu_filename);
+            File.Move(tempFile, menu_filename);
         }
 
         /// <summary>
@@ -102,8 +156,8 @@ namespace api.offlineDB
                     string[] args = line.Split(";");
                     MenuItem menu = new MenuItem()
                     {
-                        MenuID = (int) Convert.ToInt64(args[0]),
-                       // Meal = args[1],
+                        MenuID = (int)Convert.ToInt64(args[0]),
+                        Meal = mealDB.GetMeal(mealItem.MealID),
                         Price = (decimal)Convert.ToInt64(args[2]),
                         Date = date
                     };
@@ -187,7 +241,7 @@ namespace api.offlineDB
                     MenuItem menu = new MenuItem()
                     {
                         MenuID = id,
-                       // Meal = args[1],
+                        Meal = mealDB.GetMeal(mealItem.MealID),
                         Price = (decimal)Convert.ToInt64(args[2]),
                         Date = date
                     };

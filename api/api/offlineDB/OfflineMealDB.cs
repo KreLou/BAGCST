@@ -6,12 +6,14 @@ using System.IO;
 using api.Interfaces;
 using api.Models;
 using System.Reflection;
+using api.Controllers;
 
 namespace api.offlineDB
 {
     public class OfflineMealDB:IMealDB
     {
-
+        IPlaceDB placeDB;
+        PlaceItem placeItem;
         private string meal_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\meals.csv";
 
         private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
@@ -25,40 +27,6 @@ namespace api.offlineDB
         private string writeLine(MealItem meal)
         {
             return meal.MealID + ";" + meal.MealName + ";" + meal.Place + ";" + meal.description ;
-        }
-
-        public MealItem editMeal(MealItem item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Search for all aMeals in file 
-        /// </summary>
-        /// <returns></returns>
-        public MealItem[] GetMeals()
-        {
-            List<MealItem> list = new List<MealItem>();
-
-            using (StreamReader sr = new StreamReader(this.meal_filename))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] args = line.Split(";");
-                    MealItem meal = new MealItem()
-                    {
-                        MealID = (int)Convert.ToInt64(args[0]),
-                        MealName = args[1],
-                        //Place = filename_place.,
-                        description = args[3],
-                 
-                    };
-
-                }
-            }
-            return list.ToArray();
         }
 
         /// <summary>
@@ -81,10 +49,11 @@ namespace api.offlineDB
                     {
                         string[] args = line.Split(";");
                         meal = new MealItem()
-                        {
+                        {   
+                            
                             MealID = meal_id,
                             MealName = args[1],
-                            Place = meal.Place,
+                            Place = placeDB.GetPlace(placeItem.PlaceID),
                             description = args[3],
                         };
                     }
@@ -95,6 +64,36 @@ namespace api.offlineDB
         }
 
 
+
+        /// <summary>
+        /// Search for all Meals in file 
+        /// </summary>
+        /// <returns></returns>
+        public MealItem[] GetMeals()
+        {
+            List<MealItem> list = new List<MealItem>();
+
+            using (StreamReader sr = new StreamReader(this.meal_filename))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] args = line.Split(";");
+                    MealItem meal = new MealItem()
+                    {
+                        MealID = (int)Convert.ToInt64(args[0]),
+                        MealName = args[1],
+                        Place = placeDB.GetPlace(placeItem.PlaceID),
+                        description = args[3],
+                 
+                    };
+
+                }
+            }
+            return list.ToArray();
+        }
+
+
         /// <summary>
         /// Create new Meal
         /// </summary>
@@ -102,22 +101,79 @@ namespace api.offlineDB
         /// <returns></returns>
         public MealItem saveNewMeal(MealItem item)
         {
-            MealItem[] existinguser = GetMeals();
+            MealItem[] meals = GetMeals();
             int max = 1;
-            foreach (MealItem exMeal in existinguser)
+            foreach (MealItem exMeal in meals)
             {
-                max = exMeal.MealID > max ? exMeal.MealID + 1 : max;
+               if(exMeal.MealID >= max)
+                {
+                    max = exMeal.MealID;
+                }
             }
-
+            max++;
             item.MealID = max;
 
+            // save item 
             File.AppendAllLines(meal_filename, new String[] { this.writeLine(item) });
+
+            // return item 
             return item;
         }
 
+        /// <summary>
+        /// edits the Meal based on the given meal except for the ID
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>Meal</returns>
+        public MealItem editMeal(MealItem item)
+        {
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(meal_filename))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(line.Split(";")[0]) == item.MealID)
+                    {
+
+                     
+
+                        writer.WriteLine(item.MealID + ";" + item.MealName + ";" + item.Place + ";" + item.description);
+                    }
+                    else
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(meal_filename);
+            File.Move(tempFile, meal_filename);
+            return GetMeal(item.MealID);
+        }
+
+        /// <summary>
+        /// deletes the meal based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
+
         public void deleteMeal(int id)
         {
-            throw new NotImplementedException();
+            string tempFile = Path.GetTempFileName();
+            using (StreamWriter writer = new StreamWriter(tempFile))
+            using (StreamReader reader = new StreamReader(meal_filename))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(line.Split(";")[0]) != id)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            File.Delete(meal_filename);
+            File.Move(tempFile, meal_filename);
         }
     }
 }
