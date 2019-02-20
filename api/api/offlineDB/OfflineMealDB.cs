@@ -12,12 +12,13 @@ namespace api.offlineDB
 {
     public class OfflineMealDB:IMealDB
     {
-        IPlaceDB placeDB;
-        PlaceItem placeItem;
+ 
+      
+      
         private string meal_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\meals.csv";
 
-        private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
-        private static string filename_place = path_offlineDBFiles + "places.csv";
+  //      private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
+   //     private static string filename_place = path_offlineDBFiles + "places.csv";
 
         /// <summary>
         /// Creates the string output for Meal
@@ -26,7 +27,7 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(MealItem meal)
         {
-            return meal.MealID + ";" + meal.MealName + ";" + meal.Place + ";" + meal.description ;
+            return meal.MealID + ";" + meal.MealName + ";" + meal.PlaceID + ";" + meal.description ;
         }
 
         /// <summary>
@@ -44,16 +45,16 @@ namespace api.offlineDB
                 //end if end of file or meal is found
                 while ((line = sr.ReadLine()) != null && meal == null)
                 {
-                    int meal_id = (int)Convert.ToInt64(line.Split(";")[0]);
-                    if (meal_id == id)
+                    int meal_ID = (int)Convert.ToInt64(line.Split(";")[0]);
+                    if (meal_ID == id)
                     {
                         string[] args = line.Split(";");
                         meal = new MealItem()
                         {   
                             
-                            MealID = meal_id,
+                            MealID = meal_ID,
                             MealName = args[1],
-                            Place = placeDB.GetPlace(placeItem.PlaceID),
+                            PlaceID = (int)Convert.ToInt64(args[2]),
                             description = args[3],
                         };
                     }
@@ -83,11 +84,11 @@ namespace api.offlineDB
                     {
                         MealID = (int)Convert.ToInt64(args[0]),
                         MealName = args[1],
-                        Place = placeDB.GetPlace(placeItem.PlaceID),
+                        PlaceID = (int)Convert.ToInt64(args[2]),
                         description = args[3],
                  
                     };
-
+                    list.Add(meal);
                 }
             }
             return list.ToArray();
@@ -102,7 +103,7 @@ namespace api.offlineDB
         public MealItem saveNewMeal(MealItem item)
         {
             MealItem[] meals = GetMeals();
-            int max = 1;
+            int max = 0;
             foreach (MealItem exMeal in meals)
             {
                if(exMeal.MealID >= max)
@@ -123,9 +124,10 @@ namespace api.offlineDB
         /// <summary>
         /// edits the Meal based on the given meal except for the ID
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>Meal</returns>
-        public MealItem editMeal(MealItem item)
+        public MealItem editMeal(int id,MealItem item)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -134,12 +136,13 @@ namespace api.offlineDB
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (Convert.ToInt32(line.Split(";")[0]) == item.MealID)
+                  
+                    if (Convert.ToInt32(line.Split(";")[0])== id)
                     {
 
                      
 
-                        writer.WriteLine(item.MealID + ";" + item.MealName + ";" + item.Place + ";" + item.description);
+                        writer.WriteLine(id + ";" + item.MealName + ";" + item.PlaceID + ";" + item.description);
                     }
                     else
                     {
@@ -149,7 +152,7 @@ namespace api.offlineDB
             }
             File.Delete(meal_filename);
             File.Move(tempFile, meal_filename);
-            return GetMeal(item.MealID);
+            return GetMeal(id);
         }
 
         /// <summary>

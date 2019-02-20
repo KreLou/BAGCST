@@ -16,11 +16,13 @@ namespace api.Controllers
     public class MealController : ControllerBase 
     {
         private IMealDB database = getDatabase();
+       
 
         private static IMealDB getDatabase()
         {
             return new OfflineMealDB();
         }
+
         /// <summary>
         /// returns the MealItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
@@ -74,7 +76,7 @@ namespace api.Controllers
             }
 
             //update existing item
-            MealItem item_out = database.editMeal( meal);
+            MealItem item_out = database.editMeal(id, meal);
 
             //return new item
             return Ok(item_out);

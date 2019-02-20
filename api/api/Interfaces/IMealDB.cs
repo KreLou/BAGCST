@@ -26,9 +26,10 @@ namespace api.Interfaces
         /// <summary>
         /// edit MealItem
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="meal"></param>
         /// <returns>edited MealItem|null</returns>
-        MealItem editMeal(MealItem meal);
+        MealItem editMeal(int id ,MealItem meal);
 
         /// <summary>
         /// delete MealItem

@@ -10,10 +10,11 @@ namespace api.Models
              /// unique ID/PK of Meal 
              /// </summary>
         public int MealID { get; set; }
+        //TODO muss change to PlaceItem 
         /// <summary>
         /// ID/ForeignKey of Meal
         /// </summary>
-        public PlaceItem Place { get; set; }
+        public int PlaceID { get; set; }
         /// <summary>
         /// String MealName 
         /// the name of the meal 
