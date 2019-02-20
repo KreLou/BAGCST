@@ -9,10 +9,11 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule' },
     { path: '**', redirectTo: 'dashboard'},
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
-  { path: 'administrator', loadChildren: './pages/administrator/administrator.module#AdministratorPageModule' },  { path: 'news-feed', loadChildren: './pages/news-feed/news-feed.module#NewsFeedPageModule' },
+  { path: 'administrator', loadChildren: './pages/administrator/administrator.module#AdministratorPageModule' },
+  { path: 'news-feed', loadChildren: './pages/news-feed/news-feed.module#NewsFeedPageModule' },
   { path: 'imprint', loadChildren: './pages/imprint/imprint.module#ImprintPageModule' },
-  { path: 'policy', loadChildren: './pages/policy/policy.module#PolicyPageModule' },
-  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' }
+  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
+  { path: 'privacy', loadChildren: './pages/privacy/privacy.module#PrivacyPageModule' }
 
 ];
 @NgModule({
