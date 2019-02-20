@@ -25,9 +25,10 @@ namespace api.offlineDB
         /// <summary>
         /// edits the Place based on the given ContactItem except for the ID
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>Place</returns>
-        public PlaceItem editPlace(PlaceItem item)
+        public PlaceItem editPlace(int id ,PlaceItem item)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -36,9 +37,9 @@ namespace api.offlineDB
                 string line;
                 while ((line= reader.ReadLine()) != null)
                 {
-                    if(Convert.ToInt32(line.Split(";")[0]   )== item.PlaceID)
+                    if(Convert.ToInt32(line.Split(";")[0]   )== id)
                     {
-                        writer.WriteLine(item.PlaceID + ";" + item.Name);
+                        writer.WriteLine(id+ ";" + item.Name);
                     }
                     else
                     {
@@ -48,7 +49,7 @@ namespace api.offlineDB
             }
             File.Delete(place_filename);
             File.Move(tempFile, place_filename);
-            return GetPlace(item.PlaceID);
+            return GetPlace(id);
 
         }
 

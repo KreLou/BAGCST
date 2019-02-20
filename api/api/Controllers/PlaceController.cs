@@ -84,7 +84,7 @@ namespace api.Controllers
             }
 
             //update existing item
-            PlaceItem item_out = database.editPlace( place);
+            PlaceItem item_out = database.editPlace( id,place);
 
             //return new item
             return Ok(item_out);

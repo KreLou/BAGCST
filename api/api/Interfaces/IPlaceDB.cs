@@ -18,9 +18,10 @@ namespace api.Interfaces
         /// <summary>
         /// Update existing News-Item by ID
         /// </summary>
+       /// <param name="id"></param>
         /// <param name="place"></param>
         /// <returns></returns>
-        PlaceItem editPlace(PlaceItem place);
+        PlaceItem editPlace(int id ,PlaceItem place);
 
 
         /// <summary>
