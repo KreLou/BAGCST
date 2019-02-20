@@ -25,7 +25,7 @@ namespace api.Models
         ///  ID/ForeignKey of Meal
         /// </summary>
        
-        public MealItem Meal { get; set; }
+        public int MealID { get; set; }
         /// <summary>
         /// the price of menu 
         /// </summary>

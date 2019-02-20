@@ -26,9 +26,10 @@ namespace api.Interfaces
         /// <summary>
         /// edit MenuItem
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>edited MenuItem|null</returns>
-        MenuItem editMenu(MenuItem item);
+        MenuItem editMenu(int id, MenuItem item);
 
         /// <summary>
         /// delete MenuItem
@@ -36,23 +37,6 @@ namespace api.Interfaces
         /// <param name="id">ID</param>
         void deleteMenu(int id);
 
-        /// <summary>
-        /// gett all Menu 
-        /// </summary>
-        /// <param name="MenuID">ID</param>
-        /// <param name="Date">Date</param>
-        /// <param name="Meal">Meal</param>
-        /// <param name="Price">Price</param>
-        /// <returns>MenuItem|null</returns>
-        MenuItem[] GetMenus(int MenuID, DateTime Date, MealItem Meal, decimal Price);
-
-        /// <summary>
-        /// gett all Menu 
-        /// </summary>
-        /// <param name="MenuID">ID</param>
-        /// <param name="Price">Price</param>
-        /// <returns>MenuItem|null</returns>
-        MenuItem[] GetMenus(int MenuID, DateTime Date);
 
         /// <summary>
         /// gett all Menu 
@@ -64,10 +48,7 @@ namespace api.Interfaces
         /// gett all Menu 
         /// </summary>
         /// <param name="Date">Date</param>
-        /// <param name="Meal">Meal</param>
-        /// <param name="Price">Price</param>
-        /// <returns>MenuItem|null</returns>
-        MenuItem[] GetMenus( DateTime Date, MealItem Meal, decimal Price);
+        MenuItem[] GetMenus();
 
     }
 }

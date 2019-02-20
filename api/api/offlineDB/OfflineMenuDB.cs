@@ -10,8 +10,7 @@ namespace api.offlineDB
 {
     public class OfflineMenuDB:IMenuDB
     {
-        IMealDB mealDB;
-        MealItem mealItem;
+
         private string menu_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\menus.csv";
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(MenuItem menu)
         {
-            return menu.MenuID + ";" + menu.Meal + ";" + menu.Price + ";" + menu.Date ;
+            return menu.MenuID + ";" + menu.MealID + ";" + menu.Price + ";" + menu.Date ;
         }
         /// <summary>
         /// Search for Menu in file, return menu or null
@@ -45,9 +44,9 @@ namespace api.offlineDB
                         menu = new MenuItem()
                         {
                             MenuID = menu_id,
-                            Meal = mealDB.GetMeal(mealItem.MealID),
-                            Price = (decimal)Convert.ToInt64( args[2]),
-                            Date = DateTime.Parse(args[3])
+                            MealID = (int)Convert.ToInt64(args[1]),
+                            Price = decimal.Parse( args[2]),
+                            Date = DateTime.Parse(args[3]).Date
 
                         };
                     }
@@ -76,7 +75,7 @@ namespace api.offlineDB
             }
             max++;
             item.MenuID = max;
-
+            
             // save item 
             File.AppendAllLines(menu_filename, new String[] { this.writeLine(item) });
 
@@ -90,8 +89,7 @@ namespace api.offlineDB
         /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>menu</returns>
-
-        public MenuItem editMenu(MenuItem item)
+        public MenuItem editMenu(int id,MenuItem item)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -100,11 +98,11 @@ namespace api.offlineDB
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (Convert.ToInt32(line.Split(";")[0]) == item.MenuID)
+                    if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
 
                       
-                        writer.WriteLine(item.MenuID + ";" + item.Meal + ";" + item.Price + ";" + item.Date  );
+                        writer.WriteLine(id + ";" + item.MealID + ";" + item.Price + ";" + item.Date  );
                     }
                     else
                     {
@@ -114,7 +112,7 @@ namespace api.offlineDB
             }
             File.Delete(menu_filename);
             File.Move(tempFile, menu_filename);
-            return GetMenuItem(item.MenuID);
+            return GetMenuItem(id);
         }
 
         /// <summary>
@@ -143,28 +141,20 @@ namespace api.offlineDB
         /// <summary>
         /// Search for all active Menu in file 
         /// </summary>
+        /// <param name="Date">Date</param>
         /// <returns></returns>
         public MenuItem[] GetMenus(DateTime date)
         {
             List<MenuItem> list = new List<MenuItem>();
-
-            using (StreamReader sr = new StreamReader(this.menu_filename))
+            MenuItem[] menus = GetMenus();
+            foreach(MenuItem item in menus)
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                if(item.Date== date)
                 {
-                    string[] args = line.Split(";");
-                    MenuItem menu = new MenuItem()
-                    {
-                        MenuID = (int)Convert.ToInt64(args[0]),
-                        Meal = mealDB.GetMeal(mealItem.MealID),
-                        Price = (decimal)Convert.ToInt64(args[2]),
-                        Date = date
-                    };
-
-
+                    list.Add(item);
                 }
             }
+    
             return list.ToArray();
         }
 
@@ -172,35 +162,7 @@ namespace api.offlineDB
         /// Search for all active Menu in file 
         /// </summary>
         /// <returns></returns>
-        public MenuItem[] GetMenus(int id, DateTime date, MealItem meal, decimal price)
-        {
-            List<MenuItem> list = new List<MenuItem>();
-
-            using (StreamReader sr = new StreamReader(this.menu_filename))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] args = line.Split(";");
-                    MenuItem menu = new MenuItem()
-                    {
-                        MenuID = id,
-                        Meal = meal,
-                        Price = price,
-                        Date = date
-                    };
-
-
-                }
-            }
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Search for all active Menu in file 
-        /// </summary>
-        /// <returns></returns>
-        public MenuItem[] GetMenus(DateTime date, MealItem meal, decimal price)
+        public MenuItem[] GetMenus()
         {
             List<MenuItem> list = new List<MenuItem>();
 
@@ -213,43 +175,17 @@ namespace api.offlineDB
                     MenuItem menu = new MenuItem()
                     {
                         MenuID = (int)Convert.ToInt64(args[0]),
-                        Meal =meal,
-                        Price = price,
-                        Date = date
+                        MealID = (int)Convert.ToInt64(args[1]),
+                        Price = decimal.Parse(args[2]),
+                        Date = DateTime.Parse(args[3]).Date
                     };
-
+                    list.Add(menu);
 
                 }
             }
             return list.ToArray();
         }
 
-        /// <summary>
-        /// Search for all active Menu in file 
-        /// </summary>
-        /// <returns></returns>
-        public MenuItem[] GetMenus(int id, DateTime date)
-        {
-            List<MenuItem> list = new List<MenuItem>();
 
-            using (StreamReader sr = new StreamReader(this.menu_filename))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] args = line.Split(";");
-                    MenuItem menu = new MenuItem()
-                    {
-                        MenuID = id,
-                        Meal = mealDB.GetMeal(mealItem.MealID),
-                        Price = (decimal)Convert.ToInt64(args[2]),
-                        Date = date
-                    };
-
-
-                }
-            }
-            return list.ToArray();
-        }
     }
 }

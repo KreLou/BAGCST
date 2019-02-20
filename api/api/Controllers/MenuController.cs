@@ -50,13 +50,22 @@ namespace api.Controllers
         /// returns an array of ContactItems
         /// </summary>
         /// <returns>MenuItem[]</returns>
-        [HttpGet]
+        [HttpGet("date")]
         public ActionResult<MenuItem[]> getAllMenuItem(DateTime date)
         {
-            MenuItem[] items = database.GetMenus(  date);
+            MenuItem[] items = database.GetMenus();
             return Ok(items);
         }
-
+        /// <summary>
+        /// returns an array of ContactItems
+        /// </summary>
+        /// <returns>MenuItem[]</returns>
+        [HttpGet]
+        public ActionResult<MenuItem[]> getAllMenuItem()
+        {
+            MenuItem[] items = database.GetMenus();
+            return Ok(items);
+        }
         /// <summary>
         /// returns the edited MenuItem for the given ID and MenuItem. If ID is not found, it returns NotFound. 
         /// If the MenuItem is not found, it returns BadRequest.
@@ -80,7 +89,7 @@ namespace api.Controllers
             }
 
             //update existing item
-            MenuItem menuNew = database.editMenu( menu);
+            MenuItem menuNew = database.editMenu( id,menu);
 
             //return new item
             return Ok(menuNew);
