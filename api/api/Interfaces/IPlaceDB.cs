@@ -34,12 +34,12 @@ namespace api.Interfaces
         /// Return all Places 
         /// </summary>
         /// <returns></returns>
-        PlaceItem[] GetPlaces();
+        PlaceItem[] getPlaces();
 
         /// <summary>
         /// Return a Place 
         /// </summary>
         /// <returns></returns>
-        PlaceItem GetPlace(int id );
+        PlaceItem getPlaceItem(int id );
     }
 }

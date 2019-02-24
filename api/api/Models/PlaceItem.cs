@@ -17,6 +17,6 @@ namespace api.Models
         /// String name 
         /// the name of the place
         /// </summary>
-        public String Name { get; set; }
+        public String PlaceName { get; set; }
     }
 }

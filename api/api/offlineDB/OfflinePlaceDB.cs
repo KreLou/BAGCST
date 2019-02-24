@@ -19,7 +19,8 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(PlaceItem place)
         {
-            return place.PlaceID + ";" + place.Name ;
+            return place.PlaceID + ";" + 
+                   place.PlaceName ;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace api.offlineDB
                 {
                     if(Convert.ToInt32(line.Split(";")[0]   )== id)
                     {
-                        writer.WriteLine(id+ ";" + item.Name);
+                        writer.WriteLine(id+ ";" + item.PlaceName);
                     }
                     else
                     {
@@ -49,7 +50,7 @@ namespace api.offlineDB
             }
             File.Delete(place_filename);
             File.Move(tempFile, place_filename);
-            return GetPlace(id);
+            return getPlaceItem(id);
 
         }
 
@@ -57,7 +58,7 @@ namespace api.offlineDB
         /// Search for all active users in file 
         /// </summary>
         /// <returns></returns>
-        public PlaceItem[] GetPlaces()
+        public PlaceItem[] getPlaces()
         {
             List<PlaceItem> list = new List<PlaceItem>();
 
@@ -71,7 +72,7 @@ namespace api.offlineDB
                     {
                         PlaceID = (int)Convert.ToInt64(args[0]),
             
-                        Name = args[1]
+                        PlaceName = args[1]
               
                     };
                     list.Add(place);
@@ -88,7 +89,7 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public PlaceItem GetPlace(int id)
+        public PlaceItem getPlaceItem(int id)
         {
             PlaceItem place = null;
 
@@ -106,7 +107,7 @@ namespace api.offlineDB
                         {
                             PlaceID = place_ID,
                     
-                            Name = args[1]
+                            PlaceName = args[1]
                       
                         };
                     }
@@ -122,7 +123,7 @@ namespace api.offlineDB
         /// <returns></returns>
         public PlaceItem saveNewPlace(PlaceItem item)
         {
-            PlaceItem[] existingplace = GetPlaces();
+            PlaceItem[] existingplace = getPlaces();
             int max = 0;
             foreach (PlaceItem exPlace in existingplace)
             {

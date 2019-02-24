@@ -36,7 +36,7 @@ namespace api.Controllers
         public ActionResult<PlaceItem> getPlace(int id)
         {
            
-            PlaceItem item = database.GetPlace(id);
+            PlaceItem item = database.getPlaceItem(id);
             if (item != null)
             {
                 return Ok(item);
@@ -55,7 +55,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<PlaceItem[]> getAllPlaces()
         {
-            PlaceItem[] items = database.GetPlaces();
+            PlaceItem[] items = database.getPlaces();
             return Ok(items);
         }
 
@@ -72,7 +72,7 @@ namespace api.Controllers
         {
            
             //Check if id is valid
-            if (database.GetPlace(id) == null)
+            if (database.getPlaceItem(id) == null)
             {
                 return NotFound(($"No Place found for id: {id}"));
             }
@@ -98,7 +98,7 @@ namespace api.Controllers
         public ActionResult deletePlaceItem(int id)
         {
   
-            if (database.GetPlace(id) == null)
+            if (database.getPlaceItem(id) == null)
             {
                 return NotFound(($"No Place found for id: {id}"));
             }
