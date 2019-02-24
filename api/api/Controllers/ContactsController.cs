@@ -64,24 +64,17 @@ namespace api.Controllers
             //Check if id is valid
             if (database.getContactItem(id) == null)
             {
-                return NotFound(($"No ContactItem found for id: {id}"));
+                return NotFound(($"No ContactItem found for ID: {id}"));
             }
 
-            //Check if ContactItems email fits to the given id. Probably wrong. First try
-            //if(item_in.Email == database.getContactItem(item_in.Email).Email)
-            //{
-            //    return BadRequest("ContactItem is already existing");
-            //}
-
-            //second try
-            if(database.getContactItem(id).Email == database.getContactItem(item_in.Email).Email)
+            if(database.getContactItem(item_in.Email).ContactID != id)
             {
-                return BadRequest("ContactItem with this E-Mail-Address is already existing");
+                return BadRequest("The ID from the given ContactItem doesn't match the existing ID from the database.");
             }
 
 
             //Check if item not null
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
