@@ -14,7 +14,7 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns>MealItem|null</returns>
-        MealItem GetMeal(int MealID);
+        MealItem getMealItem(int MealID);
 
         /// <summary>
         /// creates a MealItem
@@ -42,7 +42,7 @@ namespace api.Interfaces
         /// get all MealItem
         /// </summary>
         /// <returns>Array of MealItem with length>=0</returns>
-        MealItem[] GetMeals();
+        MealItem[] getMeals();
 
 
 

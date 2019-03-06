@@ -14,7 +14,7 @@ namespace api.Models
         /// <summary>
         /// ID/ForeignKey of Meal
         /// </summary>
-        public int PlaceID { get; set; }
+        public PlaceItem Place { get; set; }
         /// <summary>
         /// String MealName 
         /// the name of the meal 
@@ -24,6 +24,6 @@ namespace api.Models
         /// String description
         /// necessaries the meal 
         /// </summary>
-        public String description { get; set; }
+        public String Description { get; set; }
     }
 }

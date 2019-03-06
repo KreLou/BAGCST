@@ -16,13 +16,16 @@ namespace api.Controllers
     public class MealController : ControllerBase 
     {
         private IMealDB database = getDatabase();
-       
+        private IPlaceDB datebase_db = getDatabaseDB();
 
         private static IMealDB getDatabase()
         {
             return new OfflineMealDB();
         }
-
+        private static IPlaceDB getDatabaseDB()
+        {
+            return new OfflinePlaceDB();
+        }
         /// <summary>
         /// returns the MealItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
@@ -31,7 +34,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<MealItem> getMealItem(int id)
         {
-            MealItem item = database.GetMeal(id);
+            MealItem item = database.getMealItem(id);
             if (item == null)
             {
                 return NotFound($"No MealItem found for id: {id}");
@@ -49,7 +52,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<MealItem[]> getAllMeals()
         {
-            MealItem[] items = database.GetMeals();
+            MealItem[] items = database.getMeals();
             return Ok(items);
         }
 
@@ -64,7 +67,7 @@ namespace api.Controllers
         public ActionResult<MealItem> editMeal(int id, [FromBody]MealItem meal)
         {
             //Check if id is valid
-            if (database.GetMeal(id) == null)
+            if (database.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
@@ -91,7 +94,7 @@ namespace api.Controllers
         public ActionResult deleteMeal(int id)
         {
        
-            if (database.GetMeal(id) == null)
+            if (database.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
