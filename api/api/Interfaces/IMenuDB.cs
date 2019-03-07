@@ -8,13 +8,6 @@ namespace api.Interfaces
 {
     interface IMenuDB
     {
-        /// <summary>
-        /// search for MenuItem by ID
-        /// </summary>
-        /// <param name="id">ID</param>
-        /// <returns>MenuItem|null</returns>
-        MenuItem GetMenuItem(int id);
-
 
         /// <summary>
         /// creates a MenuItem
@@ -37,18 +30,24 @@ namespace api.Interfaces
         /// <param name="id">ID</param>
         void deleteMenu(int id);
 
+        /// <summary>
+        /// search for MenuItem by ID
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>MenuItem|null</returns>
+        MenuItem getMenuItem(int id);
 
         /// <summary>
         /// gett all Menu 
         /// </summary>
         /// <param name="Date">Date</param>
-        MenuItem[] GetMenus( DateTime Date);
+        MenuItem[] getMenusbyDate( DateTime Date);
 
         /// <summary>
         /// gett all Menu 
         /// </summary>
         /// <param name="Date">Date</param>
-        MenuItem[] GetMenus();
+        MenuItem[] getMenus();
 
     }
 }

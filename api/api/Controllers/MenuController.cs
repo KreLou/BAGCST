@@ -15,11 +15,11 @@ namespace api.Controllers
     public class MenuController : ControllerBase
     {
         private IMenuDB database = getDatabase();
+        private IMealDB mealDatabase = getMealDataBase();
 
 
         /// <summary>
         /// Returns the current database
-
         /// </summary>
         /// <returns></returns>
         private static IMenuDB getDatabase()
@@ -28,14 +28,22 @@ namespace api.Controllers
         }
 
         /// <summary>
+        /// Returns the current database
+        /// </summary>
+        /// <returns></returns>
+        private static IMealDB getMealDataBase()
+        {
+            return new OfflineMealDB();
+        }
+        /// <summary>
         /// returns the MenuItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>MenuItem|NotFound</returns>
         [HttpGet("{id}")]
-        public ActionResult<MenuItem> GetItem(int id)
+        public ActionResult<MenuItem> getItem(int id)
         {
-            MenuItem item = database.GetMenuItem(id);
+            MenuItem item = database.getMenuItem(id);
 
             if (item == null)
             {
@@ -53,7 +61,7 @@ namespace api.Controllers
         [HttpGet("date")]
         public ActionResult<MenuItem[]> getAllMenuItem(DateTime date)
         {
-            MenuItem[] items = database.GetMenus();
+            MenuItem[] items = database.getMenus();
             return Ok(items);
         }
         /// <summary>
@@ -63,7 +71,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<MenuItem[]> getAllMenuItem()
         {
-            MenuItem[] items = database.GetMenus();
+            MenuItem[] items = database.getMenus();
             return Ok(items);
         }
         /// <summary>
@@ -77,7 +85,7 @@ namespace api.Controllers
         public ActionResult<MenuItem> editMenuItem(int id, [FromBody]MenuItem menu)
         {
             //Check if id is valid
-            if (database.GetMenuItem(id) == null)
+            if (database.getMenuItem(id) == null)
             {
                 return NotFound(($"No MenuItem found for id: {id}"));
             }
@@ -103,8 +111,8 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public ActionResult deleteMenuItem(int id)
         {
-            //TODO check for permission
-            if (database.GetMenuItem(id) == null)
+            
+            if (database.getMenuItem(id) == null)
             {
                 return NotFound(($"No menuNew found for id: {id}"));
             }

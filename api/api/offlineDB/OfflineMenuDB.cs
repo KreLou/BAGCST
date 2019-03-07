@@ -11,6 +11,7 @@ namespace api.offlineDB
     public class OfflineMenuDB:IMenuDB
     {
 
+        private IMealDB mealDataBase = new OfflineMealDB();
         private string menu_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\menus.csv";
 
         /// <summary>
@@ -20,14 +21,36 @@ namespace api.offlineDB
         /// <returns></returns>
         private string writeLine(MenuItem menu)
         {
-            return menu.MenuID + ";" + menu.MealID + ";" + menu.Price + ";" + menu.Date ;
+            return menu.MenuID + ";" + menu.Meal + ";" + menu.Price + ";" + menu.Date ;
+        }
+
+        private string ConvertFromMenuToString(MenuItem item)
+        {
+            return
+                item.MenuID + ";" +
+                item.Meal.MealID + ";" +
+                item.Price + ";" +
+                item.Date;
+        }
+
+        private MenuItem ConvertFromStringToMenuItem(string line)
+        {
+            string[] args = line.Split(";");
+            MenuItem item = new MenuItem
+            {
+                MenuID = Convert.ToInt32(args[0]),
+                Meal = mealDataBase.getMealItem(Convert.ToInt32(args[1])),
+                Price = decimal.Parse(args[2]),
+                Date = DateTime.Parse(args[3]).Date
+            };
+            return item;
         }
         /// <summary>
         /// Search for Menu in file, return menu or null
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public MenuItem GetMenuItem(int id)
+        public MenuItem getMenuItem(int id)
         {
             MenuItem menu = null;
 
@@ -40,15 +63,9 @@ namespace api.offlineDB
                     int menu_id = (int)Convert.ToInt64(line.Split(";")[0]);
                     if (menu_id == id)
                     {
-                        string[] args = line.Split(";");
-                        menu = new MenuItem()
-                        {
-                            MenuID = menu_id,
-                            MealID = (int)Convert.ToInt64(args[1]),
-                            Price = decimal.Parse( args[2]),
-                            Date = DateTime.Parse(args[3]).Date
 
-                        };
+                        menu = ConvertFromStringToMenuItem(line);
+  
                     }
                 }
             }
@@ -63,7 +80,7 @@ namespace api.offlineDB
         /// <returns></returns>
         public MenuItem saveNewMenu(MenuItem item)
         {
-            MenuItem[] menus = GetMenus(item.Date);
+            MenuItem[] menus = getMenusbyDate(item.Date);
             int max = 0;
             foreach (MenuItem menu in menus)
             {
@@ -77,7 +94,7 @@ namespace api.offlineDB
             item.MenuID = max;
             
             // save item 
-            File.AppendAllLines(menu_filename, new String[] { this.writeLine(item) });
+            File.AppendAllLines(menu_filename, new String[] { ConvertFromMenuToString(item) });
 
             // return item 
             return item;
@@ -101,8 +118,8 @@ namespace api.offlineDB
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
 
-                      
-                        writer.WriteLine(id + ";" + item.MealID + ";" + item.Price + ";" + item.Date  );
+
+                        line = ConvertFromMenuToString(item);
                     }
                     else
                     {
@@ -112,7 +129,7 @@ namespace api.offlineDB
             }
             File.Delete(menu_filename);
             File.Move(tempFile, menu_filename);
-            return GetMenuItem(id);
+            return getMenuItem(id);
         }
 
         /// <summary>
@@ -143,10 +160,10 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="Date">Date</param>
         /// <returns></returns>
-        public MenuItem[] GetMenus(DateTime date)
+        public MenuItem[] getMenusbyDate(DateTime date)
         {
             List<MenuItem> list = new List<MenuItem>();
-            MenuItem[] menus = GetMenus();
+            MenuItem[] menus = getMenus();
             foreach(MenuItem item in menus)
             {
                 if(item.Date== date)
@@ -162,7 +179,7 @@ namespace api.offlineDB
         /// Search for all active Menu in file 
         /// </summary>
         /// <returns></returns>
-        public MenuItem[] GetMenus()
+        public MenuItem[] getMenus()
         {
             List<MenuItem> list = new List<MenuItem>();
 
@@ -171,14 +188,9 @@ namespace api.offlineDB
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    string[] args = line.Split(";");
-                    MenuItem menu = new MenuItem()
-                    {
-                        MenuID = (int)Convert.ToInt64(args[0]),
-                        MealID = (int)Convert.ToInt64(args[1]),
-                        Price = decimal.Parse(args[2]),
-                        Date = DateTime.Parse(args[3]).Date
-                    };
+
+                    MenuItem menu = ConvertFromStringToMenuItem(line);
+
                     list.Add(menu);
 
                 }
