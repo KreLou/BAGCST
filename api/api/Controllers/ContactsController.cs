@@ -67,9 +67,9 @@ namespace api.Controllers
                 return NotFound(($"No ContactItem found for ID: {id}"));
             }
 
-            if(database.getContactItem(item_in.Email).ContactID != id)
+            if (database.getContactItem(item_in.Email) != null)
             {
-                return BadRequest("The ID from the given ContactItem doesn't match the existing ID from the database.");
+                return BadRequest("This email address already exists");
             }
 
 
@@ -112,16 +112,15 @@ namespace api.Controllers
         public ActionResult<ContactItem> createContactItem(ContactItem item_in)
         {
             //TODO check for permission
-            if( item_in == null)
+            if (item_in == null)
             {
                 return BadRequest("ContactItem not found");
             }
 
-            if (item_in.Email == database.getContactItem(item_in.ContactID).Email)
+            if (database.getContactItem(item_in.Email) != null)
             {
                 return BadRequest("ContactItem is already existing");
             }
-
 
             if (!ModelState.IsValid)
             {
