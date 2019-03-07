@@ -16,13 +16,21 @@ namespace api.Controllers
     public class MealController : ControllerBase 
     {
         private IMealDB database = getDatabase();
-        private IPlaceDB datebase_db = getDatabaseDB();
+        private IPlaceDB placeDataBase = getPlaceDatabase();
 
+        /// <summary>
+        /// Returns the current database
+        /// </summary>
+        /// <returns></returns>
         private static IMealDB getDatabase()
         {
             return new OfflineMealDB();
         }
-        private static IPlaceDB getDatabaseDB()
+        /// <summary>
+        /// Returns the current database
+        /// </summary>
+        /// <returns></returns>
+        private static IPlaceDB getPlaceDatabase()
         {
             return new OfflinePlaceDB();
         }

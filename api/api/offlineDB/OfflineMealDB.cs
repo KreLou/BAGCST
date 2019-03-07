@@ -33,6 +33,11 @@ namespace api.offlineDB
                 + meal.Place.PlaceID + ";" 
                 + meal.Description ;
         }
+        /// <summary>
+        /// Creates the meal output form the String input 
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         private MealItem ConvertfromStringToMealItem(string line)
         {
             
@@ -124,7 +129,7 @@ namespace api.offlineDB
             }
             max++;
             item.MealID = max;
-
+            
             // save item 
             File.AppendAllLines(meal_filename, new String[] { ConvertFromMealitemToString(item) });
 
