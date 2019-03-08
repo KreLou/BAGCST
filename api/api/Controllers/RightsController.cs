@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
-//using api.Databases;
-using Microsoft.AspNetCore.Http;
+using api.Databases;
 
 namespace api.Controllers
 {
@@ -15,21 +14,20 @@ namespace api.Controllers
     public class RightsController : ControllerBase
     {
         private IRightsDB database = getDatabase();
-
         private static IRightsDB getDatabase()
         {
-            return null;
+            return new offlineDB_contacts();
         }
 
         /// <summary>
         /// returns the Right for the given ID. If it's not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Right</returns>
         [HttpGet("{id}")]
         public ActionResult<Right> getRight(int id)
         {
-            Right right = null; //database
+            Right right = database.getRight(id);
             if (right == null)
             {
                 return NotFound($"No right found for id: {id}");
@@ -43,15 +41,15 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<Right[]> getAllRights()
         {
-            Right[] rights = null; //database
+            Right[] rights = database.getAllRights();
             return Ok(rights);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Right> editRight(int id, [FromBody] Right[] rights_in)
+        public ActionResult<Right> editRight(int id, [FromBody] Right right_in)
         {
             //Check if id is valid
-            if (id == null) //database
+            if (database.getRight(id) == null)
             {
                 return NotFound(($"No Right found for ID: {id}"));
             }
@@ -62,23 +60,45 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            //update existing rights
-            Right[] rights_out = null; //database
+            //update existing right
+            Right right_out = database.editRight(id, right_in);
 
             //return new item
-            return Ok(rights_out);
+            return Ok(right_out);
         }
 
         [HttpDelete("{id}")]
         public ActionResult deleteRight(int id)
         {
             //TODO check for permission
-            if (id == null) //database
+            if (database.getRight(id) == null)
             {
-                return NotFound(($"No ContactItem found for id: {id}"));
+                return NotFound(($"No Right found for id: {id}"));
             }
-            //delete id. Database
+            database.deleteRight(id);
             return Ok();
+        }
+
+        /// <summary>
+        /// creates a Right based on the given Right. If the given Right is null, it returns BadRequest.
+        /// </summary>
+        /// <param name="right_in"></param>
+        /// <returns>Right|BadRequest</returns>
+        [HttpPost]
+        public ActionResult<Right> createRight(Right right_in)
+        {
+            //TODO check for permission
+            if (right_in == null)
+            {
+                return BadRequest("Right not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Right right_out = database.createRight(right_in);
+            return Created("", right_out);
         }
 
     }
