@@ -76,7 +76,7 @@ namespace api.Databases
             right.RightID = id;
 
             //2. Save Right
-            File.AppendAllLines(csvFile, new string[] { right.RightID + ";" + right.RightID });
+            File.AppendAllLines(csvFile, new string[] { right.RightID + ";" + right.Path });
 
             //3. Return Right
             return getRight(id);
