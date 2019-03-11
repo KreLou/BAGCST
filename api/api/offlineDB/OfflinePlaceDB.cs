@@ -24,7 +24,7 @@ namespace api.offlineDB
         }
 
         /// <summary>
-        /// edits the Place based on the given ContactItem except for the ID
+        /// edits the Place based on the given PlaceItem except for the ID
         /// </summary>
         /// <param name="id"></param>
         /// <param name="item"></param>
@@ -55,7 +55,7 @@ namespace api.offlineDB
         }
 
         /// <summary>
-        /// Search for all active users in file 
+        /// Search for all Places in file 
         /// </summary>
         /// <returns></returns>
         public PlaceItem[] getPlaces()
@@ -85,7 +85,7 @@ namespace api.offlineDB
 
 
         /// <summary>
-        /// Search for place in file, return user or null
+        /// Search for place in file, return Place or null
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

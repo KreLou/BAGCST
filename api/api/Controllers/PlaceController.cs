@@ -19,7 +19,6 @@ namespace api.Controllers
 
         /// <summary>
         /// Returns the current database
- 
         /// </summary>
         /// <returns></returns>
         private static IPlaceDB getDatabase()
