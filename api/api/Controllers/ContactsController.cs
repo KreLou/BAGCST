@@ -67,7 +67,8 @@ namespace api.Controllers
                 return NotFound(($"No ContactItem found for ID: {id}"));
             }
 
-            if (database.getContactItem(item_in.Email) != null)
+            ContactItem foundByEmail = database.getContactItem(item_in.Email);
+            if (foundByEmail != null && foundByEmail.ContactID != id)
             {
                 return BadRequest("This email address already exists");
             }
@@ -117,7 +118,8 @@ namespace api.Controllers
                 return BadRequest("ContactItem not found");
             }
 
-            if (database.getContactItem(item_in.Email) != null)
+            ContactItem foundByEmail = database.getContactItem(item_in.Email);
+            if (foundByEmail != null)
             {
                 return BadRequest("ContactItem is already existing");
             }
