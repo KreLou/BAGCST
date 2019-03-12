@@ -13,7 +13,7 @@ namespace api.offlineDB
     public class OfflineMealDB:IMealDB
     {
 
-        //TODO what will be doing when Place is null 
+        //TODO @Louis what will be doing when Place is null 
         private IPlaceDB placeDB = new OfflinePlaceDB();
         private string meal_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\meals.csv";
 
@@ -156,14 +156,10 @@ namespace api.offlineDB
                     if (Convert.ToInt32(line.Split(";")[0])== id)
                     {
 
-
-
                         line = ConvertFromMealitemToString(item);
                     }
-                    else
-                    {
-                        writer.WriteLine(line);
-                    }
+     // saving the line in the mealsfile 
+                    writer.WriteLine(line);
                 }
             }
             File.Delete(meal_filename);
