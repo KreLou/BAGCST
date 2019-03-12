@@ -67,7 +67,7 @@ namespace api.offlineDB
                 string line;
                 //end if end of file or meal is found
                 while ((line = sr.ReadLine()) != null && meal == null)
-                {
+                {   // if the mealId is same the id in this line 
                     int meal_ID = (int)Convert.ToInt64(line.Split(";")[0]);
                     if (meal_ID == id)
                       
@@ -96,14 +96,17 @@ namespace api.offlineDB
         /// <returns></returns>
         public MealItem[] getMeals()
         {
+            // List for all meals 
             List<MealItem> list = new List<MealItem>();
             string line;
             using (StreamReader sr = new StreamReader(this.meal_filename))
             {
-                
+                // end if the line not exist 
                 while ((line = sr.ReadLine()) != null)
                 {
+                    // the meal item 
                     MealItem meal = ConvertfromStringToMealItem(line);
+                    // add this item to the list 
                     list.Add(meal);
                 };
             }
@@ -117,7 +120,8 @@ namespace api.offlineDB
         /// <param name="item"></param>
         /// <returns></returns>
         public MealItem saveNewMeal(MealItem item)
-        {
+        {  
+            // get all items 
             MealItem[] meals = getMeals();
             int max = 0;
             foreach (MealItem exMeal in meals)
@@ -127,6 +131,7 @@ namespace api.offlineDB
                     max = exMeal.MealID;
                 }
             }
+            // the new id is the max Id from file + 1
             max++;
             item.MealID = max;
             
@@ -144,26 +149,36 @@ namespace api.offlineDB
         /// <param name="item"></param>
         /// <returns>Meal</returns>
         public MealItem editMeal(int id,MealItem item)
-        {
+        {   
+            // get the tempfile 
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
             using (StreamReader reader = new StreamReader(meal_filename))
             {
                 string line;
+                // end if the line not exist 
                 while ((line = reader.ReadLine()) != null)
                 {
-                  
+                  // if the id in this line is the id from mealItem 
                     if (Convert.ToInt32(line.Split(";")[0])== id)
                     {
-
+                        // then make the change in this item 
                         line = ConvertFromMealitemToString(item);
+                        // saving the line in the mealsfile 
+                        writer.WriteLine(line);
                     }
-     // saving the line in the mealsfile 
-                    writer.WriteLine(line);
+                    else
+                    {   // no change 
+                        writer.WriteLine(line);
+                    }
+                    
                 }
             }
+            // delete the old item
             File.Delete(meal_filename);
+            // save the new item 
             File.Move(tempFile, meal_filename);
+            // return this item 
             return getMealItem(id);
         }
 
@@ -171,22 +186,25 @@ namespace api.offlineDB
         /// deletes the meal based on the given ID
         /// </summary>
         /// <param name="id"></param>
-
         public void deleteMeal(int id)
         {
+            // get the tempfile
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
             using (StreamReader reader = new StreamReader(meal_filename))
             {
                 string line;
+                // end if the item not exist 
                 while ((line = reader.ReadLine()) != null)
-                {
+                {   // if the id in the line is not mealId 
                     if (Convert.ToInt32(line.Split(";")[0]) != id)
                     {
+                        // no change 
                         writer.WriteLine(line);
                     }
                 }
             }
+            // else delete the item 
             File.Delete(meal_filename);
             File.Move(tempFile, meal_filename);
         }

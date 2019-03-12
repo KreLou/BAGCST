@@ -15,19 +15,21 @@ namespace api.Controllers
     [ApiController]
     public class MealController : ControllerBase 
     {
-        private IMealDB database = getDatabase();
+
+        private IMealDB mealDatabase = getMealDatabase();
+
         private IPlaceDB placeDataBase = getPlaceDatabase();
 
         /// <summary>
-        /// Returns the current database
+        /// Returns the current Meal database
         /// </summary>
         /// <returns></returns>
-        private static IMealDB getDatabase()
+        private static IMealDB getMealDatabase()
         {
             return new OfflineMealDB();
         }
         /// <summary>
-        /// Returns the current database
+        /// Returns the Place database   
         /// </summary>
         /// <returns></returns>
         private static IPlaceDB getPlaceDatabase()
@@ -38,15 +40,18 @@ namespace api.Controllers
         /// returns the MealItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>ContactItem|NotFound</returns>
+        /// <returns>MealItem|NotFound</returns>
         [HttpGet("{id}")]
         public ActionResult<MealItem> getMealItem(int id)
-        {
-            MealItem item = database.getMealItem(id);
+        {   // get the meal Item from the datebase
+            MealItem item = mealDatabase.getMealItem(id);
+            // if this item not found 
             if (item == null)
             {
+                // retern message Notfound 
                 return NotFound($"No MealItem found for id: {id}");
             }
+            // else return this item 
             else
             {
                 return Ok(item);
@@ -60,7 +65,8 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<MealItem[]> getAllMeals()
         {
-            MealItem[] items = database.getMeals();
+            // get all the Meal item 
+            MealItem[] items = mealDatabase.getMeals();
             return Ok(items);
         }
 
@@ -75,19 +81,19 @@ namespace api.Controllers
         public ActionResult<MealItem> editMeal(int id, [FromBody]MealItem meal)
         {
             //Check if id is valid
-            if (database.getMealItem(id) == null)
+            if (mealDatabase.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
 
-            //Check if item not null
+            //Check if item  null
             if (meal == null)
             {
                 return BadRequest("MealItem not found");
             }
 
             //update existing item
-            MealItem item_out = database.editMeal(id, meal);
+            MealItem item_out = mealDatabase.editMeal(id, meal);
 
             //return new item
             return Ok(item_out);
@@ -101,12 +107,13 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public ActionResult deleteMeal(int id)
         {
-       
-            if (database.getMealItem(id) == null)
+                // check if the given Id is not null
+            if (mealDatabase.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
-            database.deleteMeal(id);
+            // if not null then delete this item 
+            mealDatabase.deleteMeal(id);
             return Ok();
         }
 
@@ -118,13 +125,13 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<MealItem> createMeal(MealItem meal)
         {
-         
+            // check if this meal exist 
             if (meal == null)
             {
                 return BadRequest("MealItem not found");
             }
-
-            MealItem mealNew = database.saveNewMeal(meal);
+            // if not then created new mealItem 
+            MealItem mealNew = mealDatabase.saveNewMeal(meal);
             return Created("", mealNew);
         }
     }
