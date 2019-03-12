@@ -29,5 +29,16 @@ namespace api.Controllers
             return database.getUserItems();
         }
 
+        [HttpGet("{id}")]
+        public ActionResult getUserByID(long id)
+        {
+            UserItem user = database.getUserItem(id);
+            if (user == null)
+            {
+                return NotFound("No UserItem found for ID: " + id);
+            }
+            return Ok(user);
+        }
+
     }
 }

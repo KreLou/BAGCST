@@ -1,8 +1,9 @@
-﻿using System;
+﻿using api.Interfaces;
 using api.Models;
-using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
 using api.offlineDB;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace api.Controllers
 {
@@ -46,7 +47,11 @@ namespace api.Controllers
         public NewsItem[] getAllNews([FromQuery] int start = 0, [FromQuery] int amount = 10)
         {
             long userID = 1; //TODO Get User-ID by Token
-            int[] groups = userSettingsDatabase.getSubscribedPostGroupsIDs(userID);
+
+            PostGroupUserPushNotificationSetting[] settings = userSettingsDatabase.getSubscribedPostGroupsSettings(userID);
+
+            //Only select the PostGroupID from the Fields
+            int[] groups = settings.Select(x => x.PostGroupID).ToArray();
             //TODO Groups settings should be stored in the database
             return database.getPosts(amount, start, groups);
         }
