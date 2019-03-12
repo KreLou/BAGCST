@@ -34,14 +34,15 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<PlaceItem> getPlace(int id)
         {
-           
+           // get the item from database
             PlaceItem item = database.getPlaceItem(id);
             if (item != null)
             {
                 return Ok(item);
             }
+            // else retun message
             else
-            {
+            {   
                 return NotFound($" No Place found for id :{ id}");
             }
          
@@ -53,7 +54,7 @@ namespace api.Controllers
         /// <returns>PlaceItem[]</returns>
         [HttpGet]
         public ActionResult<PlaceItem[]> getAllPlaces()
-        {
+        {   // get the all items from the database
             PlaceItem[] items = database.getPlaces();
             return Ok(items);
         }
@@ -96,11 +97,12 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public ActionResult deletePlaceItem(int id)
         {
-  
+            // check if id is valid 
             if (database.getPlaceItem(id) == null)
             {
                 return NotFound(($"No Place found for id: {id}"));
             }
+            // then deletet the item 
             database.deletePlace(id);
             return Ok();
         }
@@ -112,12 +114,12 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<PlaceItem> createPlace([FromBody] PlaceItem place)
         {
-            
+            // check if the item  null 
             if (place == null)
-            {
+            {// then return ein messege 
                 return BadRequest("Place not found");
             }
-
+            // if the item not null then save new item 
             PlaceItem item_out = database.saveNewPlace(place);
             return Created("", item_out);
         }

@@ -30,26 +30,30 @@ namespace api.offlineDB
         /// <param name="item"></param>
         /// <returns>Place</returns>
         public PlaceItem editPlace(int id ,PlaceItem item)
-        {
+        {   // get the tempfile
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
             using (StreamReader reader = new StreamReader(place_filename))
-            {
+            {   
                 string line;
+                // if the line exist
                 while ((line= reader.ReadLine()) != null)
-                {
-                    if(Convert.ToInt32(line.Split(";")[0]   )== id)
-                    {
+                {   // if the id in the file = item Id 
+                    if(Convert.ToInt32(line.Split(";")[0] )== id)
+                    {   // save the line in the file 
                         writer.WriteLine(id+ ";" + item.PlaceName);
                     }
                     else
-                    {
+                    {   // else no change 
                         writer.WriteLine(line);
                     }
                 }
             }
+            // delete the old item 
             File.Delete(place_filename);
+            // save the new item 
             File.Move(tempFile, place_filename);
+            // return this item 
             return getPlaceItem(id);
 
         }
@@ -60,26 +64,29 @@ namespace api.offlineDB
         /// <returns></returns>
         public PlaceItem[] getPlaces()
         {
+            // list for alle Placeitems 
             List<PlaceItem> list = new List<PlaceItem>();
 
             using (StreamReader sr = new StreamReader(this.place_filename))
             {
                 string line;
+                // if the line exist
                 while ((line = sr.ReadLine()) != null)
-                {
+                {   
+                    // place 
                     string[] args = line.Split(";");
                     PlaceItem place = new PlaceItem()
                     {
                         PlaceID = (int)Convert.ToInt64(args[0]),
-            
                         PlaceName = args[1]
-              
                     };
+                    // add this place to the list 
                     list.Add(place);
 
      
                 }
             }
+            // return this list as array 
             return list.ToArray();
         }
 
@@ -98,7 +105,7 @@ namespace api.offlineDB
                 string line;
                 //end if end of file or place is found
                 while ((line = sr.ReadLine()) != null && place == null)
-                {
+                {   // if the given id = the place Id 
                     int place_ID = (int)Convert.ToInt64(line.Split(";")[0]);
                     if (place_ID == id)
                     {
@@ -106,14 +113,13 @@ namespace api.offlineDB
                         place = new PlaceItem()
                         {
                             PlaceID = place_ID,
-                    
                             PlaceName = args[1]
                       
                         };
                     }
                 }
             }
-
+            // this place
             return place;
         }
         /// <summary>
@@ -123,15 +129,19 @@ namespace api.offlineDB
         /// <returns></returns>
         public PlaceItem saveNewPlace(PlaceItem item)
         {
-            PlaceItem[] existingplace = getPlaces();
+            // get all Places 
+            PlaceItem[] places = getPlaces();
+            // the max id = 0
             int max = 0;
-            foreach (PlaceItem exPlace in existingplace)
+            // for every place in Places List 
+            foreach (PlaceItem place in places)
             {
-                max = exPlace.PlaceID > max ? exPlace.PlaceID  : max;
+                // change the max to the maxId from Place
+                max = place.PlaceID > max ? place.PlaceID  : max;
             }
-
+            // the new Id is max+1 
             item.PlaceID = max+1;
-
+            // save the place item in the file 
             File.AppendAllLines(place_filename, new String[] { this.writeLine(item) });
             return item;
         }
@@ -141,20 +151,22 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="id"></param>
         public void deletePlace(int id)
-        {
+        {   // get the tempfile
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
             using (StreamReader reader = new StreamReader(place_filename))
             {
                 string line;
+                // if the line exist 
                 while ((line = reader.ReadLine()) != null)
-                {
+                {   // and the id in this line is not Place Id 
                     if (Convert.ToInt32(line.Split(";")[0]) != id)
-                    {
+                    {   // no change 
                         writer.WriteLine(line);
                     }
                 }
             }
+            // the end delet the place item 
             File.Delete(place_filename);
             File.Move(tempFile, place_filename);
 
