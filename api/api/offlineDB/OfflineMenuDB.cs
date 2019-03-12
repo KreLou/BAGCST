@@ -121,10 +121,8 @@ namespace api.offlineDB
 
                         line = ConvertFromMenuToString(item);
                     }
-                    else
-                    {
-                        writer.WriteLine(line);
-                    }
+                    // save the line in the file 
+                    writer.WriteLine(line);
                 }
             }
             File.Delete(menu_filename);
