@@ -38,7 +38,7 @@ namespace api.Interfaces
         MenuItem getMenuItem(int id);
 
         /// <summary>
-        /// gett all Menu 
+        /// gett all Menu based on date
         /// </summary>
         /// <param name="Date">Date</param>
         MenuItem[] getMenusbyDate( DateTime Date);
@@ -46,7 +46,6 @@ namespace api.Interfaces
         /// <summary>
         /// gett all Menu 
         /// </summary>
-        /// <param name="Date">Date</param>
         MenuItem[] getMenus();
 
     }

@@ -14,16 +14,12 @@ namespace api.offlineDB
         private IMealDB mealDataBase = new OfflineMealDB();
         private string menu_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\menus.csv";
 
+
         /// <summary>
         /// Creates the string output for menu
         /// </summary>
-        /// <param name="menu"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        private string writeLine(MenuItem menu)
-        {
-            return menu.MenuID + ";" + menu.Meal + ";" + menu.Price + ";" + menu.Date ;
-        }
-
         private string ConvertFromMenuToString(MenuItem item)
         {
             return
@@ -33,6 +29,12 @@ namespace api.offlineDB
                 item.Date;
         }
 
+
+        /// <summary>
+        /// Creates the meunItem output for menu from the String 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private MenuItem ConvertFromStringToMenuItem(string line)
         {
             string[] args = line.Split(";");
@@ -45,6 +47,7 @@ namespace api.offlineDB
             };
             return item;
         }
+
         /// <summary>
         /// Search for Menu in file, return menu or null
         /// </summary>
@@ -60,10 +63,11 @@ namespace api.offlineDB
                 //end if end of file or menu is found
                 while ((line = sr.ReadLine()) != null && menu == null)
                 {
+                    // if the id in the line is the id from Menu 
                     int menu_id = (int)Convert.ToInt64(line.Split(";")[0]);
                     if (menu_id == id)
                     {
-
+                        // then get the menu
                         menu = ConvertFromStringToMenuItem(line);
   
                     }
@@ -80,7 +84,8 @@ namespace api.offlineDB
         /// <returns></returns>
         public MenuItem saveNewMenu(MenuItem item)
         {
-            MenuItem[] menus = getMenusbyDate(item.Date);
+            // get all Menus 
+            MenuItem[] menus = getMenus();
             int max = 0;
             foreach (MenuItem menu in menus)
             {
@@ -90,6 +95,7 @@ namespace api.offlineDB
                 }
                
             }
+            // the new id will be the maxId in the file + 1
             max++;
             item.MenuID = max;
             
@@ -118,15 +124,23 @@ namespace api.offlineDB
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
 
-
                         line = ConvertFromMenuToString(item);
+                        // save the line in the file 
+                        writer.WriteLine(line);
                     }
-                    // save the line in the file 
-                    writer.WriteLine(line);
+                    else
+                    {
+                        // save the line in the file 
+                        writer.WriteLine(line);
+                    }
+
                 }
             }
+            // delete the old item 
             File.Delete(menu_filename);
+            // save the new item 
             File.Move(tempFile, menu_filename);
+            // return the new item 
             return getMenuItem(id);
         }
 
@@ -141,14 +155,18 @@ namespace api.offlineDB
             using (StreamReader reader = new StreamReader(menu_filename))
             {
                 string line;
+                // end if the item not exist 
                 while ((line = reader.ReadLine()) != null)
                 {
+                    // if the item exist und id  null 
                     if (Convert.ToInt32(line.Split(";")[0]) != id)
                     {
+                        // do no thing 
                         writer.WriteLine(line);
                     }
                 }
             }
+            // else delete the item 
             File.Delete(menu_filename);
             File.Move(tempFile, menu_filename);
         }
@@ -160,12 +178,16 @@ namespace api.offlineDB
         /// <returns></returns>
         public MenuItem[] getMenusbyDate(DateTime date)
         {
+            // list for all items 
             List<MenuItem> list = new List<MenuItem>();
             MenuItem[] menus = getMenus();
             foreach(MenuItem item in menus)
             {
+                // if the date is the same given date 
                 if(item.Date== date)
-                {
+                {   
+                    // add item to list 
+
                     list.Add(item);
                 }
             }
@@ -179,6 +201,7 @@ namespace api.offlineDB
         /// <returns></returns>
         public MenuItem[] getMenus()
         {
+            // list for all items
             List<MenuItem> list = new List<MenuItem>();
 
             using (StreamReader sr = new StreamReader(this.menu_filename))
@@ -186,9 +209,9 @@ namespace api.offlineDB
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-
+                    // if item found 
                     MenuItem menu = ConvertFromStringToMenuItem(line);
-
+                    // add this item to the list 
                     list.Add(menu);
 
                 }

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using System.Numerics;
 
 namespace api.Models
-{   /// <summary>
+{   
+    /// <summary>
     /// Menu model show all elments for the objekt menu in the database
     /// </summary>
-
     public class MenuItem
     {
         /// <summary>
@@ -21,11 +21,12 @@ namespace api.Models
         /// the date whe the menu exist
         /// </summary>
         public DateTime Date { get; set; }
+
         /// <summary>
         ///  ID/ForeignKey of Meal
         /// </summary>
-       
         public MealItem Meal { get; set; }
+
         /// <summary>
         /// the price of menu 
         /// </summary>

@@ -14,27 +14,30 @@ namespace api.Controllers
     [ApiController]
     public class MenuController : ControllerBase
     {
-        private IMenuDB database = getDatabase();
+        private IMenuDB menuDatabase = getMenuDatabase();
+
         private IMealDB mealDatabase = getMealDataBase();
 
 
         /// <summary>
-        /// Returns the current database
+        /// Returns the current Menu database
         /// </summary>
         /// <returns></returns>
-        private static IMenuDB getDatabase()
+        private static IMenuDB getMenuDatabase()
         {
             return new OfflineMenuDB();
         }
 
         /// <summary>
-        /// Returns the current database
+        /// Returns the meal database
         /// </summary>
         /// <returns></returns>
         private static IMealDB getMealDataBase()
         {
             return new OfflineMealDB();
         }
+
+
         /// <summary>
         /// returns the MenuItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
@@ -43,37 +46,48 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<MenuItem> getItem(int id)
         {
-            MenuItem item = database.getMenuItem(id);
+            // get the MenuItem from the database
+            MenuItem item = menuDatabase.getMenuItem(id);
 
+            // check if the item exist 
             if (item == null)
             {
+                // if no then message
                 return NotFound($"No MenuItem found for id: {id}");
             }
+            // else 
             else
-            {
+            { // return this item 
                 return Ok(item);
             }
         }
+
+
         /// <summary>
-        /// returns an array of ContactItems
+        /// returns an array of MenuItems for the given date 
         /// </summary>
         /// <returns>MenuItem[]</returns>
         [HttpGet("date")]
         public ActionResult<MenuItem[]> getAllMenuItem(DateTime date)
         {
-            MenuItem[] items = database.getMenus();
+            // get all menuItem
+            MenuItem[] items = menuDatabase.getMenus();
             return Ok(items);
         }
+
+
         /// <summary>
-        /// returns an array of ContactItems
+        /// returns an array of MenuItems
         /// </summary>
         /// <returns>MenuItem[]</returns>
         [HttpGet]
         public ActionResult<MenuItem[]> getAllMenuItem()
         {
-            MenuItem[] items = database.getMenus();
+            MenuItem[] items = menuDatabase.getMenus();
             return Ok(items);
         }
+
+
         /// <summary>
         /// returns the edited MenuItem for the given ID and MenuItem. If ID is not found, it returns NotFound. 
         /// If the MenuItem is not found, it returns BadRequest.
@@ -85,7 +99,7 @@ namespace api.Controllers
         public ActionResult<MenuItem> editMenuItem(int id, [FromBody]MenuItem menu)
         {
             //Check if id is valid
-            if (database.getMenuItem(id) == null)
+            if (menuDatabase.getMenuItem(id) == null)
             {
                 return NotFound(($"No MenuItem found for id: {id}"));
             }
@@ -97,28 +111,31 @@ namespace api.Controllers
             }
 
             //update existing item
-            MenuItem menuNew = database.editMenu( id,menu);
+            MenuItem menuNew = menuDatabase.editMenu( id,menu);
 
             //return new item
             return Ok(menuNew);
         }
 
+
         /// <summary>
-        /// deletes the menuNew for the given ID. If the ID is not found, it returns NotFound.
+        /// deletes the menuItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult deleteMenuItem(int id)
         {
-            
-            if (database.getMenuItem(id) == null)
-            {
-                return NotFound(($"No menuNew found for id: {id}"));
+            // check if the item not null
+            if (menuDatabase.getMenuItem(id) == null)
+            {   // if null 
+                return NotFound(($"No MenuItem found for id: {id}"));
             }
-            database.deleteMenu(id);
+            // else delete this item 
+            menuDatabase.deleteMenu(id);
             return Ok();
         }
+
 
         /// <summary>
         /// creates a MenuItem based on the given MenuItem. If the given MenuItem is null, it returns BadRequest.
@@ -128,13 +145,14 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<MenuItem> createMenuItem(MenuItem menu)
         {
-
+            // check if the item not null
             if (menu == null)
             {
+                // if null then message 
                 return BadRequest("MenuItem not found");
             }
-
-            MenuItem menuNew = database.saveNewMenu(menu);
+            // else creat new item 
+            MenuItem menuNew = menuDatabase.saveNewMenu(menu);
             return Created("", menuNew);
         }
     }
