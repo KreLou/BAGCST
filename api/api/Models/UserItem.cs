@@ -51,11 +51,11 @@ namespace api.Models
         /// <summary>
         /// ID of PostGroups, where user can post news
         /// </summary>
-        public int[] PostGroups { get; set; }
+        public PostGroupItem[] PostGroups { get; set; }
         
         /// <summary>
         /// ID for PostGroups, which user subscribs
         /// </summary>
-        public int[] SubscribedPostGroups { get; set; }
+        public PostGroupUserPushNotificationSetting[] SubscribedPostGroups { get; set; }
     }
 }
