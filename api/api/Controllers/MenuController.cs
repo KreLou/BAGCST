@@ -109,7 +109,11 @@ namespace api.Controllers
             {
                 return BadRequest("MenuItem not found");
             }
-
+            // if the meun have null value 
+            if (ModelState.IsValid)
+            {
+                return BadRequest("Menu can not be editet because of one of the value is null");
+            }
             //update existing item
             MenuItem menuNew = menuDatabase.editMenu( id,menu);
 
@@ -150,6 +154,11 @@ namespace api.Controllers
             {
                 // if null then message 
                 return BadRequest("MenuItem not found");
+            }
+            // if the meun have null value 
+            if (ModelState.IsValid)
+            {
+                return BadRequest("Menu can not be created because of one of the value is null");
             }
             // else creat new item 
             MenuItem menuNew = menuDatabase.saveNewMenu(menu);
