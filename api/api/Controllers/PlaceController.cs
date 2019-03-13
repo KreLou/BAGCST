@@ -82,12 +82,26 @@ namespace api.Controllers
             {
                 return BadRequest("Place not found");
             }
+            PlaceItem[] placeItems = database.getPlaces();
+            // for every place in Places List 
+            foreach (PlaceItem placeItem in placeItems)
+            {
+                // if the PlaceName is exist 
+                if (placeItem.PlaceName == place.PlaceName)
+                {
+                    // then wrong 
+                    return BadRequest($"Place is exist : {placeItem.PlaceName}");
+                }
 
+            }
+            // else 
             //update existing item
             PlaceItem item_out = database.editPlace( id,place);
+   
+             //return new item
+             return Ok(item_out);
+                
 
-            //return new item
-            return Ok(item_out);
         }
 
         /// <summary>
@@ -103,9 +117,26 @@ namespace api.Controllers
             {// then return ein messege 
                 return BadRequest("Place not found");
             }
+            // all the Places 
+            PlaceItem[] placeItems = database.getPlaces();
+            // for every place in Places List 
+            foreach (PlaceItem placeItem in placeItems)
+            {
+                // if the PlaceName is exist 
+                if (placeItem.PlaceName == place.PlaceName)
+                {
+                    // then wrong 
+                    return BadRequest($"Place is exist : {placeItem.PlaceName}");
+                }
+
+            }
+            //else 
             // if the item not null then save new item 
             PlaceItem item_out = database.saveNewPlace(place);
-            return Created("", item_out);
+
+                return Created("", item_out);
+            
+            
         }
         /// <summary>
         /// deletes the PlaceItem for the given ID. If the ID is not found, it returns NotFound.

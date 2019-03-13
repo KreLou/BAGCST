@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
+using api.offlineDB;
 namespace api.offlineDB
 {
     public class OfflinePlaceDB : IPlaceDB
@@ -138,6 +140,11 @@ namespace api.offlineDB
             {
                 // change the max to the maxId from Place
                 max = place.PlaceID > max ? place.PlaceID  : max;
+                if(item.PlaceName == place.PlaceName)
+                {
+                    return null;
+                }
+             
             }
             // the new Id is max+1 
             item.PlaceID = max+1;
