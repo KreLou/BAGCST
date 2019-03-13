@@ -91,7 +91,10 @@ namespace api.Controllers
             {
                 return BadRequest("MealItem not found");
             }
-
+            if (ModelState.IsValid)
+            {
+                return BadRequest("Meal can not be editet ");
+            }
             //update existing item
             MealItem item_out = mealDatabase.editMeal(id, meal);
 
@@ -130,6 +133,11 @@ namespace api.Controllers
             {
                 return BadRequest("MealItem not found");
             }
+            if (ModelState.IsValid)
+            {
+                return BadRequest("Meal can not be created ");
+            }
+
             // if not then created new mealItem 
             MealItem mealNew = mealDatabase.saveNewMeal(meal);
             return Created("", mealNew);
