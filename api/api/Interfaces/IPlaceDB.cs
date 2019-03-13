@@ -22,13 +22,7 @@ namespace api.Interfaces
         /// <param name="place"></param>
         /// <returns></returns>
         PlaceItem editPlace(int id ,PlaceItem place);
-
-
-        /// <summary>
-        /// Delete a Place by ID
-        /// </summary>
-        /// <param name="id"></param>
-        void deletePlace(int id);
+  
 
         /// <summary>
         /// Return all Places 

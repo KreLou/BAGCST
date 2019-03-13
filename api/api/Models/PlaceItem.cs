@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
@@ -17,6 +18,7 @@ namespace api.Models
         /// String name 
         /// the name of the place
         /// </summary>
+        [Required]
         public String PlaceName { get; set; }
     }
 }

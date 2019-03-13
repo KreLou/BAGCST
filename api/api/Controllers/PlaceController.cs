@@ -89,23 +89,7 @@ namespace api.Controllers
             //return new item
             return Ok(item_out);
         }
-        /// <summary>
-        /// deletes the PlaceItem for the given ID. If the ID is not found, it returns NotFound.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public ActionResult deletePlaceItem(int id)
-        {
-            // check if id is valid 
-            if (database.getPlaceItem(id) == null)
-            {
-                return NotFound(($"No Place found for id: {id}"));
-            }
-            // then deletet the item 
-            database.deletePlace(id);
-            return Ok();
-        }
+
         /// <summary>
         /// creates a PlaceItem based on the given ContactItem. If the given PlaceItem is null, it returns BadRequest.
         /// </summary>
@@ -123,7 +107,22 @@ namespace api.Controllers
             PlaceItem item_out = database.saveNewPlace(place);
             return Created("", item_out);
         }
+        /// <summary>
+        /// deletes the PlaceItem for the given ID. If the ID is not found, it returns NotFound.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public ActionResult deletePlaceItem(int id)
+        {
+            // check if id is valid 
+            if (database.getPlaceItem(id) == null)
+            {
+                return NotFound(($"No Place found for id: {id}"));
+            }
 
+            return BadRequest("Place cant not be deletet");
+        }
 
     }
 }

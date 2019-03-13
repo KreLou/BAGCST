@@ -145,31 +145,5 @@ namespace api.offlineDB
             File.AppendAllLines(place_filename, new String[] { this.writeLine(item) });
             return item;
         }
-
-        /// <summary>
-        /// deletes the Place based on the given ID
-        /// </summary>
-        /// <param name="id"></param>
-        public void deletePlace(int id)
-        {   // get the tempfile
-            string tempFile = Path.GetTempFileName();
-            using (StreamWriter writer = new StreamWriter(tempFile))
-            using (StreamReader reader = new StreamReader(place_filename))
-            {
-                string line;
-                // if the line exist 
-                while ((line = reader.ReadLine()) != null)
-                {   // and the id in this line is not Place Id 
-                    if (Convert.ToInt32(line.Split(";")[0]) != id)
-                    {   // no change 
-                        writer.WriteLine(line);
-                    }
-                }
-            }
-            // the end delet the place item 
-            File.Delete(place_filename);
-            File.Move(tempFile, place_filename);
-
-        }
     }
 }
