@@ -6,61 +6,60 @@ using System.Data.SqlClient;
 
 namespace api.database
 {
-    public class Database
+    public static class TimeTableDatabase
     {
-        private SqlConnection _conn;
-        public Database(string connectionString)
-        {
-            try
-            {
-                _conn = new SqlConnection(connectionString);
-                Console.Write("Verbindun offen");
-            }
-            catch (Exception ex)
-            {
-                //Fail to Connect the Database
-            }
-        }
-        private void connectionOpen()
-        {
-            try
-            {
-                if (_conn.State == System.Data.ConnectionState.Open)
-                {
-                    // Database is allrady open
-                }
-                else
-                {
-                    //Databse open
-                    _conn.Open();
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                //Fail to open Database
-            }
-        }
-        private void connectionClose()
-        {
-            try
-            {
+        private static string connectionString;
+        private static List<SqlConnection> connections = new List<SqlConnection>();
 
-                if (_conn.State == System.Data.ConnectionState.Closed)
-                {
-                    // Database is allrady Closed
-                }
-                else
-                {
-                    //Databse closed
-                    _conn.Close();
-                }
-                _conn.Close();
-            }
-            catch(Exception ex)
-            {
-               //Fail to Close Database
-            }
+        public static void setConnectionString(string str)
+        {
+            connectionString = str;
         }
+
+        public static SqlConnection getConnection()
+        {
+            return new SqlConnection(connectionString);
+        }
+        //private void connectionOpen()
+        //{
+        //    try
+        //    {
+        //        if (_conn.State == System.Data.ConnectionState.Open)
+        //        {
+        //            // Database is allrady open
+        //        }
+        //        else
+        //        {
+        //            //Databse open
+        //            _conn.Open();
+        //        }
+                
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Fail to open Database
+        //    }
+        //}
+        //private void connectionClose()
+        //{
+        //    try
+        //    {
+
+        //        if (_conn.State == System.Data.ConnectionState.Closed)
+        //        {
+        //            // Database is allrady Closed
+        //        }
+        //        else
+        //        {
+        //            //Databse closed
+        //            _conn.Close();
+        //        }
+        //        _conn.Close();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //       //Fail to Close Database
+        //    }
+        //}
     }
 }
