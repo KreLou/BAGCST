@@ -33,7 +33,8 @@ namespace api.offlineDB
                 StartTime = Convert.ToDateTime(args[3]),
                 ExpirationTime = Convert.ToDateTime(args[4]),
                 isActivied = Convert.ToBoolean(args[5]),
-                Token = args[6]
+                ActivationCode = args[6],
+                Token = args[7]
             };
         }
         public SessionItem createNewSession(SessionItem item)
@@ -47,9 +48,12 @@ namespace api.offlineDB
 
         public SessionItem findExistingSession(long userID, long deviceID)
         {
-            SessionItem[] sessions = getAllActiveSessions();
+            DateTime now = DateTime.Now;
+            SessionItem[] sessions = getAllSessions();
             SessionItem[] possibleItems = sessions
-                .Where(x => x.DeviceID == deviceID && x.UserID == userID).ToArray();
+                .Where(x => x.DeviceID == deviceID && x.UserID == userID)
+                .Where(x => x.StartTime <= now)
+                .Where(x => x.ExpirationTime >= now).ToArray();
             if (possibleItems.Length == 1)
             {
                 return possibleItems[0];

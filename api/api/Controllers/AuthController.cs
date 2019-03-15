@@ -66,6 +66,7 @@ namespace api.Controllers
             if (session == null)
             {
                 session = createNewSession(user, device);
+                return Created("", session);
             }
 
             return Ok(session);
@@ -94,6 +95,7 @@ namespace api.Controllers
                 ExpirationTime = DateTime.Now.AddMonths(10),
                 isActivied = false
             };
+            session.setActivationCode();
             JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
             session.Token = jWTCreationHandler.Token;
 
