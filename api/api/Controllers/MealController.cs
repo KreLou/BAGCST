@@ -92,9 +92,9 @@ namespace api.Controllers
                 return BadRequest("MealItem not found");
             }
             // if the Meal have null value 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Meal can not be editet because of one of the value is null");
+                return BadRequest(ModelState);
             }
             //update existing item
             MealItem item_out = mealDatabase.editMeal(id, meal);
@@ -135,9 +135,9 @@ namespace api.Controllers
                 return BadRequest("MealItem not found");
             }
             // if the Meal have null value 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Meal can not be created because of one of the value is null");
+                return BadRequest(ModelState);
             }
             // if not then created new mealItem 
             MealItem mealNew = mealDatabase.saveNewMeal(meal);
