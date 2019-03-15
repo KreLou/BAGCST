@@ -59,33 +59,45 @@ namespace api.Controllers
 
             if (device == null)
             {
-                device = new UserDeviceItem
-                {
-                    CreateTime = DateTime.Now,
-                    DeviceName = loginData.DeviceName,
-                    UserID = user.UserID
-                };
-                device = deviceDatabasae.createNewUserDevice(device);
+                device = createNewUserDevice(loginData, user);
             }
 
             SessionItem session = sessionDatabase.findExistingSession(user.UserID, device.DeviceID);
             if (session == null)
             {
-                session = new SessionItem
-                {
-                    DeviceID = device.DeviceID,
-                    UserID = user.UserID,
-                    StartTime = DateTime.Now,
-                    ExpirationTime = DateTime.Now.AddMonths(10)
-                };
-                JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
-                session.Token = jWTCreationHandler.Token;
-
-                sessionDatabase.createNewSession(session);
+                session = createNewSession(user, device);
             }
 
             return Ok(session);
 
+        }
+
+        private UserDeviceItem createNewUserDevice(LoginDataItem loginData, UserItem user)
+        {
+            UserDeviceItem device = new UserDeviceItem
+            {
+                CreateTime = DateTime.Now,
+                DeviceName = loginData.DeviceName,
+                UserID = user.UserID
+            };
+            device = deviceDatabasae.createNewUserDevice(device);
+            return device;
+        }
+
+        private SessionItem createNewSession(UserItem user, UserDeviceItem device)
+        {
+            SessionItem session = new SessionItem
+            {
+                DeviceID = device.DeviceID,
+                UserID = user.UserID,
+                StartTime = DateTime.Now,
+                ExpirationTime = DateTime.Now.AddMonths(10)
+            };
+            JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
+            session.Token = jWTCreationHandler.Token;
+
+            sessionDatabase.createNewSession(session);
+            return session;
         }
 
 
