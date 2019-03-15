@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {   
@@ -20,16 +21,19 @@ namespace api.Models
         /// DateTime Date
         /// the date whe the menu exist
         /// </summary>
+        [Required]
         public DateTime Date { get; set; }
 
         /// <summary>
         ///  ID/ForeignKey of Meal
         /// </summary>
+        [Required]
         public MealItem Meal { get; set; }
 
         /// <summary>
         /// the price of menu 
         /// </summary>
+        [Required]
         public decimal Price { get; set; }
     }
 }

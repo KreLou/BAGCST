@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,11 +20,15 @@ namespace api.Models
         /// String MealName 
         /// the name of the meal 
         /// </summary>
+        [Required]
         public String MealName { get; set; }
+
         /// <summary>
         /// String description
         /// necessaries the meal 
         /// </summary>
+        [Required]
         public String Description { get; set; }
+
     }
 }
