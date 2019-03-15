@@ -18,6 +18,8 @@ namespace api.offlineDB
                 $"{item.UserID};" +
                 $"{item.StartTime};" +
                 $"{item.ExpirationTime};" +
+                $"{item.isActivied};" +
+                $"{item.ActivationCode};" +
                 $"{item.Token}";
         }
         private SessionItem convertToItem(string line)
@@ -30,7 +32,8 @@ namespace api.offlineDB
                 UserID = (long)Convert.ToInt64(args[2]),
                 StartTime = Convert.ToDateTime(args[3]),
                 ExpirationTime = Convert.ToDateTime(args[4]),
-                Token = args[5]
+                isActivied = Convert.ToBoolean(args[5]),
+                Token = args[6]
             };
         }
         public SessionItem createNewSession(SessionItem item)
@@ -95,6 +98,37 @@ namespace api.offlineDB
                 return getAllSessions()[0].InternalID + 1;
             }
             return 1;
+        }
+
+        public SessionItem getSessionItemByActivationCode(string code)
+        {
+            SessionItem item = this.getAllSessions().Where(x => x.ActivationCode == code).Single();
+            return item;
+        }
+
+        public SessionItem updateSessionItem(long sessionID, SessionItem item)
+        {
+            string tempfile = Path.GetTempFileName();
+
+            using (StreamReader sr = new StreamReader(filePath))
+            using (StreamWriter sw = new StreamWriter(tempfile))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    SessionItem foundItem = convertToItem(line);
+                    if (foundItem.DeviceID == sessionID)
+                    {
+                        sw.WriteLine(convertToLine(item));
+                    }else
+                    {
+                        sw.WriteLine(line);
+                    }
+                } 
+            }
+            File.Delete(filePath);
+            File.Move(tempfile, filePath);
+            return item;
         }
     }
 }

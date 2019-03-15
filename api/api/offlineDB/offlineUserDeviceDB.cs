@@ -50,7 +50,7 @@ namespace api.offlineDB
                     if (item.DeviceID >= maxUsed) maxUsed = item.DeviceID;
                 }
             }
-            return maxUsed+1;
+            return (maxUsed+1);
         }
 
         public UserDeviceItem getDeviceByNameAndUser(long userID, string deviceName)
