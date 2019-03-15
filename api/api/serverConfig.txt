@@ -1,0 +1,3 @@
+Config File for APP-Backend by WI16
+SQLConnectionString=<sql-connection-string>
+APIURl=http://localhost:5900
