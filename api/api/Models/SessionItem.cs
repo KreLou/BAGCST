@@ -13,6 +13,16 @@ namespace api.Models
         public long UserID { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime ExpirationTime { get; set; }
+        public bool isActivied { get; set; }
+        public string ActivationCode
+        {
+            get
+            {
+                string secret = $"{InternalID}&BA{DeviceID}Glauchau${UserID}{UserID}WI";
+                return secret.GetHashCode().ToString();
+            }
+        }
+
         
 
     }

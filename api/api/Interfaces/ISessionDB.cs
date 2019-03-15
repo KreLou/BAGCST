@@ -15,5 +15,9 @@ namespace api.Interfaces
         SessionItem[] getAllSessions();
 
         SessionItem[] getAllActiveSessions();
+
+        SessionItem getSessionItemByActivationCode(string code);
+
+        SessionItem updateSessionItem(long sessionID, SessionItem item);
     }
 }

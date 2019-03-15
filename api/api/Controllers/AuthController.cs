@@ -39,7 +39,7 @@ namespace api.Controllers
         {
             return new offlineUserDB();
         }
-        #endregion
+#endregion
 
         [HttpPost("register")]
         public ActionResult register([FromBody] LoginDataItem loginData)
@@ -76,7 +76,8 @@ namespace api.Controllers
                     DeviceID = device.DeviceID,
                     UserID = user.UserID,
                     StartTime = DateTime.Now,
-                    ExpirationTime = DateTime.Now.AddMonths(10)
+                    ExpirationTime = DateTime.Now.AddMonths(10),
+                    isActivied = false
                 };
                 JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
                 session.Token = jWTCreationHandler.Token;
@@ -87,7 +88,24 @@ namespace api.Controllers
             return Ok(session);
 
         }
-
+        
+        [HttpPost("activate/{code}")]
+        public IActionResult activate(string code)
+        {
+            SessionItem session = sessionDatabase.getSessionItemByActivationCode(code);
+            if (session == null)
+            {
+                return NotFound("No Session found");
+            }
+            if (session.isActivied)
+            {
+                return BadRequest("Session is already activted");
+            }
+            session.isActivied = true;
+            session = sessionDatabase.updateSessionItem(session.InternalID, session);
+            return Ok(session);
+        }
+    
 
 
 
