@@ -8,7 +8,7 @@ using System.IO;
 
 namespace api.Databases
 {
-    public class offlineDB_contacts : IRightsDB
+    public class offlineDB_Rights : IRightsDB
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\rights.csv";
 
