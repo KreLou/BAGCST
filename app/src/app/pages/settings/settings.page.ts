@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserSettingsLoaderService} from '../../services/httpServices/user-settings-loader.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  private userSettings: UserSettings;
+
+  constructor(private settingsLoader: UserSettingsLoaderService) { }
 
   ngOnInit() {
   }

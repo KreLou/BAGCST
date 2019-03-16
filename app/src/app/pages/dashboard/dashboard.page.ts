@@ -8,7 +8,7 @@ import {MenuController} from '@ionic/angular';
 })
 export class DashboardPage implements OnInit {
 
-  constructor(private menu: MenuController) { }
+  constructor() { }
 
   ngOnInit() {
   }
