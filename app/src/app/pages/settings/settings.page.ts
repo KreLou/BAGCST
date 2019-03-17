@@ -4,7 +4,7 @@ import {UserSettingsLoaderService} from '../../services/httpServices/user-settin
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+  styleUrls: ['./settings.page.css'],
 })
 export class SettingsPage implements OnInit {
 
