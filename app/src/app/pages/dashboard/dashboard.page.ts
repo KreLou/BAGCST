@@ -4,7 +4,7 @@ import {MenuController} from '@ionic/angular';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+  styleUrls: ['./dashboard.page.css'],
 })
 export class DashboardPage implements OnInit {
 
