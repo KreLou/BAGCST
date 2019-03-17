@@ -5,29 +5,33 @@
       BA-Glauchau
     </ion-title>
 
-    <ion-buttons end>
-      <button ion-button>
-        <ion-icon name="more"></ion-icon>
-      </button>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleMenu()">
+        <ion-icon slot="icon-only" name="more"></ion-icon>
+      </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
+
+
+
 </ion-header>
 
 
-<!--<ion-menu menuId="dashboard-menu" contentId="content" type="reveal" side="start" swipe-gesture="false">
+<ion-menu side="start" menuId="dashboardMenu" contentId="content">
   <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Start Menu</ion-title>
+    <ion-toolbar>
+      <ion-title>Menü</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
       <ion-item>Item 1</ion-item>
-      <ion-item>Item 2</ion-item>
+      <ion-item>Item 1</ion-item>
+      <ion-item>Item 1</ion-item>
+      <ion-item>Item 1</ion-item>
     </ion-list>
   </ion-content>
-</ion-menu>-->
+</ion-menu>
 
 
 <ion-content>

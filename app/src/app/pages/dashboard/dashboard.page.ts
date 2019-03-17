@@ -11,6 +11,11 @@ export class DashboardPage implements OnInit {
   constructor(private menu: MenuController) { }
 
   ngOnInit() {
+    this.menu.enable(true, 'dashboardMenu');
+  }
+
+  toggleMenu(): void {
+    this.menu.toggle('dashboardMenu');
   }
 
 
