@@ -20,6 +20,7 @@ namespace api.offlineDB
                 $"{item.ExpirationTime};" +
                 $"{item.isActivied};" +
                 $"{item.ActivationCode};" +
+                $"{item.ShortHashCode}" +
                 $"{item.Token}";
         }
         private SessionItem convertToItem(string line)
@@ -34,7 +35,8 @@ namespace api.offlineDB
                 ExpirationTime = Convert.ToDateTime(args[4]),
                 isActivied = Convert.ToBoolean(args[5]),
                 ActivationCode = args[6],
-                Token = args[7]
+                ShortHashCode = args[7],
+                Token = args[8]
             };
         }
         public SessionItem createNewSession(SessionItem item)

@@ -102,6 +102,7 @@ namespace api.Controllers
                 isActivied = false
             };
             session.setActivationCode();
+            session.setShortHashCode();
             JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
             session.Token = jWTCreationHandler.Token;
 

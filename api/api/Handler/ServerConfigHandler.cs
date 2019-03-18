@@ -26,7 +26,11 @@ namespace api.Handler
                 SMTP_UseCurrentUser = false,
                 SMTP_User = "smtp_user",
                 SMTP_Password = "<password>",
-                SMTP_SendAs = "noreply@app.ba-glauchau.de"
+                SMTP_SendAs = "noreply@app.ba-glauchau.de",
+                Default_SessionUseTimeInMonth = 10,
+                JWT_Audience = "APP-BA-Glauchau",
+                JWT_Issuer = "APP-BA-Glauchau",
+                JWT_SecurityKey = "<hier muss ein geheimer Code zur Verschlüsselung der JWT-Token stehen>"
             };
         }
 

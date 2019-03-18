@@ -17,15 +17,27 @@ namespace api.Models
         public DateTime ExpirationTime { get; set; }
         public bool isActivied { get; set; }
         public string ActivationCode { get; set; }
+        public string ShortHashCode { get; set; }
 
         public void setActivationCode()
         {
             string code = $"BA{DeviceID}Glauchau{UserID}WI{StartTime}{ExpirationTime}16";
+            ActivationCode = getMD5(code);
+        }
+        public void setShortHashCode()
+        {
+            string code = $"{DeviceID}{UserID}BA-Glacuhau APP";
+            ShortHashCode = getMD5(code);
+        }
+
+        private string getMD5(string value)
+        {
             MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] textHash = Encoding.Default.GetBytes(code);
+            byte[] textHash = Encoding.Default.GetBytes(value);
             byte[] result = md5.ComputeHash(textHash);
 
-            this.ActivationCode = BitConverter.ToString(result).Replace("-","");
+            return BitConverter.ToString(result).Replace("-", "");
+
         }
 
     }
