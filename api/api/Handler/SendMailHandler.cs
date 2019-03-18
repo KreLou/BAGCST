@@ -13,10 +13,13 @@ namespace api.Handler
         public string Receiver { get; private set; }
         public string Sender { get; private set; }
 
+        private ServerConfig configData;
+
         public SendMailHandler(string receiver)
         {
             this.Receiver = receiver;
-            this.Sender = "4002314@ba-glauchau.de";
+            this.configData = ServerConfigHandler.ServerConfig;
+            this.Sender = configData.SMTP_SendAs;
         }
 
         public void sendMail(string subject, string body)
@@ -25,9 +28,16 @@ namespace api.Handler
             message.Subject = subject;
             message.Body = body;
 
-            SmtpClient client = new SmtpClient("smtp.ba-glauchau.de", 587);
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("4002314@ba-glauchau.de", "<password>.");
+            SmtpClient client = new SmtpClient(configData.SMTP_Host, configData.SMTP_Port);
+            if (configData.SMTP_UseCurrentUser)
+            {
+                client.UseDefaultCredentials = true;
+            }
+            else
+            {
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(configData.SMTP_User, configData.SMTP_Password);
+            }
             try
             {
                 client.Send(message);

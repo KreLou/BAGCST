@@ -20,7 +20,13 @@ namespace api.Handler
             return new ServerConfig
             {
                 APIURl = "http://localhost:5900",
-                SQLConnectionString = "<sql-connection-string>"
+                SQLConnectionString = "<sql-connection-string>",
+                SMTP_Host = "smtp.ba-glauchau.de",
+                SMTP_Port = 587,
+                SMTP_UseCurrentUser = false,
+                SMTP_User = "smtp_user",
+                SMTP_Password = "<password>",
+                SMTP_SendAs = "noreply@app.ba-glauchau.de"
             };
         }
 
