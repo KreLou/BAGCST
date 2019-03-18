@@ -12,8 +12,11 @@ namespace api.Handler
         public UserItem User { get; private set; }
         public string Token { get; private set; }
 
+        private ServerConfig config;
+
         public JWTCreationHandler(SessionItem session, UserItem user)
         {
+            this.config = ServerConfigHandler.ServerConfig;
             this.Session = session;
             this.User = user;
             createToken();
@@ -32,12 +35,12 @@ namespace api.Handler
             new Claim("deviceid", Session.DeviceID.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BA-Glauchau Studenten APP der WI16"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.JWT_SecurityKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "BA-Glauchau APP",
-                audience: "BA-Glauchau APP",
+                issuer: config.JWT_Issuer,
+                audience: config.JWT_Audience,
                 claims: claims,
                 signingCredentials: creds);
             this.Token =  new JwtSecurityTokenHandler().WriteToken(token);

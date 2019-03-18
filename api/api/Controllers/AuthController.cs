@@ -98,7 +98,7 @@ namespace api.Controllers
                 DeviceID = device.DeviceID,
                 UserID = user.UserID,
                 StartTime = DateTime.Now,
-                ExpirationTime = DateTime.Now.AddMonths(10),
+                ExpirationTime = DateTime.Now.AddMonths(ServerConfigHandler.ServerConfig.Default_SessionUseTimeInMonth),
                 isActivied = false
             };
             session.setActivationCode();
