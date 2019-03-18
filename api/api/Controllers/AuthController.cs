@@ -66,6 +66,12 @@ namespace api.Controllers
             if (session == null)
             {
                 session = createNewSession(user, device);
+
+                //Send mail
+
+                SendMailHandler mailHandler = new SendMailHandler("4002314@ba-glauchau.de");
+                mailHandler.sendRegistrationMail(session);
+
                 return Created("", session);
             }
 
