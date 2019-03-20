@@ -3,6 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Security;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Security.Cryptography;
 
 namespace api.Handler
 {
@@ -28,11 +34,11 @@ namespace api.Handler
             
             var claims = new[]
             {
-            new Claim("userid", User.UserID.ToString()),
+            //new Claim("userid", User.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, User.Username),
             new Claim(JwtRegisteredClaimNames.GivenName, User.Firstname),
             new Claim(JwtRegisteredClaimNames.FamilyName, User.Lastname),
-            new Claim("deviceid", Session.DeviceID.ToString())
+            //new Claim("deviceid", Session.DeviceID.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.JWT_SecurityKey));
@@ -42,9 +48,9 @@ namespace api.Handler
                 issuer: config.JWT_Issuer,
                 audience: config.JWT_Audience,
                 claims: claims,
+                notBefore: DateTime.Now,
                 signingCredentials: creds);
-            this.Token =  new JwtSecurityTokenHandler().WriteToken(token);
-        
+            this.Token = new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

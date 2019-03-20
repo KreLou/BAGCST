@@ -20,7 +20,7 @@ namespace api.offlineDB
                 $"{item.ExpirationTime};" +
                 $"{item.isActivied};" +
                 $"{item.ActivationCode};" +
-                $"{item.ShortHashCode}" +
+                $"{item.ShortHashCode};" +
                 $"{item.Token}";
         }
         private SessionItem convertToItem(string line)
