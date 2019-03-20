@@ -18,36 +18,54 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        private string writeLine(UserItem user)
+        private string convertUserToLine(UserItem user)
         {
             return user.UserID + ";" + user.Active + ";" + user.Username + ";" + user.Firstname + ";" + user.Lastname + ";" + user.Email + ";" + user.StudyCourse + ";" + user.StudyGroup; 
+        }
+
+        private UserItem getUserFromLine(string line)
+        {
+            string[] args = line.Split(";");
+            UserItem user = new UserItem()
+            {
+                UserID = (long)Convert.ToInt64(args[0]),
+                Active = Convert.ToBoolean(args[1]),
+                Username = args[2],
+                Firstname = args[3],
+                Lastname = args[4],
+                Email = args[5],
+                StudyCourse = args[6],
+                StudyGroup = args[7]
+            };
+            return user;
         }
 
         public UserItem editUserItem(long id, UserItem item)
         {
             string pth_tmp = Path.GetTempFileName();
+            string writeLine = convertUserToLine(item);
 
             using(StreamWriter sw = new StreamWriter(pth_tmp))
             using(StreamReader sr = new StreamReader(user_filename))
             {
-                while (!sr.EndOfStream)
+                string line;
+                while((line = sr.ReadLine()) != null)
                 {
-                    string line = sr.ReadLine();
-                    List<string> lstLineParams = line.Split(';').ToList();
-                    UserItem UItm = new UserItem();
-
-                    // anhand ID entweder existerendes oder verändertes Element schreiben
-                    sw.WriteLine(Convert.ToInt32(lstLineParams[0]) == item.UserID ?
-                        this.writeLine(item):
-                        lstLineParams.Aggregate((phrase, word) => $"{phrase},{word}"));                    
+                    UserItem user = getUserFromLine(line);
+                     if (user.UserID == id)
+                    {
+                        sw.WriteLine(writeLine);
+                    }else
+                    {
+                        sw.WriteLine(line);
+                    }
                 }
 
-                File.Delete(user_filename);
-                File.Move(pth_tmp,user_filename);
             }
-
-//            return database.getUserItem(item);
-            return new UserItem();
+            File.Delete(user_filename);
+            File.Move(pth_tmp, user_filename);
+            
+            return getUserItem(id);
         }
 
         public int[] getSubscribedPostGroups(long id)
@@ -68,18 +86,7 @@ namespace api.offlineDB
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    string[] args = line.Split(";");
-                    UserItem user = new UserItem()
-                    {
-                        UserID = (long)Convert.ToInt64(args[0]),
-                        Active = Convert.ToBoolean(args[1]),
-                        Username = args[2],
-                        Firstname = args[3],
-                        Lastname = args[4],
-                        Email = args[5],
-                        StudyCourse = args[6],
-                        StudyGroup = args[7]
-                    };
+                    UserItem user = getUserFromLine(line);
 
                     if (user.Active) list.Add(user);
                 }
@@ -102,21 +109,10 @@ namespace api.offlineDB
                 //end if end of file or user is found
                 while((line = sr.ReadLine()) != null && user == null)
                 {
-                    long user_id = (long)Convert.ToInt64(line.Split(";")[0]);
-                    if (user_id == id)
+                    UserItem foundUser = getUserFromLine(line);
+                    if (foundUser.UserID == id)
                     {
-                        string[] args = line.Split(";");
-                        user = new UserItem()
-                        {
-                            UserID = user_id,
-                            Active = Convert.ToBoolean(args[1]),
-                            Username = args[2],
-                            Firstname = args[3],
-                            Lastname = args[4],
-                            Email = args[5],
-                            StudyCourse = args[6],
-                            StudyGroup = args[7]
-                        };
+                        user = foundUser;
                     }
                 }
             }
@@ -138,7 +134,7 @@ namespace api.offlineDB
 
             item.UserID = max;
 
-            File.AppendAllLines(user_filename, new String[] { this.writeLine(item) });
+            File.AppendAllLines(user_filename, new String[] { this.convertUserToLine(item) });
             return item;
         }
 
