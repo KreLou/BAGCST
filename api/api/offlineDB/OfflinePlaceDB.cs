@@ -26,6 +26,35 @@ namespace api.offlineDB
         }
 
         /// <summary>
+        /// Create new place
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public PlaceItem saveNewPlace(PlaceItem item)
+        {
+            // get all Places 
+            PlaceItem[] places = getPlaces();
+            // the max id = 0
+            int max = 0;
+            // for every place in Places List 
+            foreach (PlaceItem place in places)
+            {
+                // change the max to the maxId from Place
+                max = place.PlaceID > max ? place.PlaceID : max;
+                if (item.PlaceName == place.PlaceName)
+                {
+                    return null;
+                }
+
+            }
+            // the new Id is max+1 
+            item.PlaceID = max + 1;
+            // save the place item in the file 
+            File.AppendAllLines(place_filename, new String[] { this.writeLine(item) });
+            return item;
+        }
+
+        /// <summary>
         /// edits the Place based on the given PlaceItem except for the ID
         /// </summary>
         /// <param name="id"></param>
@@ -41,14 +70,18 @@ namespace api.offlineDB
                 // if the line exist
                 while ((line= reader.ReadLine()) != null)
                 {   // if the id in the file = item Id 
+
                     if(Convert.ToInt32(line.Split(";")[0] )== id)
-                    {   // save the line in the file 
-                        writer.WriteLine(id+ ";" + item.PlaceName);
+                    {
+                        item.PlaceID = id;
+                        writer.WriteLine(id + ";" + item.PlaceName);
                     }
                     else
-                    {   // else no change 
+                    {
                         writer.WriteLine(line);
                     }
+                      
+                    
                 }
             }
             // delete the old item 
@@ -59,6 +92,40 @@ namespace api.offlineDB
             return getPlaceItem(id);
 
         }
+
+
+        /// <summary>
+        /// Search for place in file, return Place or null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public PlaceItem getPlaceItem(int id)
+        {
+            PlaceItem place = null;
+
+            using (StreamReader sr = new StreamReader(place_filename))
+            {
+                string line;
+                //end if end of file or place is found
+                while ((line = sr.ReadLine()) != null && place == null)
+                {   // if the given id = the place Id 
+                    int place_ID = (int)Convert.ToInt64(line.Split(";")[0]);
+                    if (place_ID == id)
+                    {
+                        string[] args = line.Split(";");
+                        place = new PlaceItem()
+                        {
+                            PlaceID = place_ID,
+                            PlaceName = args[1]
+
+                        };
+                    }
+                }
+            }
+            // this place
+            return place;
+        }
+
 
         /// <summary>
         /// Search for all Places in file 
@@ -90,67 +157,6 @@ namespace api.offlineDB
             }
             // return this list as array 
             return list.ToArray();
-        }
-
-
-        /// <summary>
-        /// Search for place in file, return Place or null
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public PlaceItem getPlaceItem(int id)
-        {
-            PlaceItem place = null;
-
-            using (StreamReader sr = new StreamReader(place_filename))
-            {
-                string line;
-                //end if end of file or place is found
-                while ((line = sr.ReadLine()) != null && place == null)
-                {   // if the given id = the place Id 
-                    int place_ID = (int)Convert.ToInt64(line.Split(";")[0]);
-                    if (place_ID == id)
-                    {
-                        string[] args = line.Split(";");
-                        place = new PlaceItem()
-                        {
-                            PlaceID = place_ID,
-                            PlaceName = args[1]
-                      
-                        };
-                    }
-                }
-            }
-            // this place
-            return place;
-        }
-        /// <summary>
-        /// Create new place
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public PlaceItem saveNewPlace(PlaceItem item)
-        {
-            // get all Places 
-            PlaceItem[] places = getPlaces();
-            // the max id = 0
-            int max = 0;
-            // for every place in Places List 
-            foreach (PlaceItem place in places)
-            {
-                // change the max to the maxId from Place
-                max = place.PlaceID > max ? place.PlaceID  : max;
-                if(item.PlaceName == place.PlaceName)
-                {
-                    return null;
-                }
-             
-            }
-            // the new Id is max+1 
-            item.PlaceID = max+1;
-            // save the place item in the file 
-            File.AppendAllLines(place_filename, new String[] { this.writeLine(item) });
-            return item;
         }
     }
 }

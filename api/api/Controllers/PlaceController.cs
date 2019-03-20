@@ -94,6 +94,7 @@ namespace api.Controllers
                 }
 
             }
+
             // else 
             //update existing item
             PlaceItem item_out = database.editPlace( id,place);
@@ -135,25 +136,9 @@ namespace api.Controllers
             PlaceItem item_out = database.saveNewPlace(place);
 
                 return Created("", item_out);
-            
-            
+               
         }
-        /// <summary>
-        /// deletes the PlaceItem for the given ID. If the ID is not found, it returns NotFound.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public ActionResult deletePlaceItem(int id)
-        {
-            // check if id is valid 
-            if (database.getPlaceItem(id) == null)
-            {
-                return NotFound(($"No Place found for id: {id}"));
-            }
 
-            return BadRequest("Place cant not be deletet");
-        }
 
     }
 }
