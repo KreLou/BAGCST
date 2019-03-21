@@ -109,29 +109,7 @@ namespace api.Controllers
             {
                 return BadRequest("MenuItem not found");
             }
-            // if the meun have null value 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            MealItem[] meals = mealDatabase.getMeals();
-
-            foreach (MealItem meal in meals)
-            {
-                if (menu.Meal != meal)
-                {
-                    MealItem mealNew = mealDatabase.saveNewMeal(menu.Meal);
-                    if (mealNew.Place == null)
-                    {
-                        return BadRequest("the Place can not be null");
-                    }
-                }
-              
-                if(meal.Place == null)
-                {
-                    return BadRequest("the Place can not be null");
-                }
-            }
+     
             //update existing item
             MenuItem menuNew = menuDatabase.editMenu( id,menu);
 
@@ -172,31 +150,6 @@ namespace api.Controllers
             {
                 // if null then message 
                 return BadRequest("MenuItem not found");
-            }
-            // if the meun have null value 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            MealItem[] meals = mealDatabase.getMeals();
-
-            foreach (MealItem meal in meals)
-            {
-                if (menu.Meal != meal)
-                {
-                    MealItem mealNew = mealDatabase.saveNewMeal(menu.Meal);
-
-                    if (mealNew.Place == null)
-                    {
-                        return BadRequest("the Place can not be null");
-                    }
-                }
-
-                if (meal.Place == null )
-                {
-                    return BadRequest("the Place can not be null");
-                }
             }
             // else creat new item 
             MenuItem menuNew = menuDatabase.saveNewMenu(menu);

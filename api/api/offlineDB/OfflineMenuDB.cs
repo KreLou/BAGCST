@@ -123,8 +123,11 @@ namespace api.offlineDB
                 {
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
-
-                        line = ConvertFromMenuToString(item);
+                        item.MenuID = id;
+                        line =id + ";" +
+                            item.Meal.MealID + ";" +
+                            item.Price + ";" +
+                            item.Date;
                         // save the line in the file 
                         writer.WriteLine(line);
                     }

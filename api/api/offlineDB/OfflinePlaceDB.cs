@@ -158,5 +158,36 @@ namespace api.offlineDB
             // return this list as array 
             return list.ToArray();
         }
+        /// <summary>
+        /// Search for place in file, return Place or null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public PlaceItem getPlaceNameByID(int id)
+        {
+            PlaceItem place = null;
+
+            using (StreamReader sr = new StreamReader(place_filename))
+            {
+                string line;
+                //end if end of file or place is found
+                while ((line = sr.ReadLine()) != null && place == null)
+                {   // if the given id = the place Id 
+                    int place_ID = (int)Convert.ToInt64(line.Split(";")[0]);
+                    if (place_ID == id)
+                    {
+                        string[] args = line.Split(";");
+                        place = new PlaceItem()
+                        {
+                            PlaceName = args[1]
+
+                        };
+
+                    }
+                }
+            }
+            // this place
+            return place;
+        }
     }
 }
