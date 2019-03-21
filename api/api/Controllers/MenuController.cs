@@ -44,7 +44,7 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns>MenuItem|NotFound</returns>
         [HttpGet("{id}")]
-        public ActionResult<MenuItem> getItem(int id)
+        public ActionResult<MenuItem> getMenuItem(int id)
         {
             // get the MenuItem from the database
             MenuItem item = menuDatabase.getMenuItem(id);
@@ -66,6 +66,7 @@ namespace api.Controllers
         /// <summary>
         /// returns an array of MenuItems for the given date 
         /// </summary>
+        /// <param name="date"></param>
         /// <returns>MenuItem[]</returns>
         [HttpGet("date")]
         public ActionResult<MenuItem[]> getAllMenuItem(DateTime date)
@@ -74,7 +75,33 @@ namespace api.Controllers
             MenuItem[] items = menuDatabase.getMenusbyDate(date);
             return Ok(items);
         }
+        /// <summary>
+        /// returns an array of MenuItems between the given date 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns>MenuItem[]</returns>
+        [HttpGet("{from}/{to}")]
+        public ActionResult<MenuItem[]> getAllMenuItem(DateTime from, DateTime to)
+        {
+            // get all menuItem
+            MenuItem[] items = menuDatabase.getMenusbyDate(from,to);
+            return Ok(items);
+        }
 
+        /// <summary>
+        /// returns an array of MenuItems between the given date 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns>MenuItem[]</returns>
+        [HttpGet("PlaceID / Place")]
+        public ActionResult<MenuItem[]> getAllMenuItem(int PlaceID)
+        {
+            // get all menuItem
+            MenuItem[] items = menuDatabase.getMenusbyPlace(PlaceID);
+            return Ok(items);
+        }
 
         /// <summary>
         /// returns an array of MenuItems

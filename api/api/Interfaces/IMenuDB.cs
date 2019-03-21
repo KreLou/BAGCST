@@ -44,6 +44,19 @@ namespace api.Interfaces
         MenuItem[] getMenusbyDate( DateTime Date);
 
         /// <summary>
+        /// gett all Menu betwenn two Date  
+        /// </summary>
+        /// <param name="from">Date</param>
+        /// <param name="to">Date</param>
+        MenuItem[] getMenusbyDate(DateTime from,DateTime to );
+
+        /// <summary>
+        /// gett all Menu betwenn bassed on the given PlaceID 
+        /// </summary>
+        /// <param name="PlaceID">int</param>
+        MenuItem[] getMenusbyPlace(int PlaceID);
+
+        /// <summary>
         /// gett all Menu 
         /// </summary>
         MenuItem[] getMenus();
