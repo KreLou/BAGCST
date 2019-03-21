@@ -53,66 +53,6 @@ namespace api.offlineDB
             return ítem;
         }
 
-        /// <summary>
-        /// Search for Meal in file, return Meal or null
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public MealItem getMealItem(int id)
-        {
-            MealItem meal = null;
-    
-            using (StreamReader sr = new StreamReader(meal_filename))
-            {
-                string line;
-                //end if end of file or meal is found
-                while ((line = sr.ReadLine()) != null && meal == null)
-                {   // if the mealId is same the id in this line 
-                    int meal_ID = (int)Convert.ToInt64(line.Split(";")[0]);
-                    if (meal_ID == id)
-                      
-                    {
-                        string[] args = line.Split(";");
-                        meal = new MealItem()
-                        {   
-                            
-                            MealID = meal_ID,
-                            MealName = args[1],
-                            Place = placeDB.getPlaceItem(Convert.ToInt32(args[2])),
-                            Description = args[3],
-                        };
-                    }
-                }
-            }
-
-            return meal;
-        }
-
-
-
-        /// <summary>
-        /// Search for all Meals in file 
-        /// </summary>
-        /// <returns></returns>
-        public MealItem[] getMeals()
-        {
-            // List for all meals 
-            List<MealItem> list = new List<MealItem>();
-            string line;
-            using (StreamReader sr = new StreamReader(this.meal_filename))
-            {
-                // end if the line not exist 
-                while ((line = sr.ReadLine()) != null)
-                {
-                    // the meal item 
-                    MealItem meal = ConvertfromStringToMealItem(line);
-                    // add this item to the list 
-                    list.Add(meal);
-                };
-            }
-            return list.ToArray();
-        }
-
 
         /// <summary>
         /// Create new Meal
@@ -120,13 +60,13 @@ namespace api.offlineDB
         /// <param name="item"></param>
         /// <returns></returns>
         public MealItem saveNewMeal(MealItem item)
-        {  
+        {
             // get all items 
             MealItem[] meals = getMeals();
             int max = 0;
             foreach (MealItem exMeal in meals)
             {
-               if(exMeal.MealID >= max)
+                if (exMeal.MealID >= max)
                 {
                     max = exMeal.MealID;
                 }
@@ -134,7 +74,7 @@ namespace api.offlineDB
             // the new id is the max Id from file + 1
             max++;
             item.MealID = max;
-            
+
             // save item 
             File.AppendAllLines(meal_filename, new String[] { ConvertFromMealitemToString(item) });
 
@@ -148,8 +88,8 @@ namespace api.offlineDB
         /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>Meal</returns>
-        public MealItem editMeal(int id,MealItem item)
-        {   
+        public MealItem editMeal(int id, MealItem item)
+        {
             // get the tempfile 
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -159,11 +99,15 @@ namespace api.offlineDB
                 // end if the line not exist 
                 while ((line = reader.ReadLine()) != null)
                 {
-                  // if the id in this line is the id from mealItem 
-                    if (Convert.ToInt32(line.Split(";")[0])== id)
+                    // if the id in this line is the id from mealItem 
+                    if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
+                        item.MealID = id;
                         // then make the change in this item 
-                        line = ConvertFromMealitemToString(item);
+                        line = id+";"
+                                 + item.MealName + ";"
+                                 + item.Place.PlaceID + ";"
+                                 + item.Description;
                         // saving the line in the mealsfile 
                         writer.WriteLine(line);
                     }
@@ -171,7 +115,7 @@ namespace api.offlineDB
                     {   // no change 
                         writer.WriteLine(line);
                     }
-                    
+
                 }
             }
             // delete the old item
@@ -207,6 +151,64 @@ namespace api.offlineDB
             // else delete the item 
             File.Delete(meal_filename);
             File.Move(tempFile, meal_filename);
+        }
+
+        /// <summary>
+        /// Search for Meal in file, return Meal or null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public MealItem getMealItem(int id)
+        {
+            MealItem meal = null;
+    
+            using (StreamReader sr = new StreamReader(meal_filename))
+            {
+                string line;
+                //end if end of file or meal is found
+                while ((line = sr.ReadLine()) != null && meal == null)
+                {   // if the mealId is same the id in this line 
+                    int meal_ID = (int)Convert.ToInt64(line.Split(";")[0]);
+                    if (meal_ID == id)
+                      
+                    {
+                        string[] args = line.Split(";");
+                        meal = new MealItem()
+                        {   
+                            
+                            MealID = meal_ID,
+                            MealName = args[1],
+                            Place = placeDB.getPlaceItem(Convert.ToInt32(args[2])),
+                            Description = args[3],
+                        };
+                    }
+                }
+            }
+
+            return meal;
+        }
+
+        /// <summary>
+        /// Search for all Meals in file 
+        /// </summary>
+        /// <returns></returns>
+        public MealItem[] getMeals()
+        {
+            // List for all meals 
+            List<MealItem> list = new List<MealItem>();
+            string line;
+            using (StreamReader sr = new StreamReader(this.meal_filename))
+            {
+                // end if the line not exist 
+                while ((line = sr.ReadLine()) != null)
+                {
+                    // the meal item 
+                    MealItem meal = ConvertfromStringToMealItem(line);
+                    // add this item to the list 
+                    list.Add(meal);
+                };
+            }
+            return list.ToArray();
         }
     }
 }
