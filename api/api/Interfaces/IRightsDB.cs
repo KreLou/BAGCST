@@ -41,5 +41,12 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id">ID</param>
         void deleteRight(int id);
+
+        /// <summary>
+        /// Search for by given Path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        Right getRightbyPath(string path);
     }
 }

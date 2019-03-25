@@ -134,5 +134,14 @@ namespace api.Databases
             File.Delete(csvFile);
             File.Move(tempFile, csvFile);
         }
+
+        public Right getRightbyPath(string path)
+        {
+            Right[] allRights = getAllRights();
+
+            Right right = allRights.Where(item => item.Path.ToLower() == path.ToLower()).Single();
+
+            return right;
+        }
     }
 }
