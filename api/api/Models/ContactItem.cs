@@ -9,21 +9,21 @@ namespace api.Models
     public class ContactItem
     {
         /// <summary>
-        /// Primary key of contacts
+        /// Primary key of a contact
         /// </summary>
         public int ContactID { get; set; }
 
         /// <summary>
-        /// Firstname of the person
+        /// First name of the person
         /// </summary>
         [Required]
-        public string Firstname{ get; set; }
+        public string FirstName{ get; set; }
 
         /// <summary>
-        /// Lastname with title of the person
+        /// Last name with title of the person
         /// </summary>
         [Required]
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Telephone number of the person
@@ -31,23 +31,23 @@ namespace api.Models
         public string TelNumber { get; set; }
 
         /// <summary>
-        /// E-Mail-Adress of the person
+        /// E-Mail-Address of the person
         /// </summary>
         [Required]
         public string Email { get; set; }
 
         /// <summary>
-        /// Room description, possibly with letters in front of, that's why it's string
+        /// Room description (name, number or both)
         /// </summary>
         public string Room { get; set; }
            
         /// <summary>
-        /// The persons responsibilities (course manager, office,...)
+        /// Responsibilities of the person (course manager, office,...)
         /// </summary>
         public string Responsibility { get; set; }
 
         /// <summary>
-        /// The course (f.a. WI)
+        /// The course (e.g. WI)
         /// </summary>
         public string Course { get; set; }
 

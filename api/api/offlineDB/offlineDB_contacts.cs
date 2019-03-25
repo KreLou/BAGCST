@@ -13,7 +13,7 @@ namespace api.Databases
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
         /// <summary>
-        /// returns a ContactItem based on the given ID
+        /// Returns a ContactItem based on the given ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>ContactItem|null</returns>
@@ -31,7 +31,7 @@ namespace api.Databases
         }
 
         /// <summary>
-        /// returns a ContactItem based on the given E-Mail-Address
+        /// Returns a ContactItem based on the given E-Mail-Address
         /// </summary>
         /// <param name="id"></param>
         /// <returns>ContactItem|null</returns>
@@ -50,7 +50,7 @@ namespace api.Databases
         }
 
         /// <summary>
-        /// returns array of ContactItems
+        /// Returns an array of ContactItems
         /// </summary>
         /// <returns>ContactItem[]</returns>
         public ContactItem[] getAllContactItems()
@@ -64,8 +64,8 @@ namespace api.Databases
                     string[] args = line.Split(";");
                     ContactItem item = new ContactItem() {
                         ContactID = Convert.ToInt32(args[0]),
-                        Firstname = args[1],
-                        Lastname = args[2],
+                        FirstName = args[1],
+                        LastName = args[2],
                         TelNumber = args[3],
                         Email = args[4],
                         Room = args[5],
@@ -81,7 +81,7 @@ namespace api.Databases
         }
 
         /// <summary>
-        /// creates a ContactItem based on the given ContactItem
+        /// Creates a ContactItem based on the given ContactItem
         /// </summary>
         /// <param name="item"></param>
         /// <returns>ContactItem</returns>
@@ -101,14 +101,14 @@ namespace api.Databases
             item.ContactID = id;
 
             //2. Save Item
-            File.AppendAllLines(csvFile, new string[] { item.ContactID + ";" + item.Firstname + ";" + item.Lastname + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type });
+            File.AppendAllLines(csvFile, new string[] { item.ContactID + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type });
 
             //3. Return Item
             return getContactItem(id);
         }
 
         /// <summary>
-        /// edits the ContactItem based on the given ContactItem except for the ID
+        /// Edits a ContactItem based on the given ContactItem except for the ID
         /// </summary>
         /// <param name="id"></param>
         /// <param name="item"></param>
@@ -124,7 +124,7 @@ namespace api.Databases
                 {
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
-                        writer.WriteLine(id + ";" + item.Firstname + ";" + item.Lastname + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type);
+                        writer.WriteLine(id + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type);
                     }
                     else
                     {
@@ -138,7 +138,7 @@ namespace api.Databases
         }
 
         /// <summary>
-        /// deletes the ContactItem based on the given ID
+        /// Deletes a ContactItem based on the given ID
         /// </summary>
         /// <param name="id"></param>
         public void deleteContactItem(int id)

@@ -22,7 +22,7 @@ namespace api.Controllers
         }
 
         /// <summary>
-        /// returns the ContactItem for the given ID. If the ID is not found, it returns NotFound.
+        /// Returns the ContactItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>ContactItem|NotFound</returns>
@@ -32,7 +32,7 @@ namespace api.Controllers
             ContactItem item = database.getContactItem(id);
             if(item==null)
             {
-                return NotFound($"No ContactItem found for id: {id}");
+                return NotFound($"No ContactItem found for ID: {id}");
             }
             else
             {
@@ -41,7 +41,7 @@ namespace api.Controllers
         }
 
         /// <summary>
-        /// returns an array of ContactItems
+        /// Returns an array of ContactItems.
         /// </summary>
         /// <returns>ContactItems[]</returns>
         [HttpGet]
@@ -52,7 +52,7 @@ namespace api.Controllers
         }
 
         /// <summary>
-        /// returns the edited ContactItem for the given ID and ContactItem. If ID is not found, it returns NotFound. 
+        /// Returns the edited ContactItem for the given ID and ContactItem. If ID is not found, it returns NotFound. 
         /// If the ContactItem is not found, it returns BadRequest.
         /// </summary>
         /// <param name="id"></param>
@@ -61,7 +61,7 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public ActionResult<ContactItem> editContactItem(int id, [FromBody]ContactItem item_in)
         {
-            //Check if id is valid
+            //Check if ID is valid
             if (database.getContactItem(id) == null)
             {
                 return NotFound(($"No ContactItem found for ID: {id}"));
@@ -88,7 +88,7 @@ namespace api.Controllers
         }
 
         /// <summary>
-        /// deletes the ContactItem for the given ID. If the ID is not found, it returns NotFound.
+        /// Deletes the ContactItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -98,14 +98,14 @@ namespace api.Controllers
             //TODO check for permission
             if (database.getContactItem(id)==null)
             {
-                return NotFound(($"No ContactItem found for id: {id}"));
+                return NotFound(($"No ContactItem found for ID: {id}"));
             }
             database.deleteContactItem(id);
             return Ok();
         }
 
         /// <summary>
-        /// creates a ContactItem based on the given ContactItem. If the given ContactItem is null, it returns BadRequest.
+        /// Creates a ContactItem based on the given ContactItem. If the given ContactItem is null, it returns BadRequest.
         /// </summary>
         /// <param name="item_in"></param>
         /// <returns>ContactItem|BadRequest</returns>
