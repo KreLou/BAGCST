@@ -42,6 +42,7 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns>MealItem|NotFound</returns>
         [HttpGet("{id}")]
+        [NonAction]
         public ActionResult<MealItem> getMealItem(int id)
         {   // get the meal Item from the datebase
             MealItem item = mealDatabase.getMealItem(id);
@@ -62,11 +63,16 @@ namespace api.Controllers
         /// returns an array of MealItem
         /// </summary>
         /// <returns>MealItem[]</returns>
-        [HttpGet]
-        public ActionResult<MealItem[]> getAllMeals()
+        [HttpGet("{placeid}")]
+        public ActionResult<MealItem[]> getAllMeals(int placeID)
         {
             // get all the Meal item 
-            MealItem[] items = mealDatabase.getMeals();
+            MealItem[] items = mealDatabase.getMealItemsByPlaceID(placeID);
+
+            if (items.Length == 0)
+            {
+                return NotFound($"No MealItems found for PlaceID: {placeID}");
+            }
             return Ok(items);
         }
 
@@ -78,21 +84,21 @@ namespace api.Controllers
         /// <param name="meal"></param>
         /// <returns>MealItem|NotFound|BadRequest</returns>
         [HttpPut("{id}")]
+        [NonAction]
         public ActionResult<MealItem> editMeal(int id, [FromBody]MealItem meal)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             //Check if id is valid
             if (mealDatabase.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
 
-            //Check if item  null
-            if (meal == null)
-            {
-                return BadRequest("MealItem not found");
-            }
             //update existing item
-            MealItem item_out = mealDatabase.editMeal(id, meal);
+            MealItem item_out = mealDatabase.saveNewMeal(meal);
 
             //return new item
             return Ok(item_out);
@@ -104,6 +110,7 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [NonAction]
         public ActionResult deleteMeal(int id)
         {
                 // check if the given Id is not null
@@ -122,13 +129,31 @@ namespace api.Controllers
         /// <param name="meal"></param>
         /// <returns>MealItem|BadRequest</returns>
         [HttpPost]
+        [NonAction]
         public ActionResult<MealItem> createMeal(MealItem meal)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             // check if this meal exist 
             if (meal == null)
             {
                 return BadRequest("MealItem not found");
             }
+            PlaceItem foundedPlace = null;
+            foundedPlace = placeDataBase.getPlaceItemByName(meal.Place.PlaceName);
+
+            if (foundedPlace == null && meal.Place.PlaceID != 0)
+            {
+                foundedPlace = placeDataBase.getPlaceItem(meal.Place.PlaceID);
+            }
+
+            if (foundedPlace == null)
+            {
+                return NotFound("No PlaceItem found for Name or ID: " + meal.Place.PlaceName + ", " + meal.Place.PlaceID);
+            }
+            meal.Place = foundedPlace;
             // if not then created new mealItem 
             MealItem mealNew = mealDatabase.saveNewMeal(meal);
             return Created("", mealNew);
