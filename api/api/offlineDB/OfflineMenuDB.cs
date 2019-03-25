@@ -85,7 +85,7 @@ namespace api.offlineDB
         public MenuItem saveNewMenu(MenuItem item)
         {
             // get all Menus 
-            MenuItem[] menus = getMenus();
+            MenuItem[] menus = getAllMenus();
             int max = 0;
             foreach (MenuItem menu in menus)
             {
@@ -177,81 +177,8 @@ namespace api.offlineDB
         /// <summary>
         /// Search for all active Menu in file 
         /// </summary>
-        /// <param name="Date">Date</param>
         /// <returns></returns>
-        public MenuItem[] getMenusbyDate(DateTime date)
-        {
-            // list for all items 
-            List<MenuItem> list = new List<MenuItem>();
-            MenuItem[] menus = getMenus();
-            foreach(MenuItem item in menus)
-            {
-                // if the date is the same given date 
-                if(item.Date== date)
-                {   
-                    // add item to list 
-
-                    list.Add(item);
-                }
-            }
-    
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Search for all active Menu in file betwenn two date 
-        /// </summary>
-        /// <param name="from">Date</param>
-        /// <param name="to">Date</param>
-        /// <returns></returns>
-        public MenuItem[] getMenusbyDate(DateTime from,DateTime to)
-        {
-            // list for all items 
-            List<MenuItem> list = new List<MenuItem>();
-            MenuItem[] menus = getMenus();
-            foreach (MenuItem item in menus)
-            {
-                // if the date is the same given date 
-                if (item.Date >= from && item.Date >= to )
-                {
-                    // add item to list 
-
-                    list.Add(item);
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Search for all active Menu in file based on the given PlaceID
-        /// </summary>
-        /// <param name="PlaceID">int</param>
-        /// <returns></returns>
-        public MenuItem[] getMenusbyPlace(int PlaceID)
-        {
-            // list for all items 
-            List<MenuItem> list = new List<MenuItem>();
-            MenuItem[] menus = getMenus();
-            foreach (MenuItem item in menus)
-            {
-                // if the date is the same given date 
-                if (item.Meal.Place.PlaceID ==  PlaceID)
-                {
-                    // add item to list 
-
-                    list.Add(item);
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Search for all active Menu in file 
-        /// </summary>
-        /// <returns></returns>
-        public MenuItem[] getMenus()
+        public MenuItem[] getAllMenus()
         {
             // list for all items
             List<MenuItem> list = new List<MenuItem>();
@@ -271,6 +198,16 @@ namespace api.offlineDB
             return list.ToArray();
         }
 
+        public MenuItem[] getFilterdMenus(DateTime startDate, DateTime endDate, int[] placeIDs)
+        {
+            MenuItem[] allMenuItems = getAllMenus();
 
+            allMenuItems = allMenuItems
+                .Where(menu => menu.Date >= startDate)
+                .Where(menu => menu.Date <= endDate)
+                .Where(menu => placeIDs.Contains(menu.Meal.Place.PlaceID))
+                .ToArray();
+            return allMenuItems;
+        }
     }
 }

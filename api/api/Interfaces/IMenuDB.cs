@@ -38,28 +38,22 @@ namespace api.Interfaces
         MenuItem getMenuItem(int id);
 
         /// <summary>
-        /// gett all Menu based on date
+        /// get all Menu 
         /// </summary>
-        /// <param name="Date">Date</param>
-        MenuItem[] getMenusbyDate( DateTime Date);
+        MenuItem[] getAllMenus();
 
         /// <summary>
-        /// gett all Menu betwenn two Date  
+        /// Select all Menus from start to end, only in this placed
+        /// Order: 
+        /// 1. Menu.Date asc, 
+        /// 2. Menu.Meal.Place.PlaceName asc, 
+        /// 3. Menu.Meal.MealName asc
         /// </summary>
-        /// <param name="from">Date</param>
-        /// <param name="to">Date</param>
-        MenuItem[] getMenusbyDate(DateTime from,DateTime to );
-
-        /// <summary>
-        /// gett all Menu betwenn bassed on the given PlaceID 
-        /// </summary>
-        /// <param name="PlaceID">int</param>
-        MenuItem[] getMenusbyPlace(int PlaceID);
-
-        /// <summary>
-        /// gett all Menu 
-        /// </summary>
-        MenuItem[] getMenus();
+        /// <param name="startDate">First day</param>
+        /// <param name="endDate">last day</param>
+        /// <param name="placeIDs">Only this PlaceIDs</param>
+        /// <returns></returns>
+        MenuItem[] getFilterdMenus(DateTime startDate, DateTime endDate, int[] placeIDs);
 
     }
 }
