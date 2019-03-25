@@ -8,6 +8,7 @@ using api.Interfaces;
 using api.Models;
 using api.Databases;
 using api.offlineDB;
+using api.Exception;
 
 namespace api.Controllers
 {
@@ -16,6 +17,13 @@ namespace api.Controllers
     public class GroupsController : ControllerBase
     {
         private IGroupsDB database = getDatabase();
+        private IRightsDB rightsDatabase = getRightsDatabase();
+
+        private static IRightsDB getRightsDatabase()
+        {
+            return new offlineDB_Rights();
+        }
+
         private static IGroupsDB getDatabase()
         {
             return new offlineDB_Groups();
@@ -90,17 +98,45 @@ namespace api.Controllers
         public ActionResult<Group> createGroup(Group group_in)
         {
             //TODO check for permission
-            if (group_in == null)
-            {
-                return BadRequest("Group not found");
-            }
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            try
+            {
+                validateRights(group_in.Rights);
+            }catch(RightIDNotFoundException ridnfe)
+            {
+                return NotFound("No RightID found for Right.Path: " +ridnfe.RightPath);
+            } catch(RightItemNotFoundException rightItemNotFoundEx)
+            {
+                return NotFound($"No RightItem found for ID {rightItemNotFoundEx.RightID}");
+            }
             Group group_out = database.createGroup(group_in);
             return Created("", group_out);
+        }
+
+        /// <summary>
+        /// Validate all Rights
+        /// Throws RightIDNotFoundException and RightItemNotFoundException
+        /// </summary>
+        /// <param name="rights"></param>
+        private void validateRights(Right[] rights)
+        {
+            foreach(Right right in rights)
+            {
+                if (right.RightID  == 0) {
+                    throw new RightIDNotFoundException(right.Path);
+                }else
+                {
+                    Right databaseRight = rightsDatabase.getRight(right.RightID);
+                    if (databaseRight == null)
+                    {
+                        throw new RightItemNotFoundException(right.RightID);
+                    }
+                }
+            }
         }
     }
 }
