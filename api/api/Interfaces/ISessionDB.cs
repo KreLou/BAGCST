@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface ISessionDB
+    public interface ISessionDB
     {
         SessionItem findExistingSession(long userID, long deviceID);
 
@@ -19,5 +19,7 @@ namespace api.Interfaces
         SessionItem getSessionItemByActivationCode(string code);
 
         SessionItem updateSessionItem(long sessionID, SessionItem item);
+
+        SessionItem getSessionByInternalID(long sessionID);
     }
 }

@@ -20,26 +20,17 @@ namespace api.Controllers
     public class AuthController : ControllerBase
     {
 
-        private IUserDB userDatabase = getUserDatabase();
-        private IUserDeviceDB deviceDatabasae = getUserDeviceDatabase();
-        private ISessionDB sessionDatabase = getSessionDatabase();
+        private readonly IUserDB _userDB;
+        private readonly IUserDeviceDB _userDeviceDB;
+        private readonly ISessionDB _sessionDB;
 
-        #region DatabaseCreator
-        private static ISessionDB getSessionDatabase()
-        {
-            return new offlineSessionDB();
-        }
 
-        private static IUserDeviceDB getUserDeviceDatabase()
+        public AuthController(IUserDB userDB, IUserDeviceDB userDeviceDB, ISessionDB sessionDB)
         {
-            return new offlineUserDeviceDB();
+            _userDB = userDB;
+            _userDeviceDB = userDeviceDB;
+            _sessionDB = sessionDB;
         }
-
-        private static IUserDB getUserDatabase()
-        {
-            return new offlineUserDB();
-        }
-#endregion
 
         [HttpPost("register")]
         public ActionResult register([FromBody] LoginDataItem loginData)
@@ -49,27 +40,27 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserItem user = userDatabase.getUserByName(loginData.Username);
+            UserItem user = _userDB.getUserByName(loginData.Username);
 
             if (user == null)
             {
                 return NotFound($"No UserItem found for Username: {loginData.Username}");
             }
-            UserDeviceItem device = deviceDatabasae.getDeviceByNameAndUser(user.UserID, loginData.DeviceName);
+            UserDeviceItem device = _userDeviceDB.getDeviceByNameAndUser(user.UserID, loginData.DeviceName);
 
             if (device == null)
             {
                 device = createNewUserDevice(loginData, user);
             }
 
-            SessionItem session = sessionDatabase.findExistingSession(user.UserID, device.DeviceID);
+            SessionItem session = _sessionDB.findExistingSession(user.UserID, device.DeviceID);
             if (session == null)
             {
                 session = createNewSession(user, device);
 
                 //Send mail
 
-                SendMailHandler mailHandler = new SendMailHandler("4002314@ba-glauchau.de");
+                SendMailService mailHandler = new SendMailService("4002314@ba-glauchau.de");
                 mailHandler.sendRegistrationMail(session);
 
                 return Created("", session);
@@ -87,7 +78,7 @@ namespace api.Controllers
                 DeviceName = loginData.DeviceName,
                 UserID = user.UserID
             };
-            device = deviceDatabasae.createNewUserDevice(device);
+            device = _userDeviceDB.createNewUserDevice(device);
             return device;
         }
 
@@ -106,7 +97,7 @@ namespace api.Controllers
             JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
             session.Token = jWTCreationHandler.Token;
 
-            sessionDatabase.createNewSession(session);
+            _sessionDB.createNewSession(session);
             return session;
         }
         
@@ -114,7 +105,7 @@ namespace api.Controllers
         [HttpPost("activate/{code}")]
         public IActionResult activate(string code)
         {
-            SessionItem session = sessionDatabase.getSessionItemByActivationCode(code);
+            SessionItem session = _sessionDB.getSessionItemByActivationCode(code);
             if (session == null)
             {
                 return NotFound("No Session found");
@@ -124,7 +115,7 @@ namespace api.Controllers
                 return BadRequest("Session is already activted");
             }
             session.isActivied = true;
-            session = sessionDatabase.updateSessionItem(session.InternalID, session);
+            session = _sessionDB.updateSessionItem(session.InternalID, session);
             return Ok(session);
         }
     

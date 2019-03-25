@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace api.Handler
 {
-    public class SendMailHandler
+    //TODO Setup as global Scoped
+    public class SendMailService
     {
         public string Receiver { get; private set; }
         public string Sender { get; private set; }
 
         private ServerConfig configData;
 
-        public SendMailHandler(string receiver)
+        public SendMailService(string receiver)
         {
             this.Receiver = receiver;
             this.configData = ServerConfigHandler.ServerConfig;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IUserDeviceDB
+    public interface IUserDeviceDB
     {
         UserDeviceItem createNewUserDevice(UserDeviceItem item);
         UserDeviceItem getDeviceByNameAndUser(long userID, string deviceName);

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using api.Selectors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
+    [Authorize(Policy ="activatedSession")]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +24,26 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var username = "";
+            var firstname = "";
+            var lastname = "";
+            var deviceID = int.MinValue;
+            foreach(var claim in User.Claims)
+            {
+                string type = claim.Type;
+                string value = claim.Value;
+
+                if (type == TokenFields.Username) username = value;
+                else if (type == TokenFields.Firstname) firstname = value;
+                else if (type == TokenFields.Lastname) lastname = value;
+                else if (type == TokenFields.DeviceID) deviceID = Convert.ToInt32(value);
+            }
+            return new string[] {
+                $"Username:  {username}",
+                $"Firstname: {firstname}",
+                $"Lastname:  {lastname}",
+                $"Device_ID: {deviceID}",
+            };
         }
 
         

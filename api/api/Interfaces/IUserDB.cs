@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IUserDB
+    public interface IUserDB
     {
         /// <summary>
         /// Create a new News-Item in Database, return the new Item

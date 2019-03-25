@@ -136,5 +136,10 @@ namespace api.offlineDB
             File.Move(tempfile, filePath);
             return item;
         }
+
+        public SessionItem getSessionByInternalID(long sessionID)
+        {
+            return getAllSessions().SingleOrDefault(x => x.InternalID == sessionID);
+        }
     }
 }

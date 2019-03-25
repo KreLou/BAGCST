@@ -9,6 +9,7 @@ using Org.BouncyCastle.Security;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Security.Cryptography;
+using api.Selectors;
 
 namespace api.Handler
 {
@@ -31,26 +32,26 @@ namespace api.Handler
 
         private void createToken()
         {
-            
-            var claims = new[]
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+
+            var key = Encoding.ASCII.GetBytes(this.config.JWT_SecurityKey);
+
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
-            //new Claim("userid", User.UserID.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, User.Username),
-            new Claim(JwtRegisteredClaimNames.GivenName, User.Firstname),
-            new Claim(JwtRegisteredClaimNames.FamilyName, User.Lastname),
-            //new Claim("deviceid", Session.DeviceID.ToString())
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(TokenFields.Username, this.User.Username),
+                    new Claim(TokenFields.Firstname, this.User.Firstname),
+                    new Claim(TokenFields.Lastname, this.User.Lastname),
+                    new Claim(TokenFields.DeviceID, this.Session.DeviceID.ToString()),
+                    new Claim(TokenFields.SessionID, this.Session.InternalID.ToString())
+                }),
+                NotBefore = DateTime.Now,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.JWT_SecurityKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: config.JWT_Issuer,
-                audience: config.JWT_Audience,
-                claims: claims,
-                notBefore: DateTime.Now,
-                signingCredentials: creds);
-            this.Token = new JwtSecurityTokenHandler().WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            this.Token = tokenHandler.WriteToken(token); ;
         }
     }
 }
