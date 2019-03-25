@@ -28,9 +28,9 @@ namespace api.offlineDB
         private string  ConvertFromMealitemToString(MealItem meal)
         {
             return 
-                meal.MealID + ";" 
+                meal.MealID + ";"
+                + meal.Place.PlaceID + ";"
                 + meal.MealName + ";" 
-                + meal.Place.PlaceID + ";" 
                 + meal.Description ;
         }
         /// <summary>
@@ -45,9 +45,8 @@ namespace api.offlineDB
             MealItem ítem = new MealItem
             {
                 MealID = Convert.ToInt32(args[0]),
-                MealName = args[1],
-        
-                Place = placeDB.getPlaceItem(Convert.ToInt32(args[2])),
+                Place = placeDB.getPlaceItem(Convert.ToInt32(args[1])),
+                MealName = args[2],
                 Description = args[3]
             };
             return ítem;
@@ -172,15 +171,7 @@ namespace api.offlineDB
                     if (meal_ID == id)
                       
                     {
-                        string[] args = line.Split(";");
-                        meal = new MealItem()
-                        {   
-                            
-                            MealID = meal_ID,
-                            MealName = args[1],
-                            Place = placeDB.getPlaceItem(Convert.ToInt32(args[2])),
-                            Description = args[3],
-                        };
+                        meal = ConvertfromStringToMealItem(line);
                     }
                 }
             }
@@ -209,6 +200,31 @@ namespace api.offlineDB
                 };
             }
             return list.ToArray();
+        }
+
+        public int selectMealIDFromOtherInformation(MealItem meal)
+        {
+            MealItem[] mealItems = getMeals();
+
+            mealItems = mealItems
+                .Where(item => item.Description.ToLower() == meal.Description.ToLower())
+                .Where(item => item.MealName.ToLower() == meal.MealName.ToLower())
+                .ToArray();
+            if (mealItems.Length == 1)
+            {
+                return mealItems[0].MealID;
+            }
+            return 0;
+        }
+
+        public MealItem[] getMealItemsByPlaceID(int id)
+        {
+            MealItem[] items = getMeals();
+            items = items
+                .Where(item => item.Place.PlaceID == id)
+                .OrderBy(item => item.MealName)
+                .ToArray();
+            return items;
         }
     }
 }

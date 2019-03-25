@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IMealDB
+    public interface IMealDB
     {
 
         /// <summary>
@@ -44,7 +44,20 @@ namespace api.Interfaces
         /// <returns>Array of MealItem with length>=0</returns>
         MealItem[] getMeals();
 
+        /// <summary>
+        /// Select the MealID, if this Item already exist
+        /// </summary>
+        /// <param name="meal">Meal, but without id</param>
+        /// <returns>Id or 0</returns>
+        int selectMealIDFromOtherInformation(MealItem meal);
 
+        /// <summary>
+        /// Filter all Meals by PlaceID
+        /// Order by Meal.MealName asc
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        MealItem[] getMealItemsByPlaceID(int id);
 
 
 
