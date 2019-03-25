@@ -189,5 +189,24 @@ namespace api.offlineDB
             // this place
             return place;
         }
+
+        public PlaceItem getPlaceItemByName(string name)
+        {
+            PlaceItem[] allPlaces = getPlaces();
+
+            if (allPlaces.Length == 0)
+            {
+                return null;
+            }
+
+            PlaceItem[] foundedItems = allPlaces.Where(x => x.PlaceName.ToLower() == name.ToLower()).ToArray();
+
+            if (foundedItems.Length >= 1)
+            {
+                return foundedItems[0];
+            }
+
+            return null;
+        }
     }
 }

@@ -35,5 +35,12 @@ namespace api.Interfaces
         /// </summary>
         /// <returns></returns>
         PlaceItem getPlaceItem(int id );
+
+        /// <summary>
+        /// Search for Placeitem by Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        PlaceItem getPlaceItemByName(string name);
     }
 }
