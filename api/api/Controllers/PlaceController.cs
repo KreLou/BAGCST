@@ -118,19 +118,12 @@ namespace api.Controllers
             {// then return ein messege 
                 return BadRequest("Place not found");
             }
-            // all the Places 
-            PlaceItem[] placeItems = database.getPlaces();
-            // for every place in Places List 
-            foreach (PlaceItem placeItem in placeItems)
+            
+            if (database.getPlaceItemByName(place.PlaceName) != null)
             {
-                // if the PlaceName is exist 
-                if (placeItem.PlaceName == place.PlaceName)
-                {
-                    // then wrong 
-                    return BadRequest($"Place is exist : {placeItem.PlaceName}");
-                }
-
+                return BadRequest($"Place {place.PlaceName} already exist");
             }
+
             //else 
             // if the item not null then save new item 
             PlaceItem item_out = database.saveNewPlace(place);
