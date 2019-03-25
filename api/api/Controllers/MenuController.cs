@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.offlineDB;
 using api.Models;
+using api.Exception;
 
 namespace api.Controllers
 {
@@ -17,6 +18,13 @@ namespace api.Controllers
         private IMenuDB menuDatabase = getMenuDatabase();
 
         private IMealDB mealDatabase = getMealDataBase();
+
+        private IPlaceDB placeDatabase = getPlaceDatabase();
+
+        private static IPlaceDB getPlaceDatabase()
+        {
+            return new OfflinePlaceDB();
+        }
 
 
         /// <summary>
@@ -63,54 +71,19 @@ namespace api.Controllers
         }
 
 
-        /// <summary>
-        /// returns an array of MenuItems for the given date 
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns>MenuItem[]</returns>
-        [HttpGet("date")]
-        public ActionResult<MenuItem[]> getAllMenuItem(DateTime date)
-        {
-            // get all menuItem
-            MenuItem[] items = menuDatabase.getMenusbyDate(date);
-            return Ok(items);
-        }
-        /// <summary>
-        /// returns an array of MenuItems between the given date 
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns>MenuItem[]</returns>
-        [HttpGet("{from}/{to}")]
-        public ActionResult<MenuItem[]> getAllMenuItem(DateTime from, DateTime to)
-        {
-            // get all menuItem
-            MenuItem[] items = menuDatabase.getMenusbyDate(from,to);
-            return Ok(items);
-        }
 
-        /// <summary>
-        /// returns an array of MenuItems between the given date 
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns>MenuItem[]</returns>
-        [HttpGet("PlaceID / Place")]
-        public ActionResult<MenuItem[]> getAllMenuItem(int PlaceID)
-        {
-            // get all menuItem
-            MenuItem[] items = menuDatabase.getMenusbyPlace(PlaceID);
-            return Ok(items);
-        }
-
-        /// <summary>
+        /// <summary>0
         /// returns an array of MenuItems
         /// </summary>
         /// <returns>MenuItem[]</returns>
         [HttpGet]
-        public ActionResult<MenuItem[]> getAllMenuItem()
+        public ActionResult<MenuItem[]> getAllMenuItem([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int[] placeIDs)
         {
-            MenuItem[] items = menuDatabase.getMenus();
+            if (startDate == DateTime.MinValue) startDate = DateTime.Today;
+            if (endDate == DateTime.MinValue) endDate = startDate.AddDays(7);
+            if (placeIDs.Length == 0) placeIDs = placeDatabase.getPlaces().Select(x => x.PlaceID).ToArray();
+            MenuItem[] items = menuDatabase.getFilterdMenus(startDate, endDate, placeIDs);
+            items = items.OrderBy(x => x.Date).ThenBy(x => x.Meal.Place.PlaceName).ThenBy(x => x.Meal.MealName).ToArray();
             return Ok(items);
         }
 
@@ -125,23 +98,44 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public ActionResult<MenuItem> editMenuItem(int id, [FromBody]MenuItem menu)
         {
-            //Check if id is valid
-            if (menuDatabase.getMenuItem(id) == null)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                return NotFound(($"No MenuItem found for id: {id}"));
+                menu.Meal.Place = handlePlaceInput(menu.Meal.Place);
+            }
+            catch (NotFoundException nfe)
+            {
+                return NotFound(nfe.Message);
             }
 
-            //Check if item not null
-            if (menu == null)
-            {
-                return BadRequest("MenuItem not found");
-            }
-     
+            menu.Meal = handleMealInput(menu.Meal);
+
             //update existing item
-            MenuItem menuNew = menuDatabase.editMenu( id,menu);
+            MenuItem menuNew = menuDatabase.editMenu(id, menu);
 
             //return new item
             return Ok(menuNew);
+        }
+
+        /// <summary>
+        /// Check if this MealItem already exist
+        /// add FoundedID if exist
+        /// else create new
+        /// </summary>
+        /// <param name="meal"></param>
+        /// <returns></returns>
+        private MealItem handleMealInput(MealItem meal)
+        {
+            int foundedMealID = mealDatabase.selectMealIDFromOtherInformation(meal);
+            if (foundedMealID == 0)
+            {
+                meal = mealDatabase.saveNewMeal(meal);
+            }else
+            {
+                meal.MealID = foundedMealID;
+            }
+            return meal;
         }
 
 
@@ -172,15 +166,54 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<MenuItem> createMenuItem(MenuItem menu)
         {
-            // check if the item not null
-            if (menu == null)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                // if null then message 
-                return BadRequest("MenuItem not found");
+                menu.Meal.Place = handlePlaceInput(menu.Meal.Place);
+            }catch(NotFoundException nfe)
+            {
+                return NotFound(nfe.Message);
             }
-            // else creat new item 
+
+
+            menu.Meal = handleMealInput(menu.Meal);
+
+            MenuItem[] alreadySavedMenuItems = menuDatabase.getFilterdMenus(menu.Date, menu.Date, new[] { menu.Meal.Place.PlaceID });
+            MenuItem[] filteredSavedMenuItems = alreadySavedMenuItems.Where(item => item.Meal.MealID == menu.Meal.MealID).ToArray();
+            if (filteredSavedMenuItems.Length > 0)
+            {
+                return BadRequest("This MealItem is already planed in the Menu");
+            }
+
             MenuItem menuNew = menuDatabase.saveNewMenu(menu);
             return Created("", menuNew);
+        }
+
+        /// <summary>
+        /// Search for the PlaceItem
+        /// Search for ID and check with the given Name
+        /// Or Search for Place by given Name
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private PlaceItem handlePlaceInput(PlaceItem item)
+        {
+            PlaceItem foundedItem = null;
+            if (item.PlaceID != 0)
+            {
+                foundedItem = placeDatabase.getPlaceItem(item.PlaceID);
+                if (foundedItem.PlaceName.ToLower() == item.PlaceName.ToLower())   //Both Items are the same
+                {
+                    return foundedItem;
+                }
+            }
+            foundedItem = placeDatabase.getPlaceItemByName(item.PlaceName);
+            if (foundedItem == null)
+            {
+                throw new NotFoundException($"No PlaceItem found for Name: '{item.PlaceName}'");
+            }
+            return foundedItem;
         }
     }
 }
