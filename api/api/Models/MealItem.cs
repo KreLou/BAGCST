@@ -15,6 +15,7 @@ namespace api.Models
         /// <summary>
         /// ID/ForeignKey of Meal
         /// </summary>
+        [Required]
         public PlaceItem Place { get; set; }
         /// <summary>
         /// String MealName 
