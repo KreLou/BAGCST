@@ -41,28 +41,30 @@ namespace api.offlineDB
             List<Group> list = new List<Group>();
             using (StreamReader reader = new StreamReader(csvFile))
             {
-                rightsTemp = new List<Right>();
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] args = line.Split(";");
-                    Group group = new Group()
+                    rightsTemp = new List<Right>();
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        ID = Convert.ToInt32(args[0]),
-                        Name = args[1],
-                    };
+                        string[] args = line.Split(";");
+                        Group group = new Group()
+                        {
+                            ID = Convert.ToInt32(args[0]),
+                            Name = args[1],
+                        };
 
-                    //filling Rights is more complex bc it's an array
-                    List<string> rightIDs = args[2].Split(",").ToList();
-                    offlineDB_Rights dbRights = new offlineDB_Rights();
-                    foreach (string rightID in rightIDs)
-                    {
-                        rightsTemp.Add(dbRights.getRight(Convert.ToInt32(rightID)));
+                        //filling Rights is more complex bc it's an array
+                        
+                        List<string> rightIDs = args[2].Split(",").ToList();
+                        offlineDB_Rights dbRights = new offlineDB_Rights();
+                        foreach (string rightID in rightIDs)
+                        {
+                            rightsTemp.Add(dbRights.getRight(Convert.ToInt32(rightID)));
+                        }
+                        
+                        group.Rights = rightsTemp.ToArray();
+
+                        list.Add(group);
                     }
-                    group.Rights = rightsTemp.ToArray();
-
-                    list.Add(group);
-                }
             }
             return list.ToArray();
         }
@@ -87,8 +89,11 @@ namespace api.offlineDB
             id++;
             group.ID = id;
 
+            ////2. Save Group
+            //File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + group.Rights });
+
             //2. Save Group
-            File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + group.Rights });
+            File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + string.Join(",", (Array)group.Rights) });
 
             //3. Return Group
             return getGroup(id);

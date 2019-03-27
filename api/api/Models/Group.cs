@@ -22,7 +22,7 @@ namespace api.Models
         /// <summary>
         /// the groups rights
         /// </summary>
-        //[Required]
+        [Required]
         public Right[] Rights { get; set; }
     }
 }

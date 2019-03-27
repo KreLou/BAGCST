@@ -59,15 +59,29 @@ namespace api.Controllers
         public ActionResult<Group> editGroup(int id, [FromBody] Group group_in)
         {
             //Check if id is valid
-            if (database.getGroup(id) == null)
-            {
-                return NotFound(($"No Group found for ID: {id}"));
-            }
+            //if (database.getGroup(id) == null)
+            //{
+            //    return NotFound(($"No Group found for ID: {id}"));
+            //}
 
             //Check if groups are not null
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            //checked if Path and ID are valid
+            try
+            {
+                validateRights(group_in.Rights);
+            }
+            catch (RightIDNotFoundException IDNotFound)
+            {
+                return NotFound("No ID found for the Path:" + IDNotFound.RightPath);
+            }
+            catch (RightItemNotFoundException ItemNotFound)
+            {
+                return NotFound("No Right found for the ID:" + ItemNotFound.RightID);
             }
 
             //update existing group
@@ -124,19 +138,24 @@ namespace api.Controllers
         /// <param name="rights"></param>
         private void validateRights(Right[] rights)
         {
-            foreach(Right right in rights)
-            {
-                if (right.RightID  == 0) {
-                    throw new RightIDNotFoundException(right.Path);
-                }else
+            //if (rights != null)
+            //{
+                foreach (Right right in rights)
                 {
-                    Right databaseRight = rightsDatabase.getRight(right.RightID);
-                    if (databaseRight == null)
+                    if (right.RightID == 0)
                     {
-                        throw new RightItemNotFoundException(right.RightID);
+                        throw new RightIDNotFoundException(right.Path);
+                    }
+                    else
+                    {
+                        Right databaseRight = rightsDatabase.getRight(right.RightID);
+                        if (databaseRight == null)
+                        {
+                            throw new RightItemNotFoundException(right.RightID);
+                        }
                     }
                 }
-            }
+            //}
         }
     }
 }
