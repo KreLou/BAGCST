@@ -33,9 +33,9 @@ namespace api.Services
             }
             _sessionItem = _sessionDB.getSessionByInternalID(_sessionID);
             
-            _success = _sessionItem != null;
-            _success = (_sessionItem.ExpirationTime >= DateTime.Now && _sessionItem.StartTime <= DateTime.Now);
-            _success = _sessionItem.isActivied;
+            _success &= _sessionItem != null;
+            _success &= (_sessionItem.ExpirationTime >= DateTime.Now && _sessionItem.StartTime <= DateTime.Now);
+            _success &= _sessionItem.isActivied;
             // TODO krelou should we compare userIDs...?
             // _success = _sessionItem.UserID == context.User.Claims.
 
@@ -47,7 +47,7 @@ namespace api.Services
             {
                 context.Fail();
             }
-            
+
             return Task.CompletedTask;
         }
     }
