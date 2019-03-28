@@ -18,13 +18,13 @@ namespace api.Models
         /// Firstname of the person
         /// </summary>
         [Required]
-        public string Firstname { get; set; }
-
+        public string FirstName { get; set; }
+ 
         /// <summary>
         /// Lastname with title of the person
         /// </summary>
         [Required]
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Title for ex. Prof Dr.

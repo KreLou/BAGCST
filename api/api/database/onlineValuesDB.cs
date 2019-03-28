@@ -76,7 +76,7 @@ namespace api.database
                 sql.Open();
 
                 SqlDataReader myReader = null;
-                SqlCommand myCommand = new SqlCommand("DELETE FROM Tabelle_1 SET Where id='" + id + "';", sql);
+                SqlCommand myCommand = new SqlCommand("DELETE FROM Tabelle_1 Where id='" + id + "';", sql);
                 myReader = myCommand.ExecuteReader();
                 myReader.Close();
                 sql.Close();
