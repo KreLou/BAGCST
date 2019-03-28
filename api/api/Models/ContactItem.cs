@@ -26,6 +26,11 @@ namespace api.Models
         public string LastName { get; set; }
 
         /// <summary>
+        /// Title for ex. Prof Dr.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
         /// Telephone number of the person
         /// </summary>
         public string TelNumber { get; set; }
