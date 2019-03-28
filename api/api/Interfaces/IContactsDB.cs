@@ -8,7 +8,12 @@ namespace api.Interfaces
 {
     interface IContactsDB
     {
-
+        /// <summary>
+        /// Search for ContactItem by ID
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>UserItem or Null</returns>
+        ContactItem getContactItem(int id);
 
         /// <summary>
         /// search for ContactItem by E-Mail-Address

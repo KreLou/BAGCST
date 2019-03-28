@@ -25,16 +25,6 @@ namespace api.Models
         /// </summary>
         [Required]
         public string Lastname { get; set; }
-        /// First name of the person
-        /// </summary>
-        [Required]
-        public string FirstName{ get; set; }
-
-        /// <summary>
-        /// Last name with title of the person
-        /// </summary>
-        [Required]
-        public string LastName { get; set; }
 
         /// <summary>
         /// Title for ex. Prof Dr.
