@@ -1,0 +1,4 @@
+
+.vscode/*
+/api/.vscode/*
+*.DS_Store
