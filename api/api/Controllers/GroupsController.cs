@@ -138,8 +138,6 @@ namespace api.Controllers
         /// <param name="rights"></param>
         private void validateRights(Right[] rights)
         {
-            //if (rights != null)
-            //{
                 foreach (Right right in rights)
                 {
                     if (right.RightID == 0)
@@ -155,7 +153,6 @@ namespace api.Controllers
                         }
                     }
                 }
-            //}
         }
     }
 }

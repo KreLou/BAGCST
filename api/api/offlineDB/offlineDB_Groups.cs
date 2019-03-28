@@ -89,11 +89,8 @@ namespace api.offlineDB
             id++;
             group.ID = id;
 
-            ////2. Save Group
-            //File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + group.Rights });
-
             //2. Save Group
-            File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + string.Join(",", (Array)group.Rights) });
+            File.AppendAllLines(csvFile, new string[] { group.ID + ";" + group.Name + ";" + rightsToString(group.Rights) });
 
             //3. Return Group
             return getGroup(id);
@@ -116,7 +113,7 @@ namespace api.offlineDB
                 {
                     if (Convert.ToInt32(line.Split(";")[0]) == id)
                     {
-                        writer.WriteLine(id + ";" + group.Name + ";" + group.Rights);
+                        writer.WriteLine(id + ";" + group.Name + ";" + rightsToString(group.Rights));
                     }
                     else
                     {
@@ -186,6 +183,22 @@ namespace api.offlineDB
                 lines[i] = userID + ";" + groupIDs[i];
             }
             File.AppendAllLines(groupUser_csv, lines);
+        }
+
+        public string rightsToString(Right[] rights)
+        {
+            string string_out = new string("");
+            foreach(Right right in rights)
+            {
+                string_out += right.RightID.ToString();
+
+                if(right != rights.Last())
+                {
+                    string_out += ",";
+                }
+            }
+
+            return string_out;
         }
     }
 }
