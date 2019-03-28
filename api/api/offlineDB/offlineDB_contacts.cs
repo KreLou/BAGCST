@@ -12,6 +12,32 @@ namespace api.Databases
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
+
+
+        private static ContactItem convertToContactItem(string line)
+        {
+            string[] args = line.Split(";");
+            ContactItem item = new ContactItem()
+            {
+                ContactID = Convert.ToInt32(args[0]),
+                FirstName = args[1],
+                LastName = args[2],
+                TelNumber = args[3],
+                Email = args[4],
+                Room = args[5],
+                Responsibility = args[6],
+                Course = args[7],
+                Type = args[8],
+                Title = args[9]
+            };
+            return item;
+        }
+
+        private static string convertToString(ContactItem item)
+        {
+            return item.ContactID + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type + ";" + item.Title;
+        }
+
         /// <summary>
         /// Returns a ContactItem based on the given ID
         /// </summary>
@@ -61,24 +87,14 @@ namespace api.Databases
                 string line;
                 while((line = reader.ReadLine()) != null)
                 {
-                    string[] args = line.Split(";");
-                    ContactItem item = new ContactItem() {
-                        ContactID = Convert.ToInt32(args[0]),
-                        FirstName = args[1],
-                        LastName = args[2],
-                        TelNumber = args[3],
-                        Email = args[4],
-                        Room = args[5],
-                        Responsibility = args[6],
-                        Course = args[7],
-                        Type = args[8]
-                    };
-                    
+                    ContactItem item = convertToContactItem(line);
+
                     list.Add(item);
                 }
             }
-                return list.ToArray();
+            return list.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToArray();
         }
+
 
         /// <summary>
         /// Creates a ContactItem based on the given ContactItem
@@ -90,9 +106,9 @@ namespace api.Databases
             //1. Generate ID
             ContactItem[] items = getAllContactItems();
             int id = 0;
-            foreach(ContactItem item_ in items)
+            foreach (ContactItem item_ in items)
             {
-                if(item_.ContactID >= id)
+                if (item_.ContactID >= id)
                 {
                     id = item_.ContactID;
                 }
@@ -101,7 +117,7 @@ namespace api.Databases
             item.ContactID = id;
 
             //2. Save Item
-            File.AppendAllLines(csvFile, new string[] { item.ContactID + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type });
+            File.AppendAllLines(csvFile, new string[] { convertToString(item) });
 
             //3. Return Item
             return getContactItem(id);
@@ -115,6 +131,7 @@ namespace api.Databases
         /// <returns>ContactItem</returns>
         public ContactItem editContactItem(int id, ContactItem item)
         {
+            item.ContactID = id;
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
             using (StreamReader reader = new StreamReader(csvFile))
@@ -122,9 +139,10 @@ namespace api.Databases
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (Convert.ToInt32(line.Split(";")[0]) == id)
+                    ContactItem currentItem = convertToContactItem(line);
+                    if (currentItem.ContactID == id)
                     {
-                        writer.WriteLine(id + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type);
+                        writer.WriteLine(convertToString(item));
                     }
                     else
                     {

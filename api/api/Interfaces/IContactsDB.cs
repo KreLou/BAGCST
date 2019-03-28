@@ -24,6 +24,9 @@ namespace api.Interfaces
 
         /// <summary>
         /// Get all ContactItems
+        /// Order by:
+        /// 1. ContactItem.Lastname asc
+        /// 2. ContactItem.Firstname asc
         /// </summary>
         /// <returns>Array of ContactItems with length>=0</returns>
         ContactItem[] getAllContactItems();
