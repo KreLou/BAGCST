@@ -2,10 +2,10 @@ namespace api.Selectors
 {
     public class TokenInformation
     {
-        public static string Username { get; set;}
-        public static string Firstname {get; set;}
-        public static string Lastname { get; set;}
-        public static string DeviceID { get; set;}
-        public static string SessionID { get; set;}
+        public string Username { get; set;}
+        public string Firstname {get; set;}
+        public string Lastname { get; set;}
+        public string DeviceID { get; set;}
+        public string SessionID { get; set;}
     }
 }
