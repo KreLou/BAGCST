@@ -12,22 +12,33 @@ namespace api.Controllers
     public class ValuesController : ControllerBase
     {
         private onlineValuesDB database = new onlineValuesDB();
-        // GET api/values
+
+        /// <summary>
+        /// GET api/values
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// GET api/values/5
+        /// </summary>
+        /// <param name="id">ID from value</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
             string value = database.getByID(id);
             return Ok(value);
         }
-
-        // POST api/values
+        
+        /// <summary>
+        /// POST api/values
+        /// </summary>
+        /// <param name="value"></param>
         [HttpPost]
         public void Post([FromBody] string value)
         {

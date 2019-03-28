@@ -10,6 +10,7 @@ namespace api.Models
     {
         /// <summary>
         /// Primary key of contacts
+        /// Primary key of a contact
         /// </summary>
         public int ContactID { get; set; }
 
@@ -24,6 +25,21 @@ namespace api.Models
         /// </summary>
         [Required]
         public string Lastname { get; set; }
+        /// First name of the person
+        /// </summary>
+        [Required]
+        public string FirstName{ get; set; }
+
+        /// <summary>
+        /// Last name with title of the person
+        /// </summary>
+        [Required]
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Title for ex. Prof Dr.
+        /// </summary>
+        public string Title { get; set; }
 
         /// <summary>
         /// Telephone number of the person
@@ -31,7 +47,7 @@ namespace api.Models
         public string TelNumber { get; set; }
 
         /// <summary>
-        /// E-Mail-Adress of the person
+        /// E-Mail-Address of the person
         /// </summary>
         [Required]
         public string Email { get; set; }
@@ -40,9 +56,9 @@ namespace api.Models
         /// Room description, possibly with letters in front of, that's why it's string
         /// </summary>
         public string Room { get; set; }
-
+           
         /// <summary>
-        /// The persons responsibilities (course manager, office,...)
+        /// Responsibilities of the person (course manager, office,...)
         /// </summary>
         public string Responsibility { get; set; }
 
