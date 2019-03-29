@@ -62,7 +62,7 @@ namespace api.offlineDB
                         }
                         
                         group.Rights = rightsTemp.ToArray();
-
+                        rightsTemp.Clear();
                         list.Add(group);
                     }
             }
@@ -81,7 +81,7 @@ namespace api.offlineDB
             int id = 0;
             foreach (Group group_ in groups)
             {
-                if (group.ID >= id)
+                if (group_.ID >= id)
                 {
                     id = group_.ID;
                 }

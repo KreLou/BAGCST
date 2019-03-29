@@ -97,6 +97,11 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if(right_in.RightID.ToString() == "")
+            {
+                return BadRequest("Failure. No RightID entered.");
+            }
             Right right_out = database.createRight(right_in);
             return Created("", right_out);
         }
