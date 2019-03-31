@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Interfaces;
+using api.Models;
 using api.offlineDB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,18 @@ namespace api.Controllers
             long userID = 1; //TODO Get From Token
 
             return Ok();
+        }
+
+        [HttpGet("info")]
+        public IActionResult getInfo()
+        {
+            long userID = 1; //TODO get From Token
+
+            UserItem userItem = userDB.getUserItem(userID);
+
+            if (userItem == null) return NotFound("No UserItem found for your ID: " + userID);
+
+            return Ok(userItem);
         }
     }
 }
