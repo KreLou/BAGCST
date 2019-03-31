@@ -14,9 +14,9 @@ namespace api.Controllers
 
         private INewsDB database = getDatabase();
         private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
-        private IUserSettings userSettingsDatabase = getUserSettingsDatabase();
+        private IUserSettingsDB userSettingsDatabase = getUserSettingsDatabase();
 
-        private static IUserSettings getUserSettingsDatabase()
+        private static IUserSettingsDB getUserSettingsDatabase()
         {
             return new offlineUserSettings();
         }

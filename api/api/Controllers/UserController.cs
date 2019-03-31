@@ -12,7 +12,7 @@ namespace api.Controllers
     {
         
         private IUserDB userDatabase = getUserDatabase();
-        private IUserSettings settingsDatabase = getSettingsDatabase();
+        private IUserSettingsDB settingsDatabase = getSettingsDatabase();
         private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
 
         private static IPostGroupDB getPostGroupDatabase()
@@ -20,7 +20,7 @@ namespace api.Controllers
             return new offlinePostGroupDB();
         }
 
-        private static IUserSettings getSettingsDatabase()
+        private static IUserSettingsDB getSettingsDatabase()
         {
             return new offlineUserSettings();
         }

@@ -9,7 +9,7 @@ using api.Selectors;
 
 namespace api.offlineDB
 {
-    public class offlineUserSettings : IUserSettings
+    public class offlineUserSettings : IUserSettingsDB
     {
         private string file_subscribedPostGroups = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroupuser.csv";
 
