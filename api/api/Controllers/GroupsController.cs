@@ -126,7 +126,12 @@ namespace api.Controllers
             } catch(RightItemNotFoundException rightItemNotFoundEx)
             {
                 return NotFound($"No RightItem found for ID {rightItemNotFoundEx.RightID}");
+            } catch(RightPathInvalidException rightPathInvalidEx)
+            {
+                return BadRequest("Following RightPath is invalid: " + rightPathInvalidEx);
             }
+
+            
             Group group_out = database.createGroup(group_in);
             return Created("", group_out);
         }
@@ -138,21 +143,25 @@ namespace api.Controllers
         /// <param name="rights"></param>
         private void validateRights(Right[] rights)
         {
-                foreach (Right right in rights)
+            foreach (Right right in rights)
+            {
+                if (String.IsNullOrWhiteSpace(right.RightID.ToString()))
                 {
-                    if (right.RightID == 0)
+                    throw new RightIDNotFoundException(right.Path);
+                }
+                else
+                {
+                    Right databaseRight = rightsDatabase.getRight(right.RightID);
+                    if (databaseRight == null)
                     {
-                        throw new RightIDNotFoundException(right.Path);
-                    }
-                    else
-                    {
-                        Right databaseRight = rightsDatabase.getRight(right.RightID);
-                        if (databaseRight == null)
-                        {
-                            throw new RightItemNotFoundException(right.RightID);
-                        }
+                        throw new RightItemNotFoundException(right.RightID);
                     }
                 }
+                if(String.IsNullOrWhiteSpace(right.Path))
+                {
+                    throw new RightPathInvalidException(right.Path);
+                }
+            }
         }
     }
 }

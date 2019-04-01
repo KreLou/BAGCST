@@ -88,9 +88,17 @@ namespace api.Controllers
         public ActionResult<Right> createRight(Right right_in)
         {
             //TODO check for permission
-            if (right_in == null)
+            if (right_in == null | right_in.Path == "")
             {
                 return BadRequest("Right not found");
+            }
+
+            foreach(Right right in database.getAllRights())
+            {
+                if(right_in.Path == right.Path)
+                {
+                    return BadRequest("Path is already existing.");
+                }
             }
 
             if (!ModelState.IsValid)
