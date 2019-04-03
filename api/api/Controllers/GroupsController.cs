@@ -87,7 +87,7 @@ namespace api.Controllers
             {
                 return BadRequest("No Rights found.");
             }
-            catch (DuplicateRightsItemFound dpi)
+            catch (DuplicateRightsItemFoundException dpi)
             {
                 return BadRequest("Duplicate RightsID found: " + dpi.RightID);
             }
@@ -141,7 +141,7 @@ namespace api.Controllers
             } catch(RightsNotFoundException)
             {
                 return BadRequest("No Rights found.");
-            } catch(DuplicateRightsItemFound dpi)
+            } catch(DuplicateRightsItemFoundException dpi)
             {
                 return BadRequest("Duplicate RightsID found: " + dpi.RightID);
             }
@@ -187,7 +187,7 @@ namespace api.Controllers
                 }
 
                 bool duplicateRightsID = rights.Where(x => x.RightID == right.RightID).ToArray().Length > 1;
-                if (duplicateRightsID) throw new DuplicateRightsItemFound(right.RightID);
+                if (duplicateRightsID) throw new DuplicateRightsItemFoundException(right.RightID);
             }
         }
     }
