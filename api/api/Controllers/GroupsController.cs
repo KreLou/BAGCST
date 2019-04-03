@@ -83,6 +83,14 @@ namespace api.Controllers
             {
                 return NotFound("No Right found for the ID:" + ItemNotFound.RightID);
             }
+            catch (RightsNotFoundException)
+            {
+                return BadRequest("No Rights found.");
+            }
+            catch (DuplicateRightsItemFound dpi)
+            {
+                return BadRequest("Duplicate RightsID found: " + dpi.RightID);
+            }
 
             //update existing group
             Group group_out = database.editGroup(id, group_in);
@@ -117,6 +125,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             try
             {
                 validateRights(group_in.Rights);
@@ -126,9 +135,15 @@ namespace api.Controllers
             } catch(RightItemNotFoundException rightItemNotFoundEx)
             {
                 return NotFound($"No RightItem found for ID {rightItemNotFoundEx.RightID}");
-            } catch(RightPathInvalidException)
+            } catch(RightPathInvalidException rpiex)
             {
-                return BadRequest("Path is invalid");
+                return BadRequest("Path is invalid: " + rpiex.RightPath);
+            } catch(RightsNotFoundException)
+            {
+                return BadRequest("No Rights found.");
+            } catch(DuplicateRightsItemFound dpi)
+            {
+                return BadRequest("Duplicate RightsID found: " + dpi.RightID);
             }
 
             foreach(Group group in database.getAllGroups())
@@ -151,6 +166,7 @@ namespace api.Controllers
         /// <param name="rights"></param>
         private void validateRights(Right[] rights)
         {
+            if (rights.Length == 0) throw new RightsNotFoundException();
             foreach (Right right in rights)
             {
                 if (String.IsNullOrWhiteSpace(right.RightID.ToString()))
@@ -169,6 +185,9 @@ namespace api.Controllers
                 {
                     throw new RightPathInvalidException(right.Path);
                 }
+
+                bool duplicateRightsID = rights.Where(x => x.RightID == right.RightID).ToArray().Length > 1;
+                if (duplicateRightsID) throw new DuplicateRightsItemFound(right.RightID);
             }
         }
     }
