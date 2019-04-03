@@ -126,9 +126,17 @@ namespace api.Controllers
             } catch(RightItemNotFoundException rightItemNotFoundEx)
             {
                 return NotFound($"No RightItem found for ID {rightItemNotFoundEx.RightID}");
-            } catch(RightPathInvalidException rightPathInvalidEx)
+            } catch(RightPathInvalidException)
             {
-                return BadRequest("Following RightPath is invalid: " + rightPathInvalidEx);
+                return BadRequest("Path is invalid");
+            }
+
+            foreach(Group group in database.getAllGroups())
+            {
+                if(group_in.Name == group.Name)
+                {
+                    return BadRequest("GroupName already used. Try another one.");
+                }
             }
 
             

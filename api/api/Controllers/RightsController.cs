@@ -87,7 +87,11 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<Right> createRight(Right right_in)
         {
-            //TODO check for permission
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (right_in == null | right_in.Path == "")
             {
                 return BadRequest("Right not found");
@@ -99,11 +103,6 @@ namespace api.Controllers
                 {
                     return BadRequest("Path is already existing.");
                 }
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
             }
 
             if(right_in.RightID.ToString() == "")
