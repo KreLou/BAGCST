@@ -61,6 +61,13 @@ namespace api.offlineDB
                             rightsTemp.Add(dbRights.getRight(Convert.ToInt32(rightID)));
                      }
                      
+                     foreach(Right right in rightsTemp.ToArray())
+                     {
+                        if(right == null)
+                        {
+                            rightsTemp.Remove(right);
+                        }
+                     }
                      group.Rights = rightsTemp.ToArray();
                      rightsTemp.Clear();
                      list.Add(group);
