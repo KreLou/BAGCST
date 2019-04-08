@@ -13,62 +13,123 @@ namespace api.database
         SqlConnection sqlConnection = null;
         public onlineContactsDB()
         {
-            sqlConnection = TimeTableDatabase.getConnection();
+           // sqlConnection = TimeTableDatabase.getConnection();
         }
 
+
+        /// <summary>
+        /// Creates a ContactItem based on the given ContactItem
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>ContactItem</returns>
         public ContactItem createContactItem(ContactItem item)
         {
-            using (sqlConnection)
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
             {
-                string SQL = "INSERT INTO ";
-                //item.ContactID;
+                using (sqlConnection)
+                {
+                    string SQL = "INSERT INTO [contact] ([contacttypid],[lastname],[firstname],[titel],[mail], [phonenumber],[roomnumber]) " +
+                        "VALUES('1','" + item.LastName + "','" + item.FirstName + "','" + item.Title + "','" + item.Email + "','" + item.TelNumber + "','" + item.Room + "');" +
+                        "SELECT SCOPE_IDENTITY();";
+                    sqlConnection.Open();
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    int LastID = Convert.ToInt32(myCommand.ExecuteScalar());
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return getContactItem(LastID);
+                }
+            }
+            catch (Exception)
+            {
 
-
-      //          SELECT TOP(1000) [contactid]
-      //,[contacttypid]
-      //,[lastname]
-      //,[firstname]
-      //,[titel]
-      //,[mail]
-      //,[phonenumber]
-      //,[roomnumber]
-      //,[coursetypid]
-      //  FROM[Stundenplan].[dbo].[contact]
-    }
-                throw new NotImplementedException();
+               return null;
+           }
         }
 
+        /// <summary>
+        /// Deletes a ContactItem based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
         public void deleteContactItem(int id)
         {
-            throw new NotImplementedException();
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+                    string SQL = "DELETE FROM [contact] WHERE [contactid] ='" + id.ToString() + "';";
+                    sqlConnection.Open();
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    myCommand.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
+        /// <summary>
+        /// Edits a ContactItem based on the given ContactItem except for the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns>ContactItem</returns>
         public ContactItem editContactItem(int id, ContactItem item)
         {
-            throw new NotImplementedException();
-        }
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+                    string SQL = "UPDATE [contact] SET [lastname]='"+item.LastName+"',[firstname]='"+item.FirstName+"',[titel]='"+item.Title+"',[mail]='"+item.Email+"', [phonenumber]='"+item.TelNumber+"',[roomnumber]='"+item.Room+"' WHERE [contactid] ='"+id.ToString()+"';";
+                    sqlConnection.Open();
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    myCommand.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return getContactItem(id);
+                }
+            }
+            catch (Exception)
+            {
+                
+                return null;
+            }
 
+        }
+        /// <summary>
+        /// Returns an array of ContactItems
+        /// </summary>
+        /// <returns>ContactItem[]</returns>
         public ContactItem[] getAllContactItems()
         {
-            throw new NotImplementedException();
-        }
-
-        public ContactItem getContactItem(int id)
-        {
-            using (sqlConnection)
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
             {
-                try
-                {
+                using (sqlConnection)
+            {
+
                     ContactItem SQLItem = new ContactItem();
-                    string SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [contactid]='" + id + "';";
+                    List<ContactItem> ContactItemList = new List<ContactItem>();
+                    string SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact];";
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
                     myReader = myCommand.ExecuteReader();
 
-                    if (myReader.Read())
+                    while (myReader.Read())
                     {
-                        SQLItem.ContactID = id;
+                        SQLItem.ContactID = Convert.ToInt32(myReader["contactid"]);
                         SQLItem.FirstName = myReader["firstname"].ToString();
                         SQLItem.LastName = myReader["lastname"].ToString();
                         SQLItem.Title = myReader["titel"].ToString();
@@ -78,32 +139,60 @@ namespace api.database
                         SQLItem.Responsibility = myReader["coursetypid"].ToString();
                         SQLItem.Course = myReader["coursetypid"].ToString();
                         SQLItem.Type = myReader["contacttypid"].ToString();
-                        sqlConnection.Close();
-                        return SQLItem;
+                        ContactItemList.Add(SQLItem);
                     }
-                    else
-                    {
-                        sqlConnection.Close();
-                        return null;
-                    }
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return ContactItemList.ToArray();
 
                 }
-                catch (Exception)
-                {
 
-                    return null;
-                }
+            }
+            catch (Exception)
+            {
+
+                return null;
             }
         }
 
+        /// <summary>
+        /// Returns a ContactItem based on the given ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>ContactItem|null</returns>
+        public ContactItem getContactItem(int id)
+        {
+            return GetContactItemByValue(id.ToString(), 1);
+        }
+
+        /// <summary>
+        /// Returns a ContactItem based on the given E-Mail-Address
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>ContactItem|null</returns>
         public ContactItem getContactItem(string email)
         {
-            using (sqlConnection)
+            return GetContactItemByValue(email,2);
+        }
+        private ContactItem GetContactItemByValue(string value, int typ)
+        {
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
             {
-                try
+                using (sqlConnection)
                 {
+                    string SQL = "";
                     ContactItem SQLItem = new ContactItem();
-                    string SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [[mail]]='" + email + "';";
+                    if (typ==1)
+                    {
+                       SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [contactid]='" + value + "';";
+                    }
+                    if (typ == 2)
+                    {
+                       SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [mail]='" + value + "';";
+                    }
+
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
@@ -122,20 +211,21 @@ namespace api.database
                         SQLItem.Course = myReader["coursetypid"].ToString();
                         SQLItem.Type = myReader["contacttypid"].ToString();
                         sqlConnection.Close();
+                        sqlConnection = null;
                         return SQLItem;
                     }
                     else
                     {
                         sqlConnection.Close();
+                        sqlConnection = null;
                         return null;
                     }
-
                 }
-                catch (Exception)
-                {
 
-                    return null;
-                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }
