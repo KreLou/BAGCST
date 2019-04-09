@@ -4,6 +4,7 @@ using api.offlineDB;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using api.database;
 
 namespace api.Controllers
 {
@@ -24,6 +25,7 @@ namespace api.Controllers
         private static IPostGroupDB getPostGroupDatabase()
         {
             return new offlinePostGroupDB();
+            
         }
 
         /// <summary>
@@ -33,7 +35,8 @@ namespace api.Controllers
         /// <returns></returns>
         private static INewsDB getDatabase()
         {
-            return new offlineNewsDB();
+            //return new offlineNewsDB();
+            return new onlineNewsDB();
         }
 
         /// <summary>
