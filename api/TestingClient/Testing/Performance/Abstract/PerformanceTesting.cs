@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TestingClient.Testing.Configuration;
-using TestingClient.Testing.Handlers;
+using TestingClient.Testing.Configuration.WaitingMethod;
+using TestingClient.Testing.Reporting;
 
 namespace TestingClient.Testing.Performance.Abstract
 {
@@ -21,19 +22,17 @@ namespace TestingClient.Testing.Performance.Abstract
 
         public TestConditions TestConditions { get; set; }
 
-        public AuditTestResults TestResult { get; set; }
-
         public PerformanceTesting(string url)
         {
             this.RequestURL = url;
 
+            //Set Default.
             this.TestConditions = new TestConditions { Iterations = 10, WaitingMethod = new StaticWaiting { WaitingDelay= 300 } };
         }
 
         public async Task PerfomTest()
         {
-            Console.WriteLine("Start Test");
-
+            Console.WriteLine("Use WaitingMethod: " + this.TestConditions.WaitingMethod.GetType().Name);
             List<RequestResponseInformation> listResponseInformation = new List<RequestResponseInformation>();
 
             for (int round = 1; round <= TestConditions.Iterations; round++)
@@ -52,31 +51,18 @@ namespace TestingClient.Testing.Performance.Abstract
 
             ResponseInformation = listResponseInformation.ToArray();
 
-
-            handleAudit();
         }
 
-        private void handleAudit()
+        public TestReport generateTestReport()
         {
-            AuditResponseGenerator generator = new AuditResponseGenerator(this.ResponseInformation);
+            TestReportGenerator generator = new TestReportGenerator(this.GetType().Name,  this.ResponseInformation);
 
-            this.TestResult = generator.TestResult;
+            return generator.getTestReport();
         }
 
         private void handleWaiting()
         {
-            int delay = 0;
-            if (this.TestConditions.WaitingMethod is RandomWaiting)
-            {
-                RandomWaiting config = (RandomWaiting)this.TestConditions.WaitingMethod;
-                Random r = new Random();
-
-                delay = r.Next(config.MinDelay, config.MaxDelay);
-            }else
-            {
-                delay = ((StaticWaiting)this.TestConditions.WaitingMethod).WaitingDelay;
-            }
-            Thread.Sleep(delay);
+            this.TestConditions.WaitingMethod.Wait();
         }
     }
 }
