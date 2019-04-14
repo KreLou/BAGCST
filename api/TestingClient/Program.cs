@@ -4,6 +4,7 @@ using TestingClient.Testing;
 using TestingClient.Testing.Configuration;
 using TestingClient.Testing.Configuration.WaitingMethod;
 using TestingClient.Testing.Performance.Contacts;
+using TestingClient.Testing.Performance.News;
 using TestingClient.Testing.Reporting;
 
 namespace TestingClient
@@ -21,7 +22,7 @@ namespace TestingClient
             //TODO Implement Tester-Switch, depends on UserInput
 
 
-            ContactsPerformanceTesting contactsTesting = new ContactsPerformanceTesting { TestConditions = testConditions};
+            NewsPerformanceTesting contactsTesting = new NewsPerformanceTesting { TestConditions = testConditions};
 
             contactsTesting.PerfomTest().Wait();
             TestReport report = contactsTesting.generateTestReport();
