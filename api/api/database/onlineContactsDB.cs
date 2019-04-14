@@ -30,8 +30,9 @@ namespace api.database
             {
                 using (sqlConnection)
                 {
-                    string SQL = "INSERT INTO [contact] ([contacttypid],[lastname],[firstname],[titel],[mail], [phonenumber],[roomnumber]) " +
-                        "VALUES('1','" + item.LastName + "','" + item.FirstName + "','" + item.Title + "','" + item.Email + "','" + item.TelNumber + "','" + item.Room + "');" +
+                    //In der SQL Anweisung muss noch Contacttypid und CourseTypID und Verantwortlicher geändert werden.
+                    string SQL = "INSERT INTO [contact] ([contacttypid],[lastname],[firstname],[titel],[mail], [phonenumber],[roomnumber],[coursetypid]) " +
+                        "VALUES('1','" + item.LastName + "','" + item.FirstName + "','" + item.Title + "','" + item.Email + "','" + item.TelNumber + "','" + item.Room + "',NULL);" +
                         "SELECT SCOPE_IDENTITY();";
                     sqlConnection.Open();
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
@@ -90,6 +91,7 @@ namespace api.database
             {
                 using (sqlConnection)
                 {
+                    //In der SQL Anweisung muss noch Contacttypid und CourseTypID  und Verantwortlicher geändert werden.
                     string SQL = "UPDATE [contact] SET [lastname]='"+item.LastName+"',[firstname]='"+item.FirstName+"',[titel]='"+item.Title+"',[mail]='"+item.Email+"', [phonenumber]='"+item.TelNumber+"',[roomnumber]='"+item.Room+"' WHERE [contactid] ='"+id.ToString()+"';";
                     sqlConnection.Open();
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
@@ -121,7 +123,14 @@ namespace api.database
 
                     ContactItem SQLItem = new ContactItem();
                     List<ContactItem> ContactItemList = new List<ContactItem>();
-                    string SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact];";
+                    string SQL = "SELECT [contactid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber], " +
+                        "[contact].contacttypid,[contacttyp].typname AS contacttyp_typname ,[contact].coursetypid,[coursetyp].[typname] AS coursetyp_typname" +
+                        " FROM[contact]" +
+                        " LEFT JOIN[coursetyp]" +
+                        " ON[coursetyp].[coursetypid] =[contact].[coursetypid]" +
+                        " LEFT JOIN[contacttyp]" +
+                        " ON[contacttyp].[contacttypid] = [contact].contacttypid;";
+
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
@@ -137,8 +146,8 @@ namespace api.database
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
                         SQLItem.Responsibility = myReader["coursetypid"].ToString();
-                        SQLItem.Course = myReader["coursetypid"].ToString();
-                        SQLItem.Type = myReader["contacttypid"].ToString();
+                        SQLItem.Course = myReader["coursetyp_typname"].ToString();
+                        SQLItem.Type = myReader["contacttyp_typname"].ToString();
                         ContactItemList.Add(SQLItem);
                     }
                     sqlConnection.Close();
@@ -174,6 +183,8 @@ namespace api.database
         {
             return GetContactItemByValue(email,2);
         }
+
+        // Returns a ContactItem based on the given ID (Typ=1) or E-Mail-Address(typ=2) 
         private ContactItem GetContactItemByValue(string value, int typ)
         {
             sqlConnection = null;
@@ -184,13 +195,23 @@ namespace api.database
                 {
                     string SQL = "";
                     ContactItem SQLItem = new ContactItem();
+
+                    SQL = "SELECT [contactid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber], " +
+                        "[contact].contacttypid,[contacttyp].typname AS contacttyp_typname ,[contact].coursetypid,[coursetyp].[typname] AS coursetyp_typname" +
+                        " FROM[contact]" +
+                        " LEFT JOIN[coursetyp]" +
+                        " ON[coursetyp].[coursetypid] =[contact].[coursetypid]" +
+                        " LEFT JOIN[contacttyp]" +
+                        " ON[contacttyp].[contacttypid] = [contact].contacttypid ";
                     if (typ==1)
                     {
-                       SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [contactid]='" + value + "';";
+                        //Innerjoin fehlt
+                        SQL += " WHERE [contactid]='" + value + "';";
                     }
                     if (typ == 2)
                     {
-                       SQL = "SELECT [contactid],[contacttypid],[lastname],[firstname],[titel],[mail],[phonenumber],[roomnumber],[coursetypid] FROM [contact] WHERE [mail]='" + value + "';";
+                        //Innerjoin fehlt
+                        SQL += " WHERE [mail]='" + value + "';";
                     }
 
                     sqlConnection.Open();
@@ -208,8 +229,8 @@ namespace api.database
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
                         SQLItem.Responsibility = myReader["coursetypid"].ToString();
-                        SQLItem.Course = myReader["coursetypid"].ToString();
-                        SQLItem.Type = myReader["contacttypid"].ToString();
+                        SQLItem.Course = myReader["contacttyp_typname"].ToString();  
+                        SQLItem.Type = myReader["coursetyp_typname"].ToString();
                         sqlConnection.Close();
                         sqlConnection = null;
                         return SQLItem;
