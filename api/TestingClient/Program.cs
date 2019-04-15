@@ -8,6 +8,8 @@ using TestingClient.Testing.Performance.News;
 using TestingClient.Testing.Performance.Timetable;
 using TestingClient.Testing.Performance.Postgroup;
 using TestingClient.Testing.Reporting;
+using TestingClient.Testing.Performance.Abstract;
+using TestingClient.Testing.Reporting.Export;
 
 namespace TestingClient
 {
@@ -15,64 +17,103 @@ namespace TestingClient
     {
         static void Main(string[] args)
         {
-
+            bool run = true;
             Console.WriteLine("Welcome to BAGCST-Backend Tester.");
-            Console.WriteLine("Please choose your test: Contacts/News/Timetable/Postgroup (or press enter to do all) ");
-            string answer = Console.ReadLine();
 
-            TestConditions testConditions = new TestConditions { Iterations = 100, WaitingMethod = new RandomWaiting { MinDelay = 100, MaxDelay = 200 } };
-
-            //TODO Implement Tester-Switch, depends on UserInput
-
-
-            ContactsPerformanceTesting contactsTesting = new ContactsPerformanceTesting { TestConditions = testConditions };
-            NewsPerformanceTesting newsTesting = new NewsPerformanceTesting { TestConditions = testConditions };
-            TimetablePerformanceTesting timetableTesting = new TimetablePerformanceTesting { TestConditions = testConditions };
-            PostgroupPerformanceTesting postgroupTesting = new PostgroupPerformanceTesting { TestConditions = testConditions };
-
-            switch (answer)
+            do
             {
-                case "Contacts":
-                    contactsTesting.PerfomTest().Wait();
-                    TestReport contactsReport = contactsTesting.generateTestReport();
-                    contactsTesting.ExportToFileSystem();
-                    Console.WriteLine(contactsReport.ToString()); break;
+                Console.WriteLine("Please choose your test: Contacts/News/Timetable/Postgroup (or press enter to do all) ");
+                string answer = Console.ReadLine().ToLower().Trim(); //change to lower chase and remove spaces bevor and end
 
-                case "News":
-                    newsTesting.PerfomTest().Wait();
-                    TestReport newsReport = newsTesting.generateTestReport();
-                    Console.WriteLine(newsReport.ToString()); break;
+                TestConditions testConditions = new TestConditions { Iterations = 100, WaitingMethod = new RandomWaiting { MinDelay = 100, MaxDelay = 200 } };
 
-                case "Timetable":
-                    timetableTesting.PerfomTest().Wait();
-                    TestReport timetableReport = timetableTesting.generateTestReport();
-                    Console.WriteLine(timetableReport.ToString()); break;
+                //TODO Implement Tester-Switch, depends on UserInput
 
-                case "Postgroup":
-                    postgroupTesting.PerfomTest().Wait();
-                    TestReport postgroupReport = postgroupTesting.generateTestReport();
-                    Console.WriteLine(postgroupReport.ToString()); break;
 
-                default:
-                    contactsTesting.PerfomTest().Wait();
-                    TestReport allContactsReport = contactsTesting.generateTestReport();
-                    Console.WriteLine(allContactsReport.ToString());
 
-                    newsTesting.PerfomTest().Wait();
-                    TestReport allNewsReport = newsTesting.generateTestReport();
-                    Console.WriteLine(allNewsReport.ToString());
+                switch (answer)
+                {
+                    case "contacts":
+                        handleContactsTesting(testConditions); break;
 
-                    timetableTesting.PerfomTest().Wait();
-                    TestReport allTimetableReport = timetableTesting.generateTestReport();
-                    Console.WriteLine(allTimetableReport.ToString());
+                    case "news":
+                        handleNewsTesting(testConditions); break;
 
-                    postgroupTesting.PerfomTest().Wait();
-                    TestReport allPostgroupReport = postgroupTesting.generateTestReport();
-                    Console.WriteLine(allPostgroupReport.ToString());
-                    break;      
+                    case "timetable":
+                        handleTimetableTesting(testConditions); break;
+
+                    case "postgroup":
+                        handlePostgroupTesting(testConditions); break;
+
+                    default:
+                        handleContactsTesting(testConditions);
+                        handleTimetableTesting(testConditions);
+                        handlePostgroupTesting(testConditions);
+                        handleNewsTesting(testConditions);
+                        break;
+                }
+
+                //Set the run to the UserInput
+                run = UserInputIsTrue("Would you like to tun an another test?");
+            } while (run);
+
+            Console.WriteLine("Thanks for you usage. Please click any key to close the windows.");
+            Console.ReadKey(true);
+            
+        }
+
+        private static void handlePostgroupTesting(TestConditions testConditions)
+        {
+            runTest(new PostgroupPerformanceTesting { TestConditions = testConditions });
+        }
+
+        private static void handleTimetableTesting(TestConditions testConditions)
+        {
+            runTest(new TimetablePerformanceTesting { TestConditions = testConditions });
+        }
+
+        private static void handleNewsTesting(TestConditions testConditions)
+        {
+            runTest(new NewsPerformanceTesting { TestConditions = testConditions });
+        }
+
+        private static void handleContactsTesting(TestConditions testConditions)
+        {
+            runTest(new ContactsPerformanceTesting {TestConditions = testConditions });
+        }
+
+        private static void runTest(PerformanceTesting test)
+        {
+            test.PerfomTest().Wait();
+            TestReport report = test.generateTestReport();
+            if (UserInputIsTrue("Want to show the Testresults?"))
+            {
+                Console.WriteLine(report.ToString());
             }
 
-            Console.ReadLine();
+            if (UserInputIsTrue("Want to Export to Filesystem?"))
+            {
+                test.ExportToFileSystem();
+            }
+            
+        }
+
+        private static bool UserInputIsTrue(string text)
+        {
+            Console.WriteLine(text + " [y|n]");
+            bool notValid = true;
+            while (notValid)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                char letter = keyInfo.KeyChar;
+
+                if (letter == 'y' || letter == 'Y') { return true; }
+
+                if (letter == 'n' || letter == 'N') { return false; }
+
+                Console.WriteLine($"Invalid input '{keyInfo.ToString()}', please insert 'y' or 'n'");
+            }
+            return false;
             
         }
     }

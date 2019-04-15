@@ -29,7 +29,7 @@ namespace TestingClient.Testing.Reporting.Export
 
         private void setDirctoryName()
         {
-            this.DirectoryName = $"{perfomanceTest.StartTime.ToString("yyyy.MM.dd hh:mm:ss")} - {perfomanceTest.TestName}";
+            this.DirectoryName = $"{perfomanceTest.StartTime.ToString("yyyy-MM-dd hhmmss")} - {perfomanceTest.TestName}";
         }
 
         private void checkifCreatedAndCreate()

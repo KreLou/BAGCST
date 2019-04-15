@@ -27,6 +27,7 @@ namespace TestingClient.Testing.Performance.Abstract
 
         public string TestName { get { return this.GetType().Name; } }
 
+        private TestReportGenerator generator;
         public PerformanceTesting(string url)
         {
             this.RequestURL = url;
@@ -61,7 +62,7 @@ namespace TestingClient.Testing.Performance.Abstract
 
         public TestReport generateTestReport()
         {
-            TestReportGenerator generator = new TestReportGenerator(this.GetType().Name,  this.ResponseInformation);
+            generator = new TestReportGenerator(this.GetType().Name,  this.ResponseInformation);
 
             return generator.getTestReport();
         }
@@ -69,6 +70,17 @@ namespace TestingClient.Testing.Performance.Abstract
         private void handleWaiting()
         {
             this.TestConditions.WaitingMethod.Wait();
+        }
+
+        internal void ExportToFileSystem()
+        {
+            DirectoryExporter directory = new DirectoryExporter(this);
+
+            RequestCSVExporter csv = new RequestCSVExporter(directory);
+            csv.export(this.ResponseInformation);
+
+            TestReportExporter testExporter = new TestReportExporter(directory);
+            testExporter.exportTestReport(generator.getTestReport());
         }
     }
 }
