@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TestingClient.Testing.Configuration;
 using TestingClient.Testing.Configuration.WaitingMethod;
 using TestingClient.Testing.Reporting;
+using TestingClient.Testing.Reporting.Export;
 
 namespace TestingClient.Testing.Performance.Abstract
 {
@@ -22,6 +23,10 @@ namespace TestingClient.Testing.Performance.Abstract
 
         public TestConditions TestConditions { get; set; }
 
+        public DateTime StartTime { get; private set; }
+
+        public string TestName { get { return this.GetType().Name; } }
+
         public PerformanceTesting(string url)
         {
             this.RequestURL = url;
@@ -32,6 +37,7 @@ namespace TestingClient.Testing.Performance.Abstract
 
         public async Task PerfomTest()
         {
+            StartTime = DateTime.Now;
             Console.WriteLine("Use WaitingMethod: " + this.TestConditions.WaitingMethod.GetType().Name);
             List<RequestResponseInformation> listResponseInformation = new List<RequestResponseInformation>();
 

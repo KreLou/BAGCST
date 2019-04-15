@@ -35,6 +35,7 @@ namespace TestingClient
                 case "Contacts":
                     contactsTesting.PerfomTest().Wait();
                     TestReport contactsReport = contactsTesting.generateTestReport();
+                    contactsTesting.ExportToFileSystem();
                     Console.WriteLine(contactsReport.ToString()); break;
 
                 case "News":
