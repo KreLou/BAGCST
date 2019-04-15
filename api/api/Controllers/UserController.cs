@@ -44,23 +44,10 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult getUserByID(long id)
         {
-            UserItem user = getFullUserItem(id);
+            UserItem user = userDatabase.getUserItem(id);
             if (user == null)
             {
                 return NotFound("No UserItem found for ID: " + id);
-            }
-            return Ok(user);
-        }
-
-        [HttpGet("me")]
-        public ActionResult getMyUserInformation()
-        {
-            long userID = 1; //TODO Change to Token
-
-            UserItem user = getFullUserItem(userID);
-            if (user == null)
-            {
-                return NotFound("No UserItem found for ID:" + userID);
             }
             return Ok(user);
         }
@@ -85,12 +72,13 @@ namespace api.Controllers
             return Ok(user);
         }
 
+        [Obsolete("This is no longer used")]
         private UserItem getFullUserItem(long userID)
         {
             UserItem user = userDatabase.getUserItem(userID);
             if (user != null)
             {
-                user.SubscribedPostGroups = settingsDatabase.getSubscribedPostGroupsSettings(userID);
+                user.SubscribedPostGroups = settingsDatabase.getUserSettings(userID).SubscribedPostGroups;
                 user.PostGroups = postGroupDatabase.getPostGroupsWhereUserIsAuthor(userID);
             }
             return user;
