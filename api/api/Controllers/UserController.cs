@@ -35,6 +35,7 @@ namespace api.Controllers
             return new offlineUserDB();
         }
 
+
         [HttpGet]
         public UserItem[] getAllUserItems()
         {
@@ -70,18 +71,6 @@ namespace api.Controllers
 
             user = userDatabase.editUserItem(id, user);
             return Ok(user);
-        }
-
-        [Obsolete("This is no longer used")]
-        private UserItem getFullUserItem(long userID)
-        {
-            UserItem user = userDatabase.getUserItem(userID);
-            if (user != null)
-            {
-                user.SubscribedPostGroups = settingsDatabase.getUserSettings(userID).SubscribedPostGroups;
-                user.PostGroups = postGroupDatabase.getPostGroupsWhereUserIsAuthor(userID);
-            }
-            return user;
         }
 
     }

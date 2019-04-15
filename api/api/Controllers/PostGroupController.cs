@@ -125,7 +125,7 @@ namespace api.Controllers
 
             if (database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
             {
-                return Ok();
+                return Created("", null);
             }
             return BadRequest($"Could not add the User with the ID: {userID} to the PostGroup by ID: {postGroupID}");
             
@@ -143,7 +143,7 @@ namespace api.Controllers
 
             if (!database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
             {
-                return Ok();
+                return Created("", null);
             }
             return BadRequest($"Could not delete User {userID} from PostGroupItem {postGroupID}");
          }

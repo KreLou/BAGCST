@@ -47,15 +47,5 @@ namespace api.Models
         /// e.g. "WI16-1"
         /// </summary>
         public string StudyGroup { get; set; }
-
-        /// <summary>
-        /// ID of PostGroups, where user can post news
-        /// </summary>
-        public PostGroupItem[] PostGroups { get; set; }
-        
-        /// <summary>
-        /// ID for PostGroups, which user subscribs
-        /// </summary>
-        public PostGroupUserPushNotificationSetting[] SubscribedPostGroups { get; set; }
     }
 }

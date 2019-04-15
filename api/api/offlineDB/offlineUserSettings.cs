@@ -13,39 +13,47 @@ namespace api.offlineDB
     {
         private string file_subscribedPostGroups = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroupuser.csv";
 
-        public PostGroupUserPushNotificationSetting[] getSubscribedPostGroupsSettings(long userID)
+        private readonly offlineUserDB userDB;
+        private readonly offlinePostGroupDB postGroupDB;
+
+        public offlineUserSettings()
         {
-            List<PostGroupUserPushNotificationSetting> subscribedIDs = new List<PostGroupUserPushNotificationSetting>();
+            this.userDB = new offlineUserDB();
+            this.postGroupDB = new offlinePostGroupDB();
+        }
+        
+        public UserSettingsItem getUserSettings(long userID)
+        {
+            List<PostGroupItem> subscribedIDs = new List<PostGroupItem>();
             using (StreamReader sr = new StreamReader(file_subscribedPostGroups))
             {
                 string currentLine = null;
-                while((currentLine = sr.ReadLine()) != null)
+                while ((currentLine = sr.ReadLine()) != null)
                 {
                     string[] args = currentLine.Split(";");
                     long foundedUser = Convert.ToInt64(args[0]);
                     int foundPostGroup = Convert.ToInt32(args[1]);
-                    PushNotificationType notificationType = PushNotificationType.Always;
 
                     if (foundedUser == userID)
                     {
-                        PostGroupUserPushNotificationSetting setting = new PostGroupUserPushNotificationSetting
-                        {
-                            PostGroupID = foundPostGroup,
-                            Type = notificationType
-                        };
-                        subscribedIDs.Add(setting);
+                        subscribedIDs.Add(postGroupDB.getPostGroupItem(foundPostGroup));
                     }
                 }
             }
-            return subscribedIDs.Distinct().ToArray();
+
+            UserSettingsItem settings = new UserSettingsItem
+            {
+                SubscribedPostGroups = subscribedIDs.ToArray()
+            };
+            return settings;
         }
 
-        public void setSubscribedPostGroupIDs(long userID, PostGroupUserPushNotificationSetting[] postGroupIDs)
+        public void setUserSettings(long userID, UserSettingsItem settings)
         {
-            string[] lines = new string[postGroupIDs.Length];
-            for (int i = 0; i < postGroupIDs.Length; i++)
+            string[] lines = new string[settings.SubscribedPostGroups.Length];
+            for (int i = 0; i < settings.SubscribedPostGroups.Length; i++)
             {
-                lines[i] = userID + ";" + postGroupIDs[i].PostGroupID + ";" + postGroupIDs[i].Type;
+                lines[i] = userID + ";" + settings.SubscribedPostGroups[i].PostGroupID;
             }
             File.AppendAllLines(file_subscribedPostGroups, lines);
         }

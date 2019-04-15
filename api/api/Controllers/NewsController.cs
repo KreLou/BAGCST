@@ -48,10 +48,10 @@ namespace api.Controllers
         {
             long userID = 1; //TODO Get User-ID by Token
 
-            PostGroupUserPushNotificationSetting[] settings = userSettingsDatabase.getSubscribedPostGroupsSettings(userID);
+            UserSettingsItem settings = userSettingsDatabase.getUserSettings(userID);
 
             //Only select the PostGroupID from the Fields
-            int[] groups = settings.Select(x => x.PostGroupID).ToArray();
+            int[] groups = settings.SubscribedPostGroups.Select(x => x.PostGroupID).ToArray();
             //TODO Groups settings should be stored in the database
             return database.getPosts(amount, start, groups);
         }

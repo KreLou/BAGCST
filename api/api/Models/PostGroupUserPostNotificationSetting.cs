@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
+    [Obsolete("Currently not used")]
     public class PostGroupUserPushNotificationSetting
     {
         public int PostGroupID { get; set; }

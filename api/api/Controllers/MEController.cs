@@ -16,21 +16,46 @@ namespace api.Controllers
     {
         private IUserDB userDB;
         private IUserSettingsDB userSettingsDB;
+        private IPostGroupDB postGroupDB;
         
         public MEController()
         {
+            this.postGroupDB = new offlinePostGroupDB();
             this.userDB = new offlineUserDB();
             this.userSettingsDB = new offlineUserSettings();
         }
 
+        /// <summary>
+        /// Returns the Settings for the current User
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("settings")] 
         public IActionResult getSettings()
         {
             long userID = 1; //TODO Get From Token
 
-            return Ok();
+            return Ok(userSettingsDB.getUserSettings(userID));
+        }
+        
+        /// <summary>
+        /// Replace the Settings for the current user
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        [HttpPost("settings")]
+        public IActionResult postSettings([FromBody] UserSettingsItem settings)
+        {
+            long userID = 1; //TODO Get from Token
+            this.userSettingsDB.setUserSettings(userID, settings);
+
+            settings = userSettingsDB.getUserSettings(userID);
+            return Ok(settings);
         }
 
+        /// <summary>
+        /// Get the Information about the current user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("info")]
         public IActionResult getInfo()
         {
@@ -41,6 +66,20 @@ namespace api.Controllers
             if (userItem == null) return NotFound("No UserItem found for your ID: " + userID);
 
             return Ok(userItem);
+        }
+
+        /// <summary>
+        /// Returns the PostGroups, where the User is author
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("postgroups")]
+        public IActionResult getPostGroups()
+        {
+            long userID = 1;
+
+            PostGroupItem[] postGroups = postGroupDB.getPostGroupsWhereUserIsAuthor(userID);
+
+            return Ok(postGroups);
         }
     }
 }

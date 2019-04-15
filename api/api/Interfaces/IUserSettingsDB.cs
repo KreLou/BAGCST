@@ -8,9 +8,10 @@ namespace api.Interfaces
 {
     public interface IUserSettingsDB
     {
-        PostGroupUserPushNotificationSetting[] getSubscribedPostGroupsSettings(long userID);
 
-        void setSubscribedPostGroupIDs(long userID, PostGroupUserPushNotificationSetting[] postGroupIDs);
+        UserSettingsItem getUserSettings(long userID);
+
+        void setUserSettings(long userID, UserSettingsItem settings);
 
 
     }
