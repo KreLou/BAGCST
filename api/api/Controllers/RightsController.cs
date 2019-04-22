@@ -16,7 +16,7 @@ namespace api.Controllers
         private IRightsDB database = getDatabase();
         private static IRightsDB getDatabase()
         {
-            return new offlineDB_Rights();
+            return new offlineRightsDB();
         }
 
         /// <summary>

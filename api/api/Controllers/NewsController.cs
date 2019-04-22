@@ -81,7 +81,7 @@ namespace api.Controllers
                 return Created("",  item); 
 
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -94,7 +94,7 @@ namespace api.Controllers
             {
                 database.deletePost(id);
                 return Ok();
-            }catch(Exception ex)
+            }catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -120,7 +120,8 @@ namespace api.Controllers
             {
                 database.editPost(item);
                 return Ok(item);
-            } catch(Exception ex)
+            } 
+            catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }

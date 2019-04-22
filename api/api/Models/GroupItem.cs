@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
-    public class Group
+    public class GroupItem
     {
         /// <summary>
         /// the ID of the group

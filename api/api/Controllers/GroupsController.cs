@@ -21,12 +21,12 @@ namespace api.Controllers
 
         private static IRightsDB getRightsDatabase()
         {
-            return new offlineDB_Rights();
+            return new offlineRightsDB();
         }
 
         private static IGroupsDB getDatabase()
         {
-            return new offlineDB_Groups();
+            return new offlineGroupsDB();
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns>Group</returns>
         [HttpGet("{id}")]
-        public ActionResult<Group> getGroup(int id)
+        public ActionResult<GroupItem> getGroup(int id)
         {
-            Group group = database.getGroup(id);
+            GroupItem group = database.getGroup(id);
             if (group == null)
             {
                 return NotFound($"No Group found for id: {id}");
@@ -49,14 +49,14 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Group[]> getAllGroups()
+        public ActionResult<GroupItem[]> getAllGroups()
         {
-            Group[] groups = database.getAllGroups();
+            GroupItem[] groups = database.getAllGroups();
             return Ok(groups);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Group> editGroup(int id, [FromBody] Group group_in)
+        public ActionResult<GroupItem> editGroup(int id, [FromBody] GroupItem group_in)
         {
             //Check if id is valid
             //if (database.getGroup(id) == null)
@@ -85,7 +85,7 @@ namespace api.Controllers
             }
 
             //update existing group
-            Group group_out = database.editGroup(id, group_in);
+            GroupItem group_out = database.editGroup(id, group_in);
 
             //return new item
             return Ok(group_out);
@@ -109,7 +109,7 @@ namespace api.Controllers
         /// <param name="group_in"></param>
         /// <returns>Group|BadRequest</returns>
         [HttpPost]
-        public ActionResult<Group> createGroup(Group group_in)
+        public ActionResult<GroupItem> createGroup(GroupItem group_in)
         {
             //TODO check for permission
 
@@ -132,7 +132,7 @@ namespace api.Controllers
             }
 
             
-            Group group_out = database.createGroup(group_in);
+            GroupItem group_out = database.createGroup(group_in);
             return Created("", group_out);
         }
 
