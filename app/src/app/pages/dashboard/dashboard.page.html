@@ -17,18 +17,22 @@
 </ion-header>
 
 
-<ion-menu side="start" menuId="dashboardMenu" contentId="content">
+<ion-menu side="end" menuId="dashboardMenu" contentId="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menü</ion-title>
+      <ion-title>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item>Item 1</ion-item>
-      <ion-item>Item 1</ion-item>
-      <ion-item>Item 1</ion-item>
-      <ion-item>Item 1</ion-item>
+      <ion-menu-toggle *ngFor="let page of sideMenuPages">
+        <ion-item [routerLink]="['/' + page.url]">
+          <ion-icon *ngIf="page.icon" slot="start" [name]="page.icon"></ion-icon>
+          <ion-label>
+            {{page.title}}
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
     </ion-list>
   </ion-content>
 </ion-menu>

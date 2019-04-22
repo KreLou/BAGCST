@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +9,15 @@ import {MenuController} from '@ionic/angular';
 })
 export class DashboardPage implements OnInit {
 
-  constructor(private menu: MenuController) { }
+	sideMenuPages = [
+		{title: 'Administration', url: 'administrator', icon: undefined},
+		{title: 'Settings', url: 'settings', icon: undefined},
+		{title: 'Imprint', url: 'imprint', icon: undefined},
+		{title: 'Privacy', url: 'privacy', icon: undefined},
+		{title: 'About', url: 'about', icon: undefined},
+	]
+
+  constructor(private menu: MenuController, private router: Router) { }
 
   ngOnInit() {
     this.menu.enable(true, 'dashboardMenu');
