@@ -76,11 +76,6 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
-/** Don't show in iOS **/
-.platform-ios.platform-cordova .noios {
-  display: none;
-}
-
 /** Header Title Layout **/
 .headerbutton {
   position: absolute;
@@ -105,4 +100,15 @@
   position: relative;
   top: 25px;
   left: 25px;
+}
+
+/** iOS Header Title Layout **/
+.ios .headerlogo {
+  display: none;
+}
+
+.ios .headertitle {
+  position: relative;
+  top: 5px;
+  left: 0px;
 }
