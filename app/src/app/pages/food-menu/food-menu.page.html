@@ -3,13 +3,17 @@
       <ion-title>Speisepläne BA Glauchau</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content padding="true" class="has-header">
-    <div id="BackToDashboard">
+  <ion-content padding="true">
+    <div id="DshbrdBtnDate" class="center">
     <a href="dashboard.page.html"><ion-button>
       <ion-icon name="arrow-back"></ion-icon>Dashboard</ion-button>
     </a>
+    <ion-item class="nextToEach">
+      <label>
+        {{formattedDate}}
+      </label>
+    </ion-item>
     </div>
-    <h4 id="date">Print the date</h4>
     <div class=spacer></div>
     <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KWXX:</h3>
     <div class="spacer"></div>
