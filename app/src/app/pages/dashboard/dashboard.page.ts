@@ -11,10 +11,10 @@ export class DashboardPage implements OnInit {
 
 	sideMenuPages = [
 		{title: 'Administration', url: 'administrator', icon: undefined},
-		{title: 'Settings', url: 'settings', icon: undefined},
-		{title: 'Imprint', url: 'imprint', icon: undefined},
-		{title: 'Privacy', url: 'privacy', icon: undefined},
-		{title: 'About', url: 'about', icon: undefined},
+		{title: 'Einstellungen', url: 'settings', icon: undefined},
+		{title: 'Impressum', url: 'imprint', icon: undefined},
+		{title: 'Datenschutz', url: 'privacy', icon: undefined},
+		{title: 'Über diese APP', url: 'about', icon: undefined},
 	]
 
   constructor(private menu: MenuController, private router: Router) { }
