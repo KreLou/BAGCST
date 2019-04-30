@@ -18,7 +18,7 @@ namespace api.Controllers
         private static IContactsDB getDatabase()
         {
             //TODO set environment
-            return new offlineDB_contacts();
+            return new offlineContactsDB();
         }
 
         /// <summary>
