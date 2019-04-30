@@ -5,7 +5,7 @@
   </ion-header>
   <ion-content padding="true">
     <div id="DshbrdBtnDate" class="center">
-    <a href="dashboard.page.html"><ion-button>
+    <a href="dashboard"><ion-button>
       <ion-icon name="arrow-back"></ion-icon>Dashboard</ion-button>
     </a>
     <ion-item class="nextToEach">
@@ -15,7 +15,7 @@
     </ion-item>
     </div>
     <div class=spacer></div>
-    <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KWXX:</h3>
+    <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KW {{weekNumber}}:</h3>
     <div class="spacer"></div>
     <ion-text color="Primary">
       <p>Montag:</p>
@@ -26,8 +26,8 @@
     </ion-text>
     <div class="spacer"></div>
     <div id="Auswahl_buttons" class="centered_buttons">
-      <ion-button id="Button_show_Mensa">Mensa</ion-button>
-      <ion-button id="Button_show_Lennarts">Lennart's</ion-button>
+      <ion-button id="Button_show_Mensa"><ion-icon name="arrow-dropleft"></ion-icon>Mensa</ion-button>
+      <ion-button id="Button_show_Lennarts">Lennart's<ion-icon name="arrow-dropright"></ion-icon></ion-button>
     </div>
   </ion-content>
 
