@@ -48,7 +48,32 @@ namespace api.database
         /// <returns></returns>
         public NewsItem editPost(NewsItem item)
         {
-            throw new NotImplementedException();
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+                    string SQL = "UPDATE [news] SET " +
+                        "[newsgroupid]='" + item.PostGroup.PostGroupID.ToString() + "'," +
+                        "[headline]='" + item.Title + "',[text]='" + item.Message + "'," +
+                        "[updatetime]= CURRENT_TIMESTAMP,[push]=0," +
+                        "[attachmentsid]=NULL " +
+                        " WHERE [newsid] ='" + item.ID.ToString() + "';";
+
+                    sqlConnection.Open();
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    myCommand.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return item;
+                }
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -60,7 +85,67 @@ namespace api.database
         /// <returns></returns>
         public NewsItem[] getPosts(int amount, int startID, int[] groups)
         {
-            throw new NotImplementedException();
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+                    string groupid="";
+                    int j = 0;
+                    foreach (int i in groups)
+                    {
+
+                        if (j > 0)
+                        {
+                            groupid = groupid + "," + i.ToString();
+                        }
+                        else
+                        {
+                            groupid = i.ToString();
+                        }
+                        j++;                       
+                    }
+
+                    NewsItem SQLItem = new NewsItem();
+                    SQLItem.PostGroup = new PostGroupItem();
+                List<NewsItem> NewsItemList = new List<NewsItem>();
+                    string SQL = "Select TOP " + amount +  " news.newsid, news.newsgroupid, news.headline, news.text, news.createtime, news.updatetime, news.push, news.attachmentsid, newsgroup.newsgroupname " +
+                        "from news " +
+                        "LEFT JOIN newsgroup on news.newsgroupid = newsgroup.newsgroupid " +
+                        "WHERE news.newsid >= " + startID + " AND news.newsgroupid IN(" + groupid + ")"+
+                        " ORDER BY newsid DESC";
+
+                    sqlConnection.Open();
+                    SqlDataReader myReader = null;
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    myReader = myCommand.ExecuteReader();
+
+                    while (myReader.Read())
+                    {
+                        SQLItem.ID = Convert.ToInt32(myReader["newsid"]);
+                        SQLItem.Message = myReader["text"].ToString();
+                        SQLItem.Title= myReader["headline"].ToString();
+                        SQLItem.Date = Convert.ToDateTime(myReader["createtime"]);
+                        //SQLItem.AuthorID 
+                        SQLItem.PostGroup.PostGroupID = Convert.ToInt32(myReader["newsgroupid"]);
+                        SQLItem.PostGroup.Name= myReader["newsgroupname"].ToString();
+                        NewsItemList.Add(SQLItem);
+                        SQLItem = new NewsItem();
+                        SQLItem.PostGroup = new PostGroupItem();
+                    }
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return NewsItemList.ToArray();
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -70,7 +155,30 @@ namespace api.database
         /// <returns></returns>
         public NewsItem saveNewPost(NewsItem item)
         {
-            throw new NotImplementedException();
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+                    string SQL = "INSERT INTO [news] ([newsgroupid],[headline],[text],[createtime],[updatetime],[push],[attachmentsid])  " +
+                        "VALUES ("+item.PostGroup.PostGroupID.ToString()+ ",'"+item.Title+ "','"+item.Message+ "',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,NULL);" +
+                        "SELECT SCOPE_IDENTITY()";
+
+                    sqlConnection.Open();
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    int LastID = Convert.ToInt32(myCommand.ExecuteScalar());
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    item.ID = LastID;
+                    return item;
+                }
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
     }
 }

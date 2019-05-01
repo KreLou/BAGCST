@@ -2,6 +2,7 @@ using System;
 using api.Models;
 using api.Interfaces;
 using api.offlineDB;
+using api.database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -17,12 +18,14 @@ namespace api.Controllers
 
         private static IPostGroupDB getPostGroupDatabase()
         {
-            return new offlinePostGroupDB();
+            //return new offlinePostGroupDB();
+            return new onlinePostGroupDB();
         }
 
         private static IUserSettings getSettingsDatabase()
         {
             return new offlineUserSettings();
+            
         }
 
         /// <summary>
@@ -32,7 +35,8 @@ namespace api.Controllers
         /// <returns></returns>
         private static IUserDB getUserDatabase()
         {
-            return new offlineUserDB();
+            //return new offlineUserDB();
+            return new onlineUserDB();
         }
 
         [HttpGet]

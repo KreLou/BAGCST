@@ -149,6 +149,7 @@ namespace api.database
                         SQLItem.Course = myReader["coursetyp_typname"].ToString();
                         SQLItem.Type = myReader["contacttyp_typname"].ToString();
                         ContactItemList.Add(SQLItem);
+                        SQLItem = new ContactItem();
                     }
                     sqlConnection.Close();
                     sqlConnection = null;

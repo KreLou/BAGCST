@@ -13,6 +13,7 @@ namespace api.Controllers
     public class NewsController : ControllerBase
     {
 
+
         private INewsDB database = getDatabase();
         private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
         private IUserSettings userSettingsDatabase = getUserSettingsDatabase();
