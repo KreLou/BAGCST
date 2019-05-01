@@ -75,3 +75,40 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+/** Header Title Layout **/
+.headerbutton {
+  position: absolute;
+  right: 2vw;
+  top: -45px;
+  height: 40px;
+}
+
+.headerbutton-ios {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	height: 20px;
+	
+}
+
+.headerlogo {
+  height: 40px;
+}
+
+.headertitle {
+  position: relative;
+  top: 25px;
+  left: 25px;
+}
+
+/** iOS Header Title Layout **/
+.ios .headerlogo {
+  display: none;
+}
+
+.ios .headertitle {
+  position: relative;
+  top: 5px;
+  left: 0px;
+}
