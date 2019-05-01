@@ -11,7 +11,7 @@ namespace api.offlineDB
 {
     public class offlineDB_Groups : IGroupsDB
     {
-        private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\groups.csv";
+        private string csvFile = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groups.csv");
         List<Right> rightsTemp;
 
         /// <summary>

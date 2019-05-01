@@ -10,7 +10,7 @@ namespace api.Databases
 {
     public class offlineDB_Rights : IRightsDB
     {
-        private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\rights.csv";
+        private string csvFile = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","rights.csv");
 
         /// <summary>
         /// returns a Right based on the given ID
