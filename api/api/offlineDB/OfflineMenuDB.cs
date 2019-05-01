@@ -12,7 +12,7 @@ namespace api.offlineDB
     {
 
         private IMealDB mealDataBase = new OfflineMealDB();
-        private string menu_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\menus.csv";
+        private string menu_filename = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","menus.csv");
 
 
         /// <summary>

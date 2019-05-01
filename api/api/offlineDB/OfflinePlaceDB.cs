@@ -12,7 +12,7 @@ namespace api.offlineDB
 {
     public class OfflinePlaceDB : IPlaceDB
     {
-        private string place_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\places.csv";
+        private string place_filename = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","places.csv");
 
         /// <summary>
         /// Creates the string output for Place

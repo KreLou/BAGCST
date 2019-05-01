@@ -15,7 +15,7 @@ namespace api.offlineDB
 
         //TODO @Louis what will be doing when Place is null 
         private IPlaceDB placeDB = new OfflinePlaceDB();
-        private string meal_filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\meals.csv";
+        private string meal_filename = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","meals.csv");
 
   //      private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
    //     private static string filename_place = path_offlineDBFiles + "places.csv";
