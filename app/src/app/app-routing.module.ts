@@ -13,6 +13,7 @@ const routes: Routes = [
 	{ path: 'imprint', loadChildren: './pages/imprint/imprint.module#ImprintPageModule' },
 	{ path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
 	{ path: 'privacy', loadChildren: './pages/privacy/privacy.module#PrivacyPageModule' },
+
 	{ path: '**', redirectTo: 'dashboard'}
 
 ];

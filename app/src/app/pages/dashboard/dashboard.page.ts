@@ -19,6 +19,7 @@ export class DashboardPage implements OnInit {
 
   constructor(private menu: MenuController, private router: Router) { }
 
+
   ngOnInit() {
     this.menu.enable(true, 'dashboardMenu');
   }
