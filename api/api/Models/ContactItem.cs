@@ -59,6 +59,6 @@ namespace api.Models
         /// <summary>
         /// The persons type (lecturer, temporary speaker, student)
         /// </summary>
-        public string Type { get; set; }
+        public UserType Type { get; set; }
     }
 }

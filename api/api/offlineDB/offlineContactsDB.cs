@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Models;
 using api.Interfaces;
 using System.IO;
+using api.offlineDB;
 
 namespace api.Databases
 {
@@ -12,7 +13,12 @@ namespace api.Databases
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
+        private static IUserTypeDB userTypeDB = new offlineUserTypeDB();
 
+        public offlineContactsDB()
+        {
+            userTypeDB = new offlineUserTypeDB();
+        }
 
         private static ContactItem convertToContactItem(string line)
         {
@@ -27,10 +33,16 @@ namespace api.Databases
                 Room = args[5],
                 Responsibility = args[6],
                 Course = args[7],
-                Type = args[8],
+                Type = getUserType(args[8]),
                 Title = args[9]
             };
             return item;
+        }
+
+        private static UserType getUserType(string args)
+        {
+            if (args == null || args == string.Empty) return null;
+            return userTypeDB.getByID(Convert.ToInt32(args));
         }
 
         private static string convertToString(ContactItem item)
