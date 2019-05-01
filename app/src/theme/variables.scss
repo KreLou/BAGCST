@@ -112,7 +112,6 @@
 }
 
 .ios .headertitle {
-  position: relative;
   top: 5px;
   left: 0px;
 }
@@ -123,14 +122,12 @@
 }
 
 .ios .headerbutton {
-  position: absolute;
   right: 2vw;
   top: -20px;
 }
 
 /** Android Menu Title Layout **/
 .md .menutitle {
-  position: relative;
   top: 10px;
   height: 70px;
 }
