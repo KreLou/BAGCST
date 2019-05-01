@@ -54,7 +54,7 @@ namespace api.Models
         /// <summary>
         /// The course (e.g. WI)
         /// </summary>
-        public string Course { get; set; }
+        public StudyCourse Course { get; set; }
 
         /// <summary>
         /// The persons type (lecturer, temporary speaker, student)
