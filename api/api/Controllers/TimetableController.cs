@@ -24,17 +24,22 @@ namespace api.Controllers
             return new offlineTimetableDB();
         }
 
-        [HttpGet("{userid}")]
-        public IActionResult getLectureFeed(int userid)
+        [HttpGet]
+        public IActionResult getLectureFeed()
         {
+            //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
+            //Alt: Forward the whole token to 'getLectures(token)', check for isStudent + studygroup/dozId at central place
+            int userid = 1;
             LectureItem[] lectures = getLectures(userid);
 
             return Ok(lectures);
         }
 
-        [HttpGet("{userid}/export")]
-        public IActionResult getLectureExport(int userid)
+        [HttpGet("export")]
+        public IActionResult getLectureExport()
         {
+            //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
+            int userid = 1;
             string calDateFormat = "yyyyMMddTHHmm00Z";
             var calendarString = new StringBuilder();
 
@@ -76,8 +81,6 @@ namespace api.Controllers
 
             var bytes = Encoding.UTF8.GetBytes(calendarString.ToString());
 
-            //TODO: Check for iOS/Android/Windows acceptance of .ics/.iCal
-            //Question for Wized: Is '.ics' enough on iOS? Please test.
             return File(bytes, "text/calendar", "bagcst_export.ics");
         }
 
@@ -94,7 +97,7 @@ namespace api.Controllers
                 DateTime startDate = currentSemester == null ? getFirstOfMonth() : currentSemester.Start;
                 lectures = timetableDatabase.getSemesterLectures(studygroup, startDate);
             }
-            else //is Lecturer
+            else
             {
                 string dozID = "Prof. Penzel";
                 DateTime startDate = getFirstOfMonth();
@@ -107,6 +110,7 @@ namespace api.Controllers
         private DateTime getFirstOfMonth()
         {
             DateTime today = DateTime.Today;
+
             return new DateTime(today.Year, today.Month, 1);
         }
     }
