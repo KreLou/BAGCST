@@ -88,6 +88,7 @@ namespace api.Controllers
         {
             LectureItem[] lectures = null;
             //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
+            //TODO Ad Switch and Adapter for the UserItem
             string studygroup = "WI16-1";
             bool isStudent = true;
 
