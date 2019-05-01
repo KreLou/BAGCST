@@ -39,7 +39,7 @@ namespace api.Models
         /// topic he's learning
         /// e.g. "WI16"
         /// </summary>
-        public string StudyCourse { get; set; }
+        public StudyCourse StudyCourse { get; set; }
 
         /// <summary>
         /// group of profil
