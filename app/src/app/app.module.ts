@@ -12,8 +12,10 @@ import {HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
+  entryComponents: [
+    LoginComponent
+  ],
   declarations: [AppComponent, LoginComponent],
-  entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
