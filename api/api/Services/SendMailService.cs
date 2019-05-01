@@ -1,4 +1,5 @@
 ﻿using api.Models;
+using api.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,14 @@ namespace api.Handler
         public string Receiver { get; private set; }
         public string Sender { get; private set; }
 
+        private UserItem user;
         private ServerConfig configData;
 
-        public SendMailService(string receiver)
+        private readonly MailContentLoader _mailContentLoader;
+
+        public SendMailService(MailContentLoader contentLoader)
         {
-            this.Receiver = receiver;
+            this._mailContentLoader = contentLoader;
             this.configData = ServerConfigHandler.ServerConfig;
             this.Sender = configData.SMTP_SendAs;
         }
@@ -26,6 +30,7 @@ namespace api.Handler
         public void sendMail(string subject, string body)
         {
             MailMessage message = new MailMessage(Sender, Receiver);
+            message.IsBodyHtml = true;
             message.Subject = subject;
             message.Body = body;
 
@@ -50,17 +55,16 @@ namespace api.Handler
 
         public void sendRegistrationMail(SessionItem session)
         {
-            string message = $@"
-                Herzlich Willkommen zur APP der BA-Glauchau\n
-
-Sie versuchen gerade ein neues Gerät anzumelden.<br>
-Um die Registrierung abzuschließen klicken Sie bitte auf den folgenden Links:<br>
-<a href=""http://app.ba-glauchau.de/register/{session.ActivationCode}"">Hier</a><br><br>
-
-                ";
-
+            string message = _mailContentLoader.getFormatedMessage(session, user);
             string subject = "Registrierung BA-Glauchau-APP";
             sendMail(subject, message);
+        }
+
+        internal void setUser(UserItem user)
+        {
+            this.user = user;
+            this.user = user;
+            this.Receiver = user.Email;
         }
     }
 }

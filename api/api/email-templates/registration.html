@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        body {
+            background-color: #009ee3;
+        }
+
+        .ba-container{
+            color: #fff;
+            background-color: #07558C;
+            padding: 0.12em;
+            font-size: 2em;
+        }
+
+        .message{
+            font-size: large;
+        }
+
+
+        .activationLink {
+            padding: 1em;
+            background-color: gray;
+            letter-spacing: 2px;
+            font-weight:bold;
+            color: #e5004b
+        }
+    </style>
+</head>
+<body>
+    <div class="ba-container">
+        <h1>BA-Glauchau APP</h1>
+    </div>
+    <div class="message">
+        <p>Herzlich Willkommen {{firstname}} {{lastname}} zur App.</p>
+
+        <p>Deine E-Mail-Adresse wurde eben zur Registrierung angegeben.</p>
+
+        <p>Wenn dir dies bekannt ist, klicke bitte auf den folgenden Link um deine Registirerung abzuschließen:</p>
+        <a href="http://{{serveraddress}}:{{serverport}}/api/auth/activate/{{activationcode}}">Hier</a>
+    
+
+        <p class="activationLink">ActivationCode: {{activationcode}}</p>
+    </div>
+</body>
+</html>

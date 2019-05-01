@@ -32,32 +32,25 @@ namespace api.Services
             {
                 _tokenInfo = new TokenInformation();
 
-                foreach (var claim in User.Claims)
-                {
-                    switch (claim.Type)
-                    {
-                        case nameof(TokenFields.Username):
-                            _tokenInfo.Username = claim.Value;
-                            break;
-                        case nameof(TokenFields.Firstname):
-                            _tokenInfo.Firstname = claim.Value;
-                            break;
-                        case nameof(TokenFields.Lastname):
-                            _tokenInfo.Lastname = claim.Value;
-                            break;
-                        case nameof(TokenFields.DeviceID):
-                            _tokenInfo.DeviceID = claim.Value;
-                            break;
-                        case nameof(TokenFields.SessionID):
-                            _tokenInfo.SessionID = claim.Value;
-                            break;
-                    }
-                }
+                IEnumerable<Claim> claims = User.Claims;
+
+                _tokenInfo.Username = extractFieldFromClaims(TokenFields.Username, claims);
+                _tokenInfo.Firstname = extractFieldFromClaims(TokenFields.Firstname, claims);
+                _tokenInfo.Lastname = extractFieldFromClaims(TokenFields.Lastname, claims);
+                _tokenInfo.DeviceID = Convert.ToInt32(extractFieldFromClaims(TokenFields.DeviceID, claims));
+                _tokenInfo.SessionID = Convert.ToInt32(extractFieldFromClaims(TokenFields.SessionID, claims));
+                
+
             }
             catch (Exception ex)
             {
                 throw new ArgumentNullException($"{MethodInfo.GetCurrentMethod().Name}-Fehler: Token konnte nicht gelesen werden. {ex.ToString()}");
             }
+        }
+
+        private static string extractFieldFromClaims(string field, IEnumerable<Claim> claims)
+        {
+            return claims.Where(x => x.Type == field).FirstOrDefault().Value;
         }
     }
 }

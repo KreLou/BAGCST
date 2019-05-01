@@ -37,6 +37,9 @@ namespace api
 
             //Add Interfaces
             services.AddSingleton<ISessionDB, offlineSessionDB>();
+            services.AddScoped<TokenDecoderService>();
+            services.AddScoped<MailContentLoader>();
+            services.AddScoped<SendMailService>();
             services.AddScoped<IUserDB, offlineUserDB>();
             services.AddScoped<IUserDeviceDB, offlineUserDeviceDB>();
 

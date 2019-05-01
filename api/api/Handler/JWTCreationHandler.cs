@@ -46,7 +46,7 @@ namespace api.Handler
                     new Claim(TokenFields.DeviceID, this.Session.DeviceID.ToString()),
                     new Claim(TokenFields.SessionID, this.Session.InternalID.ToString())
                 }),
-                NotBefore = DateTime.Now,
+                NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

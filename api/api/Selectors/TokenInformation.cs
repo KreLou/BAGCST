@@ -5,7 +5,7 @@ namespace api.Selectors
         public string Username { get; set;}
         public string Firstname {get; set;}
         public string Lastname { get; set;}
-        public string DeviceID { get; set;}
-        public string SessionID { get; set;}
+        public int DeviceID { get; set;}
+        public int SessionID { get; set;}
     }
 }

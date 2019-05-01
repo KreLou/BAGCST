@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Selectors;
+using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,26 +25,11 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var username = "";
-            var firstname = "";
-            var lastname = "";
-            var deviceID = int.MinValue;
-            foreach(var claim in User.Claims)
-            {
-                string type = claim.Type;
-                string value = claim.Value;
+            TokenDecoderService service = new TokenDecoderService();
 
-                if (type == TokenFields.Username) username = value;
-                else if (type == TokenFields.Firstname) firstname = value;
-                else if (type == TokenFields.Lastname) lastname = value;
-                else if (type == TokenFields.DeviceID) deviceID = Convert.ToInt32(value);
-            }
-            return new string[] {
-                $"Username:  {username}",
-                $"Firstname: {firstname}",
-                $"Lastname:  {lastname}",
-                $"Device_ID: {deviceID}",
-            };
+            TokenInformation token = service.GetTokenInfo(User);
+
+            return Ok($"HEllo {token.Username}");
         }
 
         

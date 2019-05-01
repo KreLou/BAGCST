@@ -13,9 +13,11 @@ namespace api.Services
     public class ActivatedSessionHandler: AuthorizationHandler<ActivatedSessionRequirement>
     {
         private readonly ISessionDB _sessionDB;
-        public ActivatedSessionHandler(ISessionDB sessionDB)
+        private readonly TokenDecoderService _tokenDecoderService;
+        public ActivatedSessionHandler(ISessionDB sessionDB, TokenDecoderService tokenDecoderService)
         {
             _sessionDB = sessionDB;
+            _tokenDecoderService = tokenDecoderService;
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ActivatedSessionRequirement requirement)
@@ -24,14 +26,23 @@ namespace api.Services
             SessionItem _sessionItem = null;
             bool _success = true;
 
-            foreach (var claim in context.User.Claims.ToList())
+            TokenInformation token = _tokenDecoderService.GetTokenInfo(context.User);
+
+            if (tokenIsEmpty(token))
             {
-                if (claim.Type == TokenFields.SessionID)
-                {
-                   _sessionID = Convert.ToInt64(claim.Value); 
-                }
+                context.Fail();
+                return Task.CompletedTask;
             }
+
+            _sessionID = token.SessionID;
+
             _sessionItem = _sessionDB.getSessionByInternalID(_sessionID);
+
+            if (_sessionItem == null)
+            {
+                context.Fail();
+                return Task.CompletedTask;
+            }
             
             _success &= _sessionItem != null;
             _success &= (_sessionItem.ExpirationTime >= DateTime.Now && _sessionItem.StartTime <= DateTime.Now);
@@ -49,6 +60,11 @@ namespace api.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        private bool tokenIsEmpty(TokenInformation token)
+        {
+            return token == new TokenInformation();
         }
     }
 }

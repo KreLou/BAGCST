@@ -123,7 +123,7 @@ namespace api.offlineDB
                 while ((line = sr.ReadLine()) != null)
                 {
                     SessionItem foundItem = convertToItem(line);
-                    if (foundItem.DeviceID == sessionID)
+                    if (foundItem.InternalID == sessionID)
                     {
                         sw.WriteLine(convertToLine(item));
                     }else

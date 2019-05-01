@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using api.Handler;
+using System.Threading;
 
 namespace api.Controllers
 {
@@ -23,13 +24,15 @@ namespace api.Controllers
         private readonly IUserDB _userDB;
         private readonly IUserDeviceDB _userDeviceDB;
         private readonly ISessionDB _sessionDB;
+        private readonly SendMailService _sendMailService;
 
 
-        public AuthController(IUserDB userDB, IUserDeviceDB userDeviceDB, ISessionDB sessionDB)
+        public AuthController(IUserDB userDB, IUserDeviceDB userDeviceDB, ISessionDB sessionDB, SendMailService mailService)
         {
             _userDB = userDB;
             _userDeviceDB = userDeviceDB;
             _sessionDB = sessionDB;
+            _sendMailService = mailService;
         }
 
         [HttpPost("register")]
@@ -59,9 +62,11 @@ namespace api.Controllers
                 session = createNewSession(user, device);
 
                 //Send mail
+                _sendMailService.setUser(user);
 
-                SendMailService mailHandler = new SendMailService("4002314@ba-glauchau.de");
-                mailHandler.sendRegistrationMail(session);
+                Thread thread = new Thread(() => _sendMailService.sendRegistrationMail(session));
+                thread.Start();
+                //mailHandler.sendRegistrationMail(session);
 
                 return Created("", session);
             }
@@ -94,10 +99,14 @@ namespace api.Controllers
             };
             session.setActivationCode();
             session.setShortHashCode();
+
+            session = _sessionDB.createNewSession(session);
+
             JWTCreationHandler jWTCreationHandler = new JWTCreationHandler(session, user);
             session.Token = jWTCreationHandler.Token;
 
-            _sessionDB.createNewSession(session);
+            _sessionDB.updateSessionItem(session.InternalID, session);
+            
             return session;
         }
         
