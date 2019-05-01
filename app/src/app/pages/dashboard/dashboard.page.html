@@ -1,21 +1,23 @@
 
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      BA-Glauchau
-    </ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleMenu()">
-        <ion-icon slot="icon-only" name="more"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+	<ion-title class="headertitle">
+		Dashboard
+	</ion-title>
+	<ion-title>
+		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+	</ion-title>
+	<ion-buttons end>
+		<ion-button class="headerbutton" (click)="toggleMenu()">
+			<ion-icon name="more"></ion-icon>
+		</ion-button>
+	</ion-buttons>
+	
   </ion-toolbar>
 
 
 
 </ion-header>
-
 
 <ion-menu side="end" menuId="dashboardMenu" contentId="content" type="overlay">
   <ion-header>
@@ -40,5 +42,6 @@
 
 <ion-content>
 
+	
 
 </ion-content>
