@@ -10,10 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
+import { TabsService } from './services/tabs.service';
 
 @NgModule({
+  entryComponents: [
+    LoginComponent
+  ],
   declarations: [AppComponent, LoginComponent],
-  entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -23,7 +26,8 @@ import { LoginComponent } from './components/login/login.component';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    TabsService
   ],
   bootstrap: [AppComponent]
 })
