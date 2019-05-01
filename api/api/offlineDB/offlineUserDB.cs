@@ -14,6 +14,7 @@ namespace api.offlineDB
         private string user_filename = offlineDBPath + "\\Files\\users.csv";
 
         private IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
+        private IStudyGroupDB studyGroupDB = new offlineStudyGroupDB();
 
         /// <summary>
         /// Creates the string output for User
@@ -40,9 +41,15 @@ namespace api.offlineDB
                 Lastname = args[4],
                 Email = args[5],
                 StudyCourse = getStudyCourse(args[6]),
-                StudyGroup = args[7]
+                StudyGroup = getStudyGroup(args[7])
             };
             return user;
+        }
+
+        private StudyGroup getStudyGroup(string arg)
+        {
+            if (arg == null || arg == string.Empty) return null;
+            return studyGroupDB.getByID(Convert.ToInt32(arg));
         }
 
         private StudyCourse getStudyCourse(string arg)

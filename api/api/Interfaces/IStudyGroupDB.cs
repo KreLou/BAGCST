@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IUserTypeDB
+    interface IStudyGroupDB
     {
-        bool UserTypeExistsById(int id);
+        StudyGroup[] getAll();
 
-        UserType getByID(int id);
-        UserType[] getAll();
+        StudyGroup getByID(int id);
     }
 }

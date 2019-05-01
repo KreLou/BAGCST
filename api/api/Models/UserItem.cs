@@ -46,7 +46,7 @@ namespace api.Models
         /// specific name of group in the course
         /// e.g. "WI16-1"
         /// </summary>
-        public string StudyGroup { get; set; }
+        public StudyGroup StudyGroup { get; set; }
 
         /// <summary>
         /// ID of PostGroups, where user can post news
