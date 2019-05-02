@@ -1,6 +1,6 @@
  <ion-header id="speisepläne_out">
     <ion-toolbar>
-      <ion-title>Speisepläne BA Glauchau</ion-title>
+      <ion-title><ion-icon name="pizza"></ion-icon>  Speisepläne BA Glauchau</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content padding="true">
@@ -10,14 +10,96 @@
       </ion-label>
     </ion-item>
     <div class=spacer></div>
-    <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KW {{weekNumber}}:</h3>
-    <div class="spacer"></div>
+    <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KW {{weekNumber}}, 29.04. - 05.05.</h3>
+    <div class="spacer" id="ContSpeisepläne"></div>
     <ion-text color="Primary">
-      <p>Montag:</p>
-      <p>Dienstag:</p>
-      <p>Mittwoch:</p>
-      <p>Donnerstag:</p>
-      <p>Freitag:</p>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <div id="Mo">
+            <p>Mo:</p>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div id="MoMeal">
+            <p>Schnitzel mit Pommes</p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div id="MoPreis">
+            <p class="align-end">4,90€</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <div id="Di">
+            <p>Di:</p>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div id="DiMeal">
+            <p>Schnitzel mit Kartoffel</p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div id="DiPreis">
+            <p class="align-end">4,80€</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <div id="Mi">
+            <p>Mi:</p>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div id="MiMeal">
+            <p>Schnitzel mit Spiegelei</p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div id="MiPreis">
+            <p class="align-end">5,20€</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <div id="Do">
+            <p>Do:</p>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div id="DoMeal">
+            <p>Schnitzel mit Safransauce</p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div id="DoPreis">
+            <p class="align-end">4,50€</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <div id="Fr">
+            <p>Fr:</p>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div id="FrMeal">
+            <p>Schnitzel mit Kartoffelsalat</p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div id="FrPreis">
+            <p class="align-end">6,00€</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     </ion-text>
     <div class="spacer"></div>
     <div id="Auswahl_buttons" class="centered_buttons">

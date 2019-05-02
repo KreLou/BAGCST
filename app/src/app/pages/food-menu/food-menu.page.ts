@@ -39,6 +39,17 @@ export class FoodMenuPage implements OnInit {
     return [weekNo];
   }
 
+  startAndEndOfWeek(d) {
+    var weekMap = [6, 0, 1, 2, 3, 4, 5];
+    var now = new Date(d);
+    now.setHours(0, 0, 0, 0);
+    var monday = new Date(now);
+    monday.setDate(monday.getDate() - weekMap[monday.getDay()]);
+    var sunday = new Date(now);
+    sunday.setDate(sunday.getDate() - weekMap[sunday.getDay()] + 6);
+    sunday.setHours(23, 59, 59, 999);
+    return [monday, sunday];
+  }
 
   ngOnInit() {}
 }
