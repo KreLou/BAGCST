@@ -14,6 +14,7 @@ const routes: Routes = [
 	{ path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
 	{ path: 'privacy', loadChildren: './pages/privacy/privacy.module#PrivacyPageModule' },
   { path: 'admin-food-planer', loadChildren: './pages/admin-food-planer/admin-food-planer.module#AdminFoodPlanerPageModule' },
+	{ path: 'admin-food-planer/:placeID/:menuID', loadChildren: './pages/admin-create-or-edit-food-menu/admin-create-or-edit-food-menu.module#AdminCreateOrEditFoodMenuPageModule' },
 
 	{ path: '**', redirectTo: 'dashboard'},
 

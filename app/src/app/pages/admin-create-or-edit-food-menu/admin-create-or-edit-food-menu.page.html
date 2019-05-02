@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="admin-food-planer"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="inputMenuID == 0; else elseMenu">Neue Menü anlegen</ion-title>
+    <ng-template #elseMenu>
+      <ion-title>Menü bearbeiten</ion-title>
+    </ng-template>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="menu">
+
+    <ion-item lines="full">
+      <ion-label>Datum:</ion-label>
+      <ion-datetime placeholder="Datum" display-format="YYYY-MM-DD" picker-format="YYYY-MM-DD" [(ngModel)]="menu.date" [value]="menu.date" (ionFocus)="ionDateTimeFocus($event)"></ion-datetime>
+    </ion-item>
+
+    
+    
+    <ion-item lines="full">
+        <ion-label>Name:</ion-label>
+        <ion-input required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.mealName" autocapitalize="on"></ion-input>
+      </ion-item>
+
+      
+    
+    <ion-item lines="full">
+        <ion-label>Beschreibung:</ion-label>
+        <ion-input required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
+      </ion-item>
+
+    
+    
+    <ion-item lines="full">
+        <ion-label>Preis:</ion-label>
+        <ion-input required="true" name="name" inputmode="number" max="10" min="0" [(ngModel)]="menu.price" autocapitalize="on"></ion-input>
+      </ion-item>
+
+    <ion-button (click)="save()">
+      Speichern
+    </ion-button>
+
+
+  </div>
+
+</ion-content>

@@ -1,16 +1,56 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Admin Food Planer</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Speiseplan-Verwaltung</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-item lines="none" *ngIf="foundedPlaces">
+  <ion-item>
     <ion-label>Place</ion-label>
-    <ion-select [(ngModel)]="activePlace">
-      <ion-select-option *ngFor="let place of foundedPlaces" [value]="place">{{place.placeName}}</ion-select-option>
+    <ion-select interface="action-sheet" [(ngModel)]="activePlace">
+      <ion-select-option *ngFor="let place of foundedPlaces">{{place}}</ion-select-option>
     </ion-select>
   </ion-item>
 
+  <ng-container *ngIf="menuForecast">
+    <ion-grid>
+      <ng-container *ngFor="let day of menuForecast">
+        <ion-row>
+          <ion-label class="headerDate" color="primary">{{day.date | date: 'dd.MM.yy'}}</ion-label>
+        </ion-row>
+
+        <ng-container *ngFor="let menu of day.menus" lines="none">
+          <ion-row>
+            <ion-col size="10">
+              <ion-row>
+                <ion-col class="mealname" size="9">{{menu.meal.mealName}}</ion-col>
+                <ion-col class="pricetag" size="3">{{menu.price | currency: 'EUR': 'symbol': '1.2-2': 'de'}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">{{menu.meal.description}}</ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button color="success" (click)="editMenu(menu)">
+                <ion-icon name="create" type="icon-only"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+        <ion-row></ion-row>
+
+
+      </ng-container>
+    </ion-grid>
+  </ng-container>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addNewMenu()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

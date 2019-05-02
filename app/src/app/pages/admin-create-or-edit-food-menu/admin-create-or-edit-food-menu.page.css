@@ -1,0 +1,12 @@
+ion-item {
+    border: 1px solid green;
+}
+ion-label {
+    border: 1px solid red;
+}
+ion-datetime {
+    border: 1px solid black;
+}
+ion-input {
+    border: 1px solid blue;
+}
