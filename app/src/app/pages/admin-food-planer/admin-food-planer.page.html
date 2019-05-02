@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>AdminFoodPlaner</ion-title>
+    <ion-title>Admin Food Planer</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+
+  <ion-item lines="none" *ngIf="foundedPlaces">
+    <ion-label>Place</ion-label>
+    <ion-select [(ngModel)]="activePlace">
+      <ion-select-option *ngFor="let place of foundedPlaces" [value]="place">{{place.placeName}}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
 </ion-content>
