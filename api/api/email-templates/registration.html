@@ -4,46 +4,97 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
-
-        body {
-            background-color: #009ee3;
+        p, a, h1, h2, h3, h4, h5, h6 {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
         }
 
-        .ba-container{
+        body {
+            margin-left: auto;
+            margin-right: auto;
+            width: 94vw;
+            max-width: 800px;
+        }
+
+        .header-container{
             color: #fff;
-            background-color: #07558C;
-            padding: 0.12em;
+            background-color: #009ee3;
+            padding: 1vw;
+            margin: 0vw;
             font-size: 2em;
         }
 
         .message{
+            background-color: #06629c;
+            padding: 1vw;
+            margin: 2vw 0vw 1vw 0vw;
             font-size: large;
+            color: #fff;
         }
 
+        .activationbutton {
+            display: inline-block;
+            padding: 2vw;
+            margin: 0vw;
+            vertical-align: middle;
+            text-align: center;
+            width: 94vw;
+            max-width: 800px;
+            background-color: #e5004b;
+            letter-spacing: 3px;
+            font-weight: bold;
+            border-radius: 4px;
+            border: none;
+            color: #fff;
+            -webkit-transition: right 0.4s;
+            transition: right 0.4s;
+            cursor: pointer;
+        }
+        
+        .activationbutton span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
 
-        .activationLink {
-            padding: 1em;
-            background-color: gray;
+        .activationbutton span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .activationbutton:hover span {
+            padding-right: 25px;
+        }
+
+        .activationbutton:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        .activationcode {
+            padding: 1vw;
+            margin: 1vw 0vw 1vw 0vw;
+            background-color: #989aa2;
             letter-spacing: 2px;
-            font-weight:bold;
-            color: #e5004b
+            font-weight: bold;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="ba-container">
-        <h1>BA-Glauchau APP</h1>
+    <div class="header-container">
+        <h4>Registrierung BA-Glauchau App</h4>
     </div>
     <div class="message">
-        <p>Herzlich Willkommen {{firstname}} {{lastname}} zur App.</p>
-
-        <p>Deine E-Mail-Adresse wurde eben zur Registrierung angegeben.</p>
-
-        <p>Wenn dir dies bekannt ist, klicke bitte auf den folgenden Link um deine Registirerung abzuschließen:</p>
-        <a href="http://{{serveraddress}}:{{serverport}}/api/auth/activate/{{activationcode}}">Hier</a>
-    
-
-        <p class="activationLink">ActivationCode: {{activationcode}}</p>
+        <p>Herzlich Willkommen zur App, {{firstname}} {{lastname}}!</p>
+        <p>Deine E-Mail-Adresse wurde soeben zur Registrierung für die App der BA-Glauchau angegeben. Wenn du dich einloggen möchtest, klick bitte auf die folgende Schaltfläche um dein Gerät freizuschalten:</p>
     </div>
+    <button class="activationbutton" href="http://{{serveraddress}}:{{serverport}}/api/auth/activate/{{activationcode}}"><span>REGISTRIERUNG BESTÄTIGEN</span></button>
+    <p class="activationcode">Dein Aktivierungscode: {{activationcode}}</p>
 </body>
 </html>
