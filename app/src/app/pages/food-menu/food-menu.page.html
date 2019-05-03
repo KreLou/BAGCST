@@ -1,17 +1,18 @@
  <ion-header id="speisepläne_out">
     <ion-toolbar>
-      <ion-title><ion-icon name="pizza"></ion-icon>  Speisepläne BA Glauchau</ion-title>
+      <ion-title>Speisepläne BA Glauchau</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content padding="true">
     <ion-item lines="none" class="center">
-      <ion-label color="medium">
+      <ion-label color="medium"><ion-icon name="pizza"></ion-icon>
         {{formattedDate}}
       </ion-label>
     </ion-item>
     <div class=spacer></div>
-    <h3 id="ShowKW" style="color:#000000;" class="center">Mensa KW {{weekNumber}}, 29.04. - 05.05.</h3>
-    <div class="spacer" id="ContSpeisepläne"></div>
+    <h3 id="ShowKW" class="h3size_center">Mensa KW {{weekNumber}}, {{startEndDate}}</h3>
+    <div class="spacer2" id="ContSpeisepläne"></div>
+    <hr class="divider">
     <ion-text color="Primary">
     <ion-grid>
       <ion-row>

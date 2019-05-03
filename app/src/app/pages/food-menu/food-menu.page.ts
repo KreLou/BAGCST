@@ -9,10 +9,12 @@ export class FoodMenuPage implements OnInit {
   currentDate;
   formattedDate;
   weekNumber;
+  startEndDate;
   constructor() {
     this.currentDate = new Date()
     this.getFormattedDate()
     this.weekNumber = this.getWeekNumber(new Date());
+    this.startEndDate = this.startAndEndOfWeek(new Date());
   }
   getFormattedDate(){
     var dateObj = new Date()
@@ -21,7 +23,7 @@ export class FoodMenuPage implements OnInit {
     var month = dateObj.getMonth().toString()
     var date = dateObj.getDate().toString()
 
-    var monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
+    var monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 
     this.formattedDate = date + '. ' + monthArray[month] + ' ' + year
   }
@@ -48,7 +50,16 @@ export class FoodMenuPage implements OnInit {
     var sunday = new Date(now);
     sunday.setDate(sunday.getDate() - weekMap[sunday.getDay()] + 6);
     sunday.setHours(23, 59, 59, 999);
-    return [monday, sunday];
+    //formatting Date
+    var monMonth = monday.getMonth().toString();
+    var monDate = monday.getDate().toString();
+    var sunMonth = sunday.getMonth().toString();
+    var sunDate = sunday.getDate().toString();
+
+    var monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+    var startAndEndofWeek = monDate + '.' + ' ' + monthArray[monMonth] + ' ' + '-' + ' ' + sunDate + '.' + ' ' + monthArray[sunMonth];
+    return [startAndEndofWeek];
   }
 
   ngOnInit() {}
