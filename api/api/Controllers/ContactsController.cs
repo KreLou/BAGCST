@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
 using api.Databases;
+using api.database;
 
 namespace api.Controllers
 {
@@ -18,7 +19,8 @@ namespace api.Controllers
         private static IContactsDB getDatabase()
         {
             //TODO set environment
-            return new offlineDB_contacts();
+            return new onlineContactsDB();
+           // return new offlineDB_contacts();
         }
 
         /// <summary>

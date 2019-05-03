@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.offlineDB;
+using api.database;
 
 namespace api.Controllers
 {
@@ -23,7 +24,8 @@ namespace api.Controllers
         /// <returns></returns>
         private static IPostGroupDB getDatabase()
         {
-            return new offlinePostGroupDB();
+            //return new offlinePostGroupDB();
+            return new onlinePostGroupDB();
         }
 
         /// <summary>
