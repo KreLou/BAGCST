@@ -14,19 +14,15 @@ namespace api.Controllers
     {
 
 
-        private INewsDB database = getDatabase();
-        private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
-        private IUserSettings userSettingsDatabase = getUserSettingsDatabase();
-
-        private static IUserSettings getUserSettingsDatabase()
+        private INewsDB newsDB;
+        private IPostGroupDB postGroupDB;
+        private IUserSettingsDB userSettingsDB;
+        
+        public NewsController(INewsDB newsDB, IPostGroupDB postGroupDB, IUserSettingsDB userrSettingsDB)
         {
-            return new offlineUserSettings();
-        }
-
-        private static IPostGroupDB getPostGroupDatabase()
-        {
-            return new offlinePostGroupDB();
-            
+            this.newsDB = newsDB;
+            this.postGroupDB = postGroupDB;
+            this.userSettingsDB = userrSettingsDB;
         }
 
         /// <summary>
@@ -52,12 +48,12 @@ namespace api.Controllers
         {
             long userID = 1; //TODO Get User-ID by Token
 
-            PostGroupUserPushNotificationSetting[] settings = userSettingsDatabase.getSubscribedPostGroupsSettings(userID);
+            PostGroupUserPushNotificationSetting[] settings = userSettingsDB.getSubscribedPostGroupsSettings(userID);
 
             //Only select the PostGroupID from the Fields
             int[] groups = settings.Select(x => x.PostGroupID).ToArray();
             //TODO Groups settings should be stored in the database
-            return database.getPosts(amount, start, groups);
+            return newsDB.getPosts(amount, start, groups);
         }
         
         /// <summary>
@@ -75,17 +71,17 @@ namespace api.Controllers
             item.PostGroup = new PostGroupItem { PostGroupID = postGroupID };
             item.AuthorID = authorID;
 
-            if (!postGroupDatabase.checkIfUserIsPostGroupAuthor(postGroupID, authorID))
+            if (!postGroupDB.checkIfUserIsPostGroupAuthor(postGroupID, authorID))
             {
                 return BadRequest($"User {authorID} is not allowed to post for PostGroup {postGroupID}");
             }
             try
             {
-                item = database.saveNewPost(item);
+                item = newsDB.saveNewPost(item);
                 return Created("",  item); 
 
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -96,9 +92,9 @@ namespace api.Controllers
         {
             try
             {
-                database.deletePost(id);
+                newsDB.deletePost(id);
                 return Ok();
-            }catch(Exception ex)
+            }catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -122,9 +118,9 @@ namespace api.Controllers
             item.Date = DateTime.Now;
             try
             {
-                database.editPost(item);
+                newsDB.editPost(item);
                 return Ok(item);
-            } catch(Exception ex)
+            } catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
