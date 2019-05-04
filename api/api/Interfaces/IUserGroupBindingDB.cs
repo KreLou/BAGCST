@@ -8,6 +8,7 @@ namespace api.Controllers
     interface IUserGroupBindingDB
     {
         UserGroupBindingItem addUserGroupBinding(int UserID, int GroupID);
+
         void deleteUserGroupBinding(int UserID, int GroupID);
 
         List<int> getUsersOfGroup(int GroupID);

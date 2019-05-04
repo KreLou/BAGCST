@@ -54,28 +54,19 @@ namespace api.Controllers
             return Ok();
         }
 
-        [HttpGet("users/{id}")]
+        [HttpGet("users/{GroupID}")]
         public UserItem[] getUsersOfGroup(int GroupID)
         {
-            List<UserItem> ret = new List<UserItem>();
-            List<int> arrUIDs = database.getUsersOfGroup(GroupID);
-            arrUIDs.ForEach(Console.WriteLine);
-            
-            foreach (int UID in arrUIDs)
-            {
-                ret.Add(databaseUser.getUserItem(UID));
-                Console.WriteLine(ret.Count);
-                ret.ForEach(Console.WriteLine);
-            }
-            // database.getUsersOfGroup(GroupID).ForEach(GID => ret.Add(databaseUser.getUserItem(GID)));
+            List<UserItem> ret = new List<UserItem>();            
+            database.getUsersOfGroup(GroupID).ForEach(GID => ret.Add(databaseUser.getUserItem(GID)));
             return ret.ToArray();
         }
 
-        [HttpGet("groups/{id}")]
-        public Group[] getGroupsofUser(int GroupID)
+        [HttpGet("groups/{UserID}")]
+        public Group[] getGroupsofUser(int UserID)
         {
             List<Group> ret = new List<Group>();
-            database.getGroupsOfUser(GroupID).ForEach(UID => ret.Add(databaseGroup.getGroup(UID)));
+            database.getGroupsOfUser(UserID).ForEach(UID => ret.Add(databaseGroup.getGroup(UID)));
             return ret.ToArray();
         }
     }
