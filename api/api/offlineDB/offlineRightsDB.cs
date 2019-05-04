@@ -8,7 +8,7 @@ using System.IO;
 
 namespace api.Databases
 {
-    public class offlineDB_Rights : IRightsDB
+    public class offlineRightsDB : IRightsDB
     {
         private string csvFile = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","rights.csv");
 
