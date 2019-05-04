@@ -15,15 +15,11 @@ namespace api.Controllers
     [ApiController]
     public class PlaceController : ControllerBase
     {
-        private IPlaceDB database = getDatabase();
+        private IPlaceDB placeDB;
 
-        /// <summary>
-        /// Returns the current database
-        /// </summary>
-        /// <returns></returns>
-        private static IPlaceDB getDatabase()
+        public PlaceController(IPlaceDB placeDB)
         {
-            return new OfflinePlaceDB();
+            this.placeDB = placeDB;
         }
 
         /// <summary>
@@ -35,7 +31,7 @@ namespace api.Controllers
         public ActionResult<PlaceItem> getPlace(int id)
         {
            // get the item from database
-            PlaceItem item = database.getPlaceItem(id);
+            PlaceItem item = placeDB.getPlaceItem(id);
             if (item != null)
             {
                 return Ok(item);
@@ -55,7 +51,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<PlaceItem[]> getAllPlaces()
         {   // get the all items from the database
-            PlaceItem[] items = database.getPlaces();
+            PlaceItem[] items = placeDB.getPlaces();
             return Ok(items);
         }
 
@@ -72,7 +68,7 @@ namespace api.Controllers
         {
            
             //Check if id is valid
-            if (database.getPlaceItem(id) == null)
+            if (placeDB.getPlaceItem(id) == null)
             {
                 return NotFound(($"No Place found for id: {id}"));
             }
@@ -82,7 +78,7 @@ namespace api.Controllers
             {
                 return BadRequest("Place not found");
             }
-            PlaceItem[] placeItems = database.getPlaces();
+            PlaceItem[] placeItems = placeDB.getPlaces();
             // for every place in Places List 
             foreach (PlaceItem placeItem in placeItems)
             {
@@ -97,7 +93,7 @@ namespace api.Controllers
 
             // else 
             //update existing item
-            PlaceItem item_out = database.editPlace( id,place);
+            PlaceItem item_out = placeDB.editPlace( id,place);
    
              //return new item
              return Ok(item_out);
@@ -119,14 +115,14 @@ namespace api.Controllers
                 return BadRequest("Place not found");
             }
             
-            if (database.getPlaceItemByName(place.PlaceName) != null)
+            if (placeDB.getPlaceItemByName(place.PlaceName) != null)
             {
                 return BadRequest($"Place {place.PlaceName} already exist");
             }
 
             //else 
             // if the item not null then save new item 
-            PlaceItem item_out = database.saveNewPlace(place);
+            PlaceItem item_out = placeDB.saveNewPlace(place);
 
                 return Created("", item_out);
                

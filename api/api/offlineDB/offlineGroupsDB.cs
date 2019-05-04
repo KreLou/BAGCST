@@ -9,7 +9,7 @@ using api.Databases;
 
 namespace api.offlineDB
 {
-    public class offlineDB_Groups : IGroupsDB
+    public class offlineGroupsDB : IGroupsDB
     {
         private string csvFile = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groups.csv");
         List<Right> rightsTemp;
@@ -55,7 +55,7 @@ namespace api.offlineDB
                      //filling Rights is more complex bc it's an array
                      
                      List<string> rightIDs = args[2].Split(",").ToList();
-                     offlineDB_Rights dbRights = new offlineDB_Rights();
+                     offlineRightsDB dbRights = new offlineRightsDB();
                      foreach (string rightID in rightIDs)
                      {
                             rightsTemp.Add(dbRights.getRight(Convert.ToInt32(rightID)));

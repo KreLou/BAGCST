@@ -15,17 +15,11 @@ namespace api.Controllers
     [ApiController]
     public class PostGroupController : ControllerBase
     {
-        private IPostGroupDB database = getDatabase();
+        private IPostGroupDB postGroupDB;
 
-        /// <summary>
-        /// Returns the current database
-        /// TODO Implementing a switch which depends on the environment
-        /// </summary>
-        /// <returns></returns>
-        private static IPostGroupDB getDatabase()
+        public PostGroupController(IPostGroupDB postGroupDB)
         {
-            //return new offlinePostGroupDB();
-            return new onlinePostGroupDB();
+            this.postGroupDB = postGroupDB;
         }
 
         /// <summary>
@@ -36,13 +30,13 @@ namespace api.Controllers
         public PostGroupItem[] getAllPostGroupItems()
         {
             //TODO Groups settings should be stored in the database
-            return database.getPostGroupItems();
+            return postGroupDB.getPostGroupItems();
         }
 
         [HttpGet("{id}")]
         public IActionResult getPostGroupItem(int id)
         {
-            PostGroupItem item = database.getPostGroupItem(id);
+            PostGroupItem item = postGroupDB.getPostGroupItem(id);
             if (item == null) return NotFound($"No PostGroupItem found for ID {id}");
             return Ok(item);
         }
@@ -64,11 +58,11 @@ namespace api.Controllers
             item.CreationDate = DateTime.Now;
             try
             {
-                item = database.saveNewPostGroupItem(item);
+                item = postGroupDB.saveNewPostGroupItem(item);
                 return Created("",  item); 
 
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -80,10 +74,10 @@ namespace api.Controllers
             //TODO What should happen, when the amount of posts > 0?
             try
             {
-                database.deletePostGroupItem(id);
+                postGroupDB.deletePostGroupItem(id);
                 return Ok();
             }
-            catch(Exception ex)
+            catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -106,10 +100,10 @@ namespace api.Controllers
             item.EditDate = DateTime.Now;
             try
             {
-                database.editPostGroupItem(id, item);
+                postGroupDB.editPostGroupItem(id, item);
                 return Ok(item);
             } 
-            catch(Exception ex)
+            catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -119,13 +113,13 @@ namespace api.Controllers
         [HttpPost("{postGroupID}/author/{userID}")]
         public IActionResult postAuthorOfPostGroup(int postGroupID, long userID)
         {
-            if (database.getPostGroupItem(postGroupID) == null)
+            if (postGroupDB.getPostGroupItem(postGroupID) == null)
             {
                 return NotFound($"No PostGroupItem found for ID: {postGroupID}");
             }
-            database.addUserToPostGroupAuthors(postGroupID, userID);
+            postGroupDB.addUserToPostGroupAuthors(postGroupID, userID);
 
-            if (database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
+            if (postGroupDB.checkIfUserIsPostGroupAuthor(postGroupID, userID))
             {
                 return Ok();
             }
@@ -136,14 +130,14 @@ namespace api.Controllers
         [HttpDelete("{postGroupID}/author/{userID}")]
         public IActionResult deleteUserFromPostGroupAuthors(int postGroupID, long userID)
         {
-            if (database.getPostGroupItem(postGroupID) == null)
+            if (postGroupDB.getPostGroupItem(postGroupID) == null)
             {
                 return NotFound($"No PostGroupItem found for ID: {postGroupID}");
             }
 
-            database.deleteUserFromPostGroupAuthors(postGroupID, userID);
+            postGroupDB.deleteUserFromPostGroupAuthors(postGroupID, userID);
 
-            if (!database.checkIfUserIsPostGroupAuthor(postGroupID, userID))
+            if (!postGroupDB.checkIfUserIsPostGroupAuthor(postGroupID, userID))
             {
                 return Ok();
             }
@@ -155,7 +149,7 @@ namespace api.Controllers
         {
             long authorID = 1; //TODO Get userID from Token
 
-            PostGroupItem[] myGroups = database.getPostGroupsWhereUserIsAuthor(authorID);
+            PostGroupItem[] myGroups = postGroupDB.getPostGroupsWhereUserIsAuthor(authorID);
 
             if (myGroups.Length == 0)
             {

@@ -151,9 +151,9 @@ namespace api.offlineDB
 
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw new Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
+                throw new System.Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
             }
 
             return item;

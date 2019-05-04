@@ -13,11 +13,13 @@ namespace api.Controllers
     [ApiController]
     public class RightsController : ControllerBase
     {
-        private IRightsDB database = getDatabase();
-        private static IRightsDB getDatabase()
+        private IRightsDB rightsDB;
+
+        public RightsController(IRightsDB rightsDB)
         {
-            return new offlineDB_Rights();
+            this.rightsDB = rightsDB;
         }
+
 
         /// <summary>
         /// returns the Right for the given ID. If it's not found, it returns NotFound.
@@ -27,7 +29,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<Right> getRight(int id)
         {
-            Right right = database.getRight(id);
+            Right right = rightsDB.getRight(id);
             if (right == null)
             {
                 return NotFound($"No right found for id: {id}");
@@ -41,7 +43,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<Right[]> getAllRights()
         {
-            Right[] rights = database.getAllRights();
+            Right[] rights = rightsDB.getAllRights();
             return Ok(rights);
         }
 
@@ -49,7 +51,7 @@ namespace api.Controllers
         public ActionResult<Right> editRight(int id, [FromBody] Right right_in)
         {
             //Check if id is valid
-            if (database.getRight(id) == null)
+            if (rightsDB.getRight(id) == null)
             {
                 return NotFound(($"No Right found for ID: {id}"));
             }
@@ -61,7 +63,7 @@ namespace api.Controllers
             }
 
             //update existing right
-            Right right_out = database.editRight(id, right_in);
+            Right right_out = rightsDB.editRight(id, right_in);
 
             //return new item
             return Ok(right_out);
@@ -71,11 +73,11 @@ namespace api.Controllers
         public ActionResult deleteRight(int id)
         {
             //TODO check for permission
-            if (database.getRight(id) == null)
+            if (rightsDB.getRight(id) == null)
             {
                 return NotFound(($"No Right found for id: {id}"));
             }
-            database.deleteRight(id);
+            rightsDB.deleteRight(id);
             return Ok();
         }
 
@@ -97,7 +99,7 @@ namespace api.Controllers
                 return BadRequest("Right not found");
             }
 
-            foreach(Right right in database.getAllRights())
+            foreach(Right right in rightsDB.getAllRights())
             {
                 if(right_in.Path == right.Path)
                 {
@@ -109,7 +111,7 @@ namespace api.Controllers
             {
                 return BadRequest("Failure. No RightID entered.");
             }
-            Right right_out = database.createRight(right_in);
+            Right right_out = rightsDB.createRight(right_in);
             return Created("", right_out);
         }
 

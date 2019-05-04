@@ -11,17 +11,14 @@ namespace api.Controllers
     [ApiController]
     public class TimetableController : ControllerBase
     {
-        private ITimetableDB timetableDatabase = getTimetableDatabase();
-        private ISemesterDB semesterDatabase = getSemesterDatabase();
+        private ITimetableDB timetableDB;
+        private ISemesterDB semesterDB;
+        
 
-        private static ISemesterDB getSemesterDatabase()
+        public TimetableController(ITimetableDB timetableDB, ISemesterDB semesterDB)
         {
-            return new offlineSemesterDB();
-        }
-
-        private static ITimetableDB getTimetableDatabase()
-        {
-            return new offlineTimetableDB();
+            this.timetableDB = timetableDB;
+            this.semesterDB = semesterDB;
         }
 
         [HttpGet]
@@ -94,15 +91,15 @@ namespace api.Controllers
 
             if (isStudent)
             {
-                SemesterItem currentSemester = semesterDatabase.getCurrentSemesterByStudyGroup(studygroup);
+                SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
                 DateTime startDate = currentSemester == null ? getFirstOfMonth() : currentSemester.Start;
-                lectures = timetableDatabase.getSemesterLectures(studygroup, startDate);
+                lectures = timetableDB.getSemesterLectures(studygroup, startDate);
             }
             else
             {
                 string dozID = "Prof. Penzel";
                 DateTime startDate = getFirstOfMonth();
-                lectures = timetableDatabase.getLecturesByLecturer(dozID, startDate);
+                lectures = timetableDB.getLecturesByLecturer(dozID, startDate);
             }
 
             return lectures;
