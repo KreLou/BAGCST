@@ -34,7 +34,7 @@ namespace api.database
                     return;
                 }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
 
                 return;
@@ -69,7 +69,7 @@ namespace api.database
                     return item;
                 }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
 
                 return null;
@@ -141,7 +141,7 @@ namespace api.database
                 }
 
             }
-            catch (Exception)
+            catch (System.Exception)
             {
 
                 return null;
@@ -174,7 +174,7 @@ namespace api.database
                     return item;
                 }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
 
                 return null;
