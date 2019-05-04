@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IPostGroupDB
+    public interface IPostGroupDB
     {
         /// <summary>
         /// Create a new News-Item in Database, return the new Item

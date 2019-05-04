@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IContactsDB
+    public interface IContactsDB
     {
         /// <summary>
         /// Search for ContactItem by ID
