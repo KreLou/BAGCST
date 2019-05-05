@@ -15,21 +15,27 @@
 
     <ion-item lines="full">
       <ion-label>Datum:</ion-label>
-      <ion-datetime placeholder="Datum" display-format="YYYY-MM-DD" picker-format="YYYY-MM-DD" [(ngModel)]="menu.date" [value]="menu.date" (ionFocus)="ionDateTimeFocus($event)"></ion-datetime>
+      <ion-button icon-right (click)="openDateTimePicker(datePicker)">
+        <ion-datetime #datePicker placeholder="Date" display-format="YYYY-MM-DD" picker-format="YYYY-MM-DD" [(ngModel)]="date"></ion-datetime>
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
     </ion-item>
 
     
     
     <ion-item lines="full">
-        <ion-label>Name:</ion-label>
-        <ion-input required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.mealName" autocapitalize="on"></ion-input>
-      </ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-input #nameInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.mealName" autocapitalize="on"></ion-input>
+      <ion-button color="light" (click)="clearInput(nameInput)">
+        <ion-icon color="danger" name="close" type="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
 
       
     
     <ion-item lines="full">
         <ion-label>Beschreibung:</ion-label>
-        <ion-input required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
+        <ion-input clearInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
       </ion-item>
 
     

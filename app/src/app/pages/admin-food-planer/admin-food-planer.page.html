@@ -9,7 +9,7 @@
 
 <ion-content padding>
 
-  <ion-item>
+  <ion-item *ngIf="activePlace">
     <ion-label>Place</ion-label>
     <ion-select interface="action-sheet" [(ngModel)]="activePlace">
       <ion-select-option *ngFor="let place of foundedPlaces">{{place}}</ion-select-option>
