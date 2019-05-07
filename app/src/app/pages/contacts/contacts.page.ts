@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import {Injectable} from '@angular/core';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.css'],
 })
+
+@NgModule({
+  declarations:[],
+  imports: [BrowserModule, HttpClientModule]
+})
+
 export class ContactsPage implements OnInit {
 
   constructor() {
     // let Testitem:IonItem = document.element getElementById('testID')
     // var TestVariable:string = 'TestText';
     // Testitem = TestVariable;
+    
   }
   
 
@@ -20,10 +31,11 @@ export class ContactsPage implements OnInit {
 
 
 }
-
-export class AppComponent{
-  title = 'Tour of Heroes';
-  myHero = 'Windstorm';
+@Injectable()
+export class Configuration{
+  public server = 'http://localhost:50179/';
+  public apiUrl = 'api/';
+  public serverWithApiUrl = this.server + this.apiUrl;
 }
 
-// export var contactList:string[] = ["TestItem1", "TestItem2", "TestItem3"];
+export var contactList:string[] = ["TestItem1", "TestItem2", "TestItem3"];
