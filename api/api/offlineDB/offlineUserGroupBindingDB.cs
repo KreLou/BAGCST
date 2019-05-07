@@ -66,14 +66,15 @@ namespace api.offlineDB
             File.Move(tempFile, filename_offlineUGBDB);
         }
 
-        public List<int> getGroupsOfUser(int UserID)
+        public List<int> getGroupsOfUser(int[] UserIDs)
         {
-            return lstUGB.Where(x => x.UserID == UserID).Select(x => x.GroupID).ToList();
+            
+            return lstUGB.Where(x => UserIDs.Contains(x.UserID)).Select(x => x.GroupID).ToList();
         }
 
-        public List<int> getUsersOfGroup(int GroupID)
+        public List<int> getUsersOfGroup(int[] GroupIDs)
         {
-            return lstUGB.Where(x => x.GroupID == GroupID).Select(x => x.UserID).ToList();
+            return lstUGB.Where(x => GroupIDs.Contains(x.GroupID)).Select(x => x.UserID).ToList();
         }
     }
 }

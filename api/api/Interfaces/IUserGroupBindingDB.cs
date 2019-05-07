@@ -11,8 +11,8 @@ namespace api.Controllers
 
         void deleteUserGroupBinding(int UserID, int GroupID);
 
-        List<int> getUsersOfGroup(int GroupID);
+        List<int> getUsersOfGroup(int[] GroupID);
 
-        List<int> getGroupsOfUser(int UserID);
+        List<int> getGroupsOfUser(int[] UserID);
     }
 }
