@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactsPage implements OnInit {
 
-  constructor() { }
+  constructor() {
+    // let Testitem:IonItem = document.element getElementById('testID')
+    // var TestVariable:string = 'TestText';
+    // Testitem = TestVariable;
+  }
+  
 
   ngOnInit() {
   }
 
+
+
 }
+
+export class AppComponent{
+  title = 'Tour of Heroes';
+  myHero = 'Windstorm';
+}
+
+// export var contactList:string[] = ["TestItem1", "TestItem2", "TestItem3"];
