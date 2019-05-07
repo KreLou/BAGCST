@@ -94,7 +94,8 @@ namespace api.Controllers
             {
                 newsDB.deletePost(id);
                 return Ok();
-            }catch(System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -120,7 +121,8 @@ namespace api.Controllers
             {
                 newsDB.editPost(item);
                 return Ok(item);
-            } catch(System.Exception ex)
+            } 
+            catch(System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
