@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IMenuDB
+    public interface IMenuDB
     {
 
         /// <summary>

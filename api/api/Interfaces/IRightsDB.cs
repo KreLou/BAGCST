@@ -6,7 +6,7 @@ using api.Models;
 
 namespace api.Interfaces
 {
-    interface IRightsDB
+    public interface IRightsDB
     {
         /// <summary>
         /// search for Right by ID

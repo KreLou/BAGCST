@@ -2,6 +2,7 @@ using System;
 using api.Models;
 using api.Interfaces;
 using api.offlineDB;
+using api.database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -11,34 +12,21 @@ namespace api.Controllers
     public class UserController : ControllerBase
     {
         
-        private IUserDB userDatabase = getUserDatabase();
-        private IUserSettings settingsDatabase = getSettingsDatabase();
-        private IPostGroupDB postGroupDatabase = getPostGroupDatabase();
+        private IUserDB userDB;
+        private IUserSettingsDB userSettingsDB;
+        private IPostGroupDB postGroupDB;
 
-        private static IPostGroupDB getPostGroupDatabase()
+        public UserController(IUserDB userDB, IUserSettingsDB userSettingsDB, IPostGroupDB postGroupDB)
         {
-            return new offlinePostGroupDB();
-        }
-
-        private static IUserSettings getSettingsDatabase()
-        {
-            return new offlineUserSettings();
-        }
-
-        /// <summary>
-        /// Returns the current database
-        /// TODO Implementing a switch which depends on the environment
-        /// </summary>
-        /// <returns></returns>
-        private static IUserDB getUserDatabase()
-        {
-            return new offlineUserDB();
+            this.userDB = userDB;
+            this.userSettingsDB = userSettingsDB;
+            this.postGroupDB = postGroupDB;
         }
 
         [HttpGet]
         public UserItem[] getAllUserItems()
         {
-            return userDatabase.getUserItems();
+            return userDB.getUserItems();
         }
 
         [HttpGet("{id}")]
@@ -70,7 +58,7 @@ namespace api.Controllers
         {
             //TODO Check if user is allowed to update this item
             
-            if (userDatabase.getUserItem(id) == null)
+            if (userDB.getUserItem(id) == null)
             {
                 return NotFound("No UserItem found for ID: " + id);
             }
@@ -81,17 +69,17 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            user = userDatabase.editUserItem(id, user);
+            user = userDB.editUserItem(id, user);
             return Ok(user);
         }
 
         private UserItem getFullUserItem(long userID)
         {
-            UserItem user = userDatabase.getUserItem(userID);
+            UserItem user = userDB.getUserItem(userID);
             if (user != null)
             {
-                user.SubscribedPostGroups = settingsDatabase.getSubscribedPostGroupsSettings(userID);
-                user.PostGroups = postGroupDatabase.getPostGroupsWhereUserIsAuthor(userID);
+                user.SubscribedPostGroups = userSettingsDB.getSubscribedPostGroupsSettings(userID);
+                user.PostGroups = postGroupDB.getPostGroupsWhereUserIsAuthor(userID);
             }
             return user;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    public interface IUserSettings
+    public interface IUserSettingsDB
     {
         PostGroupUserPushNotificationSetting[] getSubscribedPostGroupsSettings(long userID);
 

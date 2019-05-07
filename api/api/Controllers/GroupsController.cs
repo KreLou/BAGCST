@@ -16,17 +16,13 @@ namespace api.Controllers
     [ApiController]
     public class GroupsController : ControllerBase
     {
-        private IGroupsDB database = getDatabase();
-        private IRightsDB rightsDatabase = getRightsDatabase();
+        private IGroupsDB groupsDB;
+        private IRightsDB rightsDB;
 
-        private static IRightsDB getRightsDatabase()
+        public GroupsController(IGroupsDB groupsDB, IRightsDB rightsDB)
         {
-            return new offlineDB_Rights();
-        }
-
-        private static IGroupsDB getDatabase()
-        {
-            return new offlineDB_Groups();
+            this.groupsDB = groupsDB;
+            this.rightsDB = rightsDB;
         }
 
         /// <summary>
@@ -37,7 +33,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<Group> getGroup(int id)
         {
-            Group group = database.getGroup(id);
+            Group group = groupsDB.getGroup(id);
             if (group == null)
             {
                 return NotFound($"No Group found for id: {id}");
@@ -51,7 +47,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<Group[]> getAllGroups()
         {
-            Group[] groups = database.getAllGroups();
+            Group[] groups = groupsDB.getAllGroups();
             return Ok(groups);
         }
 
@@ -93,7 +89,7 @@ namespace api.Controllers
             }
 
             //update existing group
-            Group group_out = database.editGroup(id, group_in);
+            Group group_out = groupsDB.editGroup(id, group_in);
 
             //return new item
             return Ok(group_out);
@@ -103,11 +99,11 @@ namespace api.Controllers
         public ActionResult deleteGroup(int id)
         {
             //TODO check for permission
-            if (database.getGroup(id) == null)
+            if (groupsDB.getGroup(id) == null)
             {
                 return NotFound(($"No Group found for id: {id}"));
             }
-            database.deleteGroup(id);
+            groupsDB.deleteGroup(id);
             return Ok();
         }
 
@@ -146,7 +142,7 @@ namespace api.Controllers
                 return BadRequest("Duplicate RightsID found: " + dpi.RightID);
             }
 
-            foreach(Group group in database.getAllGroups())
+            foreach(Group group in groupsDB.getAllGroups())
             {
                 if(group_in.Name == group.Name)
                 {
@@ -155,7 +151,7 @@ namespace api.Controllers
             }
 
             
-            Group group_out = database.createGroup(group_in);
+            Group group_out = groupsDB.createGroup(group_in);
             return Created("", group_out);
         }
 
@@ -175,7 +171,7 @@ namespace api.Controllers
                 }
                 else
                 {
-                    Right databaseRight = rightsDatabase.getRight(right.RightID);
+                    Right databaseRight = rightsDB.getRight(right.RightID);
                     if (databaseRight == null)
                     {
                         throw new RightItemNotFoundException(right.RightID);

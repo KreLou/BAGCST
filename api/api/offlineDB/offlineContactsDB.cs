@@ -8,7 +8,7 @@ using System.IO;
 
 namespace api.Databases
 {
-    public class offlineDB_contacts : IContactsDB
+    public class offlineContactsDB : IContactsDB
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
@@ -30,6 +30,7 @@ namespace api.Databases
                 Type = args[8],
                 Title = args[9]
             };
+        
             return item;
         }
 
