@@ -12,7 +12,7 @@ import { ContactItem } from 'src/app/models/ContactItem';
 
 export class ContactsPage implements OnInit {
 
-  private contactList: ContactItem[];
+  contactList: ContactItem[];
 
   constructor(
     private contactLoader: ContactsLoaderService
