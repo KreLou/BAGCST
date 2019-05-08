@@ -38,6 +38,7 @@ namespace api.Databases
                 Type = getUserType(args[8]),
                 Title = args[9]
             };
+        
             return item;
         }
 

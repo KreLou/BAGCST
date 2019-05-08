@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface ITimetableDB
+    public interface ITimetableDB
     {
         /// <summary>
         /// Returns the Lecture from specific semester

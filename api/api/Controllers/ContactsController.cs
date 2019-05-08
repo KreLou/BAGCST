@@ -8,6 +8,7 @@ using api.Interfaces;
 using api.Models;
 using api.Databases;
 using api.offlineDB;
+using api.database;
 
 namespace api.Controllers
 {
@@ -15,16 +16,11 @@ namespace api.Controllers
     [ApiController]
     public class ContactsController : ControllerBase
     {
-        private IContactsDB database = getDatabase();
+        private readonly IContactsDB contactsDB;
 
-        private IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
-        private IUserTypeDB userTypeDB = new offlineUserTypeDB();
-
-
-        private static IContactsDB getDatabase()
+        public ContactsController(IContactsDB contactsDB)
         {
-            //TODO set environment
-            return new offlineContactsDB();
+            this.contactsDB = contactsDB;
         }
 
         /// <summary>
@@ -35,7 +31,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<ContactItem> getContactItem(int id)
         {
-            ContactItem item = database.getContactItem(id);
+            ContactItem item = contactsDB.getContactItem(id);
             if(item==null)
             {
                 return NotFound($"No ContactItem found for ID: {id}");
@@ -53,7 +49,7 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<ContactItem[]> getAllContactItems()
         {
-            ContactItem[] items = database.getAllContactItems();
+            ContactItem[] items = contactsDB.getAllContactItems();
             return Ok(items);
         }
 
@@ -74,12 +70,12 @@ namespace api.Controllers
             }
 
             //Check if ID is valid
-            if (database.getContactItem(id) == null)
+            if (contactsDB.getContactItem(id) == null)
             {
                 return NotFound(($"No ContactItem found for ID: {id}"));
             }
 
-            ContactItem foundByEmail = database.getContactItem(item_in.Email);
+            ContactItem foundByEmail = contactsDB.getContactItem(item_in.Email);
             if (foundByEmail != null && foundByEmail.ContactID != id)
             {
                 return BadRequest("This email address already exists");
@@ -98,7 +94,7 @@ namespace api.Controllers
             }
 
             //update existing item
-            ContactItem item_out = database.editContactItem(id, item_in);
+            ContactItem item_out = contactsDB.editContactItem(id, item_in);
 
             //return new item
             return Ok(item_out);
@@ -113,11 +109,11 @@ namespace api.Controllers
         public ActionResult deleteContactItem(int id)
         {
             //TODO check for permission
-            if (database.getContactItem(id)==null)
+            if (contactsDB.getContactItem(id)==null)
             {
                 return NotFound(($"No ContactItem found for ID: {id}"));
             }
-            database.deleteContactItem(id);
+            contactsDB.deleteContactItem(id);
             return Ok();
         }
 
@@ -147,7 +143,7 @@ namespace api.Controllers
                 return BadRequest("No UserType found for " + item_in.Type.ID);
             }
 
-            ContactItem foundByEmail = database.getContactItem(item_in.Email);
+            ContactItem foundByEmail = contactsDB.getContactItem(item_in.Email);
             if (foundByEmail != null)
             {
                 return BadRequest("ContactItem is already existing");
@@ -157,7 +153,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ContactItem item_out = database.createContactItem(item_in);
+            ContactItem item_out = contactsDB.createContactItem(item_in);
             return Created("", item_out);
         }
 

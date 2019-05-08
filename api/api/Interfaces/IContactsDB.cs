@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
+using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IContactsDB
+    public interface IContactsDB
     {
         /// <summary>
-        /// Get ContactItem by ID
+        /// Search for ContactItem by ID
         /// </summary>
-        /// <param name="id">ID</param>
-        /// <returns>ContactItem|null</returns>
+        /// <param name="id">User ID</param>
+        /// <returns>UserItem or Null</returns>
         ContactItem getContactItem(int id);
 
         /// <summary>
+        /// search for ContactItem by E-Mail-Address
         /// Get ContactItem by E-Mail-Address
         /// </summary>
         /// <param name="email"></param>
@@ -23,7 +24,7 @@ namespace api.Interfaces
         ContactItem getContactItem(string email);
 
         /// <summary>
-        /// Get all ContactItems
+        /// get all ContactItems
         /// Order by:
         /// 1. ContactItem.Lastname asc
         /// 2. ContactItem.Firstname asc
@@ -32,6 +33,7 @@ namespace api.Interfaces
         ContactItem[] getAllContactItems();
 
         /// <summary>
+        /// creates a ContactItem
         /// Create ContactItem
         /// </summary>
         /// <param name="item">ContactItem</param>
@@ -39,6 +41,7 @@ namespace api.Interfaces
         ContactItem createContactItem(ContactItem item);
 
         /// <summary>
+        /// edit ContactItem
         /// Edit ContactItem by ID and ContactItem
         /// </summary>
         /// <param name="id"></param>
@@ -47,11 +50,10 @@ namespace api.Interfaces
         ContactItem editContactItem(int id, ContactItem item);
 
         /// <summary>
-        /// Delete ContactItem by ID
+        /// delete ContactItem
         /// </summary>
         /// <param name="id">ID</param>
         void deleteContactItem(int id);
-
         
     }
 }
