@@ -146,8 +146,8 @@ namespace api.database
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
                         SQLItem.Responsibility = myReader["coursetypid"].ToString();
-                        SQLItem.Course = myReader["coursetyp_typname"].ToString();
-                        SQLItem.Type = myReader["contacttyp_typname"].ToString();
+                        SQLItem.Course.LongText = myReader["coursetyp_typname"].ToString();
+                        SQLItem.Type.Name = myReader["contacttyp_typname"].ToString();
                         ContactItemList.Add(SQLItem);
                         SQLItem = new ContactItem();
                     }
@@ -230,8 +230,8 @@ namespace api.database
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
                         SQLItem.Responsibility = myReader["coursetypid"].ToString();
-                        SQLItem.Course = myReader["contacttyp_typname"].ToString();  
-                        SQLItem.Type = myReader["coursetyp_typname"].ToString();
+                        SQLItem.Course.LongText = myReader["contacttyp_typname"].ToString();  
+                        SQLItem.Type.Name = myReader["coursetyp_typname"].ToString();
                         sqlConnection.Close();
                         sqlConnection = null;
                         return SQLItem;
