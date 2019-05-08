@@ -12,6 +12,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 
 import localeDe from '@angular/common/locales/de';
+import {LOCALE_ID} from '@angular/core';
 
 registerLocaleData(localeDe, 'de');
 
@@ -27,7 +28,8 @@ registerLocaleData(localeDe, 'de');
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: LOCALE_ID, useValue: "de-DE"}
   ],
   bootstrap: [AppComponent]
 })
