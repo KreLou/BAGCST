@@ -242,5 +242,25 @@ namespace api.offlineDB
                 }
             }
         }
+
+        public UserItem getUserByName(string username)
+        {
+            UserItem[] allUsers = getUserItems();
+
+            UserItem[] possibleItems = allUsers
+                .Where(x => x.Active == true)
+                .Where(x => x.Username.ToLower() == username.ToLower())
+                .ToArray();
+
+            if (possibleItems.Length == 1)
+            {
+                return possibleItems[0];
+            }
+            if (possibleItems.Length == 0)
+            {
+                return null;
+            }
+            throw new Exception("Username no unique");
+        }
     }
 }
