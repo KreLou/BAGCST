@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Models;
 using api.Interfaces;
 using System.IO;
+using api.offlineDB;
 
 namespace api.Databases
 {
@@ -12,7 +13,14 @@ namespace api.Databases
     {
         private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
 
+        private static IUserTypeDB userTypeDB = new offlineUserTypeDB();
 
+        private static IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
+
+        public offlineContactsDB()
+        {
+            userTypeDB = new offlineUserTypeDB();
+        }
 
         private static ContactItem convertToContactItem(string line)
         {
@@ -26,17 +34,34 @@ namespace api.Databases
                 Email = args[4],
                 Room = args[5],
                 Responsibility = args[6],
-                Course = args[7],
-                Type = args[8],
+                Course = getCourse(args[7]),
+                Type = getUserType(args[8]),
                 Title = args[9]
             };
         
             return item;
         }
 
+        private static StudyCourse getCourse(string arg)
+        {
+            if (arg == null || arg == string.Empty) return null;
+            return studyCourseDB.getCourseById(Convert.ToInt32(arg));
+        }
+
+        private static UserType getUserType(string args)
+        {
+            if (args == null || args == string.Empty) return null;
+            return userTypeDB.getByID(Convert.ToInt32(args));
+        }
+
         private static string convertToString(ContactItem item)
         {
-            return item.ContactID + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + item.Course + ";" + item.Type + ";" + item.Title;
+            string course = "";
+            string type = "";
+
+            if (item.Course != null) course = item.Course.ID.ToString();
+            if (item.Type != null) type = item.Type.ID.ToString();
+            return item.ContactID + ";" + item.FirstName + ";" + item.LastName + ";" + item.TelNumber + ";" + item.Email + ";" + item.Room + ";" + item.Responsibility + ";" + course + ";" + type + ";" + item.Title;
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
-7;Marcell;Schneider;;4002358@ba-glauchau.de;SR201;;;Student;
+7;Marcell;Schneider;;4002358@ba-glauchau.de;SR201;;;4;
 8;Dustin;Zetzsche;;4002370@ba-glauchau.de;;;;;
 9;Louis;Kretzschmann;;_4002314@ba-glauchau.de;1108;;;;
 11;Tobias;Jahnsmüller;;4002359@ba-glauchau.de;;;;;
-12;Marius;Arlt;;4402498@ba-glauchau.de;;;;;
+12;Marius;Arlt;;4402498@ba-glauchau.de;;;1;4;
 13;Thomas;Schäfer;;4002519@ba-glauchau.de;;;;;
 14;Vincent;Günther;;4002523@ba-glauchau.de;;;;;
 15;Steven;Wolf;;4002286@ba-glauchau.de;;;;;
@@ -10,14 +10,14 @@
 17;Alexander;Bucklisch;;4002268@ba-glauchau.de;;;;;
 18;Theo;Teein;0101010101010101;theo@tee.in;Teekanne;;;;
 19;Alexander;Lehmann;;4002297@ba-glauchau.de;;;;;
-20;Anders;Birgit;03763/173-521;anders@ba-glauchau.de;215;Prüfungsamt;;Mitarbeiter;
-21;Frauke;Deckow;03763/173-133;deckow@ba-glauchau.de;408;Studiengangsleiterin;Mittelständische Wirtschaft;Dozent;Prof. Dr.
-22;Carmen;Dillner;03763/173-280 (281);dillner@ba-glauchau.de;212;Sekretariat Sellv. Direktor;;Mitarbeiter;
-23;Heiko;Enge;03763/173-111 (125);enge@ba-glauchau.de;214a;Studiengangsleiter Industrielle Produktion;Industrielle Produktion;Dozent;Prod. Dr.-Ing.
-24;Ines;Fischer;03763/173-290 (288);fischer@ba-glauchau.de;Bibliothek;Bibliotheksangestellte;;Mitarbeiter;
-25;Katja;Flehmig;03763/173-350;flehmig@ba-glauchau.de;108;Studiengangsleiterin Baubetriebsmanagement;Baubetriebsmanagement;Dozent;Prof. Dr.
-26;Reinhard;Franke;03763/173-285;franke@ba-glauchau.de;505;;;Dozent;Prof. Dr.
-27;Siliva;Franke;03763/173-285;sfranke@ba-glauchau.de;Bibliothek;Bibliotheksangestellte;;Mitarbeiter;
-28;Denis;Freudenberg;03763/173-117;freudenberg@ba-glauchau.de;L 17;Laboringenieur Produktionstechnik;;Dozent;Dipl.-Ing.
-29;Roy;Fritzsche;03763/173-454;fritzsche@ba-glauchau.de;505;;;Dozent;Prof. Dr.
-30;Nils;Fröhlich;03763/173-355;fröhlich@ba-glauchau.de;022;;;Dozent;Prof. Dr.
+20;Anders;Birgit;03763/173-521;anders@ba-glauchau.de;215;Prüfungsamt;;2;
+21;Frauke;Deckow;03763/173-133;deckow@ba-glauchau.de;408;Studiengangsleiterin;10;1;Prof. Dr.
+22;Carmen;Dillner;03763/173-280 (281);dillner@ba-glauchau.de;212;Sekretariat Sellv. Direktor;;2;
+23;Heiko;Enge;03763/173-111 (125);enge@ba-glauchau.de;214a;Studiengangsleiter Industrielle Produktion;4;1;Prod. Dr.-Ing.
+24;Ines;Fischer;03763/173-290 (288);fischer@ba-glauchau.de;Bibliothek;Bibliotheksangestellte;;2;
+25;Katja;Flehmig;03763/173-350;flehmig@ba-glauchau.de;108;Studiengangsleiterin Baubetriebsmanagement;11;1;Prof. Dr.
+26;Reinhard;Franke;03763/173-285;franke@ba-glauchau.de;505;;;1;Prof. Dr.
+27;Siliva;Franke;03763/173-285;sfranke@ba-glauchau.de;Bibliothek;Bibliotheksangestellte;;2;
+28;Denis;Freudenberg;03763/173-117;freudenberg@ba-glauchau.de;L 17;Laboringenieur Produktionstechnik;;1;Dipl.-Ing.
+29;Roy;Fritzsche;03763/173-454;fritzsche@ba-glauchau.de;505;;;1;Prof. Dr.
+30;Nils;Fröhlich;03763/173-355;fröhlich@ba-glauchau.de;022;;;1;Prof. Dr.

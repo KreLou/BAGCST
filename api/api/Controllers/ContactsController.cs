@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Models;
 using api.Databases;
+using api.offlineDB;
 using api.database;
 
 namespace api.Controllers
@@ -62,6 +63,12 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public ActionResult<ContactItem> editContactItem(int id, [FromBody]ContactItem item_in)
         {
+            //Check if item not null
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             //Check if ID is valid
             if (contactsDB.getContactItem(id) == null)
             {
@@ -74,11 +81,16 @@ namespace api.Controllers
                 return BadRequest("This email address already exists");
             }
 
-
-            //Check if item not null
-            if (!ModelState.IsValid)
+            //TODO handle evaluation better
+            if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest("No Studycourse found for " + item_in.Course.ID);
+            }
+
+            //TODO handle better evaluation
+            if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
+            {
+                return BadRequest("No UserType found for " + item_in.Type.ID);
             }
 
             //update existing item
@@ -117,6 +129,18 @@ namespace api.Controllers
             if (item_in == null)
             {
                 return BadRequest("ContactItem not found");
+            }
+
+            //TODO handle evaluation better
+            if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
+            {
+                return BadRequest("No Studycourse found for " + item_in.Course.ID);
+            }
+
+            //TODO handle better evaluation
+            if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
+            {
+                return BadRequest("No UserType found for " + item_in.Type.ID);
             }
 
             ContactItem foundByEmail = contactsDB.getContactItem(item_in.Email);
