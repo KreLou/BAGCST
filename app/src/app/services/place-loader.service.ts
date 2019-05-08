@@ -20,6 +20,10 @@ export class PlaceLoaderService {
     );
   }
 
+  public getPlaceByID(id: number): Observable<Place> {
+    return this.httpClient.get<Place>(environment.apiURL + '/api/place/' + id);
+  }
+
   handleError(error) {
      let errorMessage = '';
 

@@ -11,13 +11,15 @@ export class PopUpMessageService {
   constructor(private toast: ToastController) { }
 
   async showInputError(message: string) {
-    const toast = await this.toast.create({
+    this.toast.create({
       message: message,
       position: "bottom",
-      duration: 3000
+      duration: 3000,
+      cssClass: 'customToast'
+    }).then((obj) => {
+      console.log('Toast ', obj);
+      obj.present();
     });
-
-    toast.present();
   }
 
   async showAPISuccess(message: string) {

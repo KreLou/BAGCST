@@ -20,12 +20,12 @@
     <ion-grid>
       <ng-container *ngFor="let day of menuForecast">
         <ion-row>
-          <ion-label class="headerDate" color="primary">{{day.date | date: 'dd.MM.yy'}}</ion-label>
+          <ion-label class="headerDate" color="primary">{{day.date | date: 'EEEEEE dd.MM.yy'}}</ion-label>
         </ion-row>
 
         <ng-container *ngFor="let menu of day.menus" lines="none">
           <ion-row>
-            <ion-col size="10">
+            <ion-col size="9">
               <ion-row>
                 <ion-col class="mealname" size="9">{{menu.meal.mealName}}</ion-col>
                 <ion-col class="pricetag" size="3">{{menu.price | currency: 'EUR': 'symbol': '1.2-2': 'de'}}</ion-col>
@@ -34,9 +34,12 @@
                 <ion-col size="12">{{menu.meal.description}}</ion-col>
               </ion-row>
             </ion-col>
-            <ion-col size="2">
-              <ion-button color="success" (click)="editMenu(menu)">
+            <ion-col size="3">
+              <ion-button color="success" (click)="onEditClick(menu)">
                 <ion-icon name="create" type="icon-only"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="onDeleteClick(menu)">
+                <ion-icon name="trash" type="icon-only"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>
@@ -48,7 +51,7 @@
     </ion-grid>
   </ng-container>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="addNewMenu()">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="onAddNewMenuClick()">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
