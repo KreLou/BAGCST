@@ -257,7 +257,8 @@ namespace api.database
 
         public PostGroupItem[] getPostGroupsWhereUserIsAuthor(long userID)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>

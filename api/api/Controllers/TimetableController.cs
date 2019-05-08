@@ -87,18 +87,20 @@ namespace api.Controllers
             //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
             //TODO Ad Switch and Adapter for the UserItem
             string studygroup = "WI16-1";
-            bool isStudent = true;
+            bool isStudent = false;
 
             if (isStudent)
             {
                 SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
-                DateTime startDate = currentSemester == null ? getFirstOfMonth() : currentSemester.Start;
+                //DateTime startDate = currentSemester == null ? getFirstOfMonth() : currentSemester.Start;
+                DateTime startDate = Convert.ToDateTime("01.01.2018 00:00:00");
                 lectures = timetableDB.getSemesterLectures(studygroup, startDate);
             }
             else
             {
-                string dozID = "Prof. Penzel";
-                DateTime startDate = getFirstOfMonth();
+                string dozID = "Frank";
+                //DateTime startDate = getFirstOfMonth();
+                DateTime startDate = Convert.ToDateTime("01.01.2018 00:00:00");
                 lectures = timetableDB.getLecturesByLecturer(dozID, startDate);
             }
 

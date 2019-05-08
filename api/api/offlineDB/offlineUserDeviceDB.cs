@@ -65,7 +65,8 @@ namespace api.offlineDB
             {
                 return possibleItems[0];
             }
-            throw new Exception("Not unique Item found");
+
+            throw new System.Exception("Not unique Item found");
         }
 
         public UserDeviceItem[] getAllUserDeviceItems()

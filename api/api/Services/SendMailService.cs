@@ -47,7 +47,7 @@ namespace api.Handler
             try
             {
                 client.Send(message);
-            }catch(Exception ex)
+            }catch(System.Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }

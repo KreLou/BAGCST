@@ -57,5 +57,16 @@ namespace api.Models
         /// ID for PostGroups, which user subscribs
         /// </summary>
         public PostGroupUserPushNotificationSetting[] SubscribedPostGroups { get; set; }
+
+        /// <summary>
+        /// ID and Name of UserType, where user are
+        /// e.g. Student or Dorzent
+        /// </summary>
+        public UserType UserType { get; set; }
+
+        /// <summary>
+        /// DSGVO accepted
+        /// </summary>
+        public bool DSGVO { get; set; }
     }
 }
