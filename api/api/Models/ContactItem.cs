@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
     public class ContactItem
     {
         /// <summary>
+        /// Primary key of contacts
         /// Primary key of a contact
         /// </summary>
         public int ContactID { get; set; }
 
         /// <summary>
-        /// First name of the person
+        /// Firstname of the person
         /// </summary>
         [Required]
-        public string FirstName{ get; set; }
-
+        public string FirstName { get; set; }
+ 
         /// <summary>
-        /// Last name with title of the person
+        /// Lastname with title of the person
         /// </summary>
         [Required]
         public string LastName { get; set; }
@@ -42,7 +43,7 @@ namespace api.Models
         public string Email { get; set; }
 
         /// <summary>
-        /// Room description (name, number or both)
+        /// Room description, possibly with letters in front of, that's why it's string
         /// </summary>
         public string Room { get; set; }
            
@@ -52,7 +53,7 @@ namespace api.Models
         public string Responsibility { get; set; }
 
         /// <summary>
-        /// The course (e.g. WI)
+        /// The course (f.a. WI)
         /// </summary>
         public string Course { get; set; }
 

@@ -10,9 +10,9 @@ namespace api.offlineDB
 {
     public class offlinePostGroupDB : IPostGroupDB
     {
-        private static string path_offlineDBFiles = Environment.CurrentDirectory + "\\offlineDB\\Files\\";
-        private static string filename_postgroup = path_offlineDBFiles + "postgroups.csv";
-        private static string filename_postgroupauthor = path_offlineDBFiles + "postgroupauthors.csv";
+        private static string path_offlineDBFiles = Path.Combine(Environment.CurrentDirectory, "offlineDB","Files");
+        private static string filename_postgroup = Path.Combine(path_offlineDBFiles,"postgroups.csv");
+        private static string filename_postgroupauthor = Path.Combine(path_offlineDBFiles, "postgroupauthors.csv");
 
         #region DEBUG Funktion -- am Ende entfernen
         public string[] getStringArray(PostGroupItem item)
@@ -151,9 +151,9 @@ namespace api.offlineDB
 
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw new Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
+                throw new System.Exception($"{MethodInfo.GetCurrentMethod()}-Fehler: {ex.Message}");
             }
 
             return item;

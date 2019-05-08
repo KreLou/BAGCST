@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.database;
+using api.Databases;
+using api.Interfaces;
+using api.offlineDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,12 +28,16 @@ namespace api
         }
 
         public IConfiguration Configuration { get; }
-        public object CurrentEnvironment { get; }
+        public IHostingEnvironment CurrentEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            //Register dependencies
+            registerDependencies(services);
 
             //Register the Swagger Generator
             services.AddSwaggerGen(c =>
@@ -41,6 +49,46 @@ namespace api
                     Description = "Documentation BA-Glauchau-Student-Project-Backend"
                 });
             });
+        }
+
+        private void registerDependencies(IServiceCollection services)
+        {
+            //Configure Static Dependencies
+
+
+
+            //Configure Environment Dependencies
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                //Development
+                services.AddSingleton<IContactsDB, offlineContactsDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
+                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMenuDB, OfflineMenuDB>();
+                services.AddSingleton<INewsDB, offlineNewsDB>();
+                services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
+                services.AddSingleton<IPostGroupDB, offlinePostGroupDB>();
+                services.AddSingleton<IRightsDB, offlineRightsDB>();
+                services.AddSingleton<ISemesterDB, offlineSemesterDB>();
+                services.AddSingleton<ITimetableDB, offlineTimetableDB>();
+                services.AddSingleton<IUserDB, offlineUserDB>();
+                services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+            }else
+            {
+                //Production
+                services.AddSingleton<IContactsDB, onlineContactsDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
+                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMenuDB, OfflineMenuDB>();
+                services.AddSingleton<INewsDB, onlineNewsDB>();
+                services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
+                services.AddSingleton<IPostGroupDB, onlinePostGroupDB>();
+                services.AddSingleton<IRightsDB, offlineRightsDB>();
+                services.AddSingleton<ISemesterDB, offlineSemesterDB>();
+                services.AddSingleton<ITimetableDB, offlineTimetableDB>();
+                services.AddSingleton<IUserDB, onlineUserDB>();
+                services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

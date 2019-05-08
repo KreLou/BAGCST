@@ -6,7 +6,7 @@ using api.Models;
 
 namespace api.Interfaces
 {
-    interface IGroupsDB
+    public interface IGroupsDB
     {
         /// <summary>
         /// search for Group by ID

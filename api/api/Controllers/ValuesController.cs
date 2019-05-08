@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -10,7 +11,8 @@ namespace api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
- 
+        private onlineValuesDB database = new onlineValuesDB();
+
         /// <summary>
         /// GET api/values
         /// </summary>
@@ -29,7 +31,8 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value " + id;
+            string value = database.getByID(id);
+            return Ok(value);
         }
         
         /// <summary>
@@ -39,18 +42,21 @@ namespace api.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            database.newID(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+            database.setByID(id,value);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            database.deleteByID(id);
         }
     }
 }

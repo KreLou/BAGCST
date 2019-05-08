@@ -15,34 +15,17 @@ namespace api.Controllers
     [ApiController]
     public class MenuController : ControllerBase
     {
-        private IMenuDB menuDatabase = getMenuDatabase();
+        private IMenuDB menuDB;
 
-        private IMealDB mealDatabase = getMealDataBase();
+        private IMealDB mealDB;
 
-        private IPlaceDB placeDatabase = getPlaceDatabase();
+        private IPlaceDB placeDB;
 
-        private static IPlaceDB getPlaceDatabase()
+        public MenuController(IMenuDB menuDB, IMealDB mealDB, IPlaceDB placeDB)
         {
-            return new OfflinePlaceDB();
-        }
-
-
-        /// <summary>
-        /// Returns the current Menu database
-        /// </summary>
-        /// <returns></returns>
-        private static IMenuDB getMenuDatabase()
-        {
-            return new OfflineMenuDB();
-        }
-
-        /// <summary>
-        /// Returns the meal database
-        /// </summary>
-        /// <returns></returns>
-        private static IMealDB getMealDataBase()
-        {
-            return new OfflineMealDB();
+            this.menuDB = menuDB;
+            this.mealDB = mealDB;
+            this.placeDB = placeDB;
         }
 
 
@@ -55,7 +38,7 @@ namespace api.Controllers
         public ActionResult<MenuItem> getMenuItem(int id)
         {
             // get the MenuItem from the database
-            MenuItem item = menuDatabase.getMenuItem(id);
+            MenuItem item = menuDB.getMenuItem(id);
 
             // check if the item exist 
             if (item == null)
@@ -81,8 +64,8 @@ namespace api.Controllers
         {
             if (startDate == DateTime.MinValue) startDate = DateTime.Today;
             if (endDate == DateTime.MinValue) endDate = startDate.AddDays(7);
-            if (placeIDs.Length == 0) placeIDs = placeDatabase.getPlaces().Select(x => x.PlaceID).ToArray();
-            MenuItem[] items = menuDatabase.getFilterdMenus(startDate, endDate, placeIDs);
+            if (placeIDs.Length == 0) placeIDs = placeDB.getPlaces().Select(x => x.PlaceID).ToArray();
+            MenuItem[] items = menuDB.getFilterdMenus(startDate, endDate, placeIDs);
             items = items.OrderBy(x => x.Date).ThenBy(x => x.Meal.Place.PlaceName).ThenBy(x => x.Meal.MealName).ToArray();
             return Ok(items);
         }
@@ -112,7 +95,7 @@ namespace api.Controllers
             menu.Meal = handleMealInput(menu.Meal);
 
             //update existing item
-            MenuItem menuNew = menuDatabase.editMenu(id, menu);
+            MenuItem menuNew = menuDB.editMenu(id, menu);
 
             //return new item
             return Ok(menuNew);
@@ -127,10 +110,10 @@ namespace api.Controllers
         /// <returns></returns>
         private MealItem handleMealInput(MealItem meal)
         {
-            int foundedMealID = mealDatabase.selectMealIDFromOtherInformation(meal);
+            int foundedMealID = mealDB.selectMealIDFromOtherInformation(meal);
             if (foundedMealID == 0)
             {
-                meal = mealDatabase.saveNewMeal(meal);
+                meal = mealDB.saveNewMeal(meal);
             }else
             {
                 meal.MealID = foundedMealID;
@@ -148,12 +131,12 @@ namespace api.Controllers
         public ActionResult deleteMenuItem(int id)
         {
             // check if the item not null
-            if (menuDatabase.getMenuItem(id) == null)
+            if (menuDB.getMenuItem(id) == null)
             {   // if null 
                 return NotFound(($"No MenuItem found for id: {id}"));
             }
             // else delete this item 
-            menuDatabase.deleteMenu(id);
+            menuDB.deleteMenu(id);
             return Ok();
         }
 
@@ -179,14 +162,14 @@ namespace api.Controllers
 
             menu.Meal = handleMealInput(menu.Meal);
 
-            MenuItem[] alreadySavedMenuItems = menuDatabase.getFilterdMenus(menu.Date, menu.Date, new[] { menu.Meal.Place.PlaceID });
+            MenuItem[] alreadySavedMenuItems = menuDB.getFilterdMenus(menu.Date, menu.Date, new[] { menu.Meal.Place.PlaceID });
             MenuItem[] filteredSavedMenuItems = alreadySavedMenuItems.Where(item => item.Meal.MealID == menu.Meal.MealID).ToArray();
             if (filteredSavedMenuItems.Length > 0)
             {
                 return BadRequest("This MealItem is already planed in the Menu");
             }
 
-            MenuItem menuNew = menuDatabase.saveNewMenu(menu);
+            MenuItem menuNew = menuDB.saveNewMenu(menu);
             return Created("", menuNew);
         }
 
@@ -202,13 +185,13 @@ namespace api.Controllers
             PlaceItem foundedItem = null;
             if (item.PlaceID != 0)
             {
-                foundedItem = placeDatabase.getPlaceItem(item.PlaceID);
+                foundedItem = placeDB.getPlaceItem(item.PlaceID);
                 if (foundedItem.PlaceName.ToLower() == item.PlaceName.ToLower())   //Both Items are the same
                 {
                     return foundedItem;
                 }
             }
-            foundedItem = placeDatabase.getPlaceItemByName(item.PlaceName);
+            foundedItem = placeDB.getPlaceItemByName(item.PlaceName);
             if (foundedItem == null)
             {
                 throw new NotFoundException($"No PlaceItem found for Name: '{item.PlaceName}'");

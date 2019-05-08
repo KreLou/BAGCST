@@ -16,26 +16,16 @@ namespace api.Controllers
     public class MealController : ControllerBase 
     {
 
-        private IMealDB mealDatabase = getMealDatabase();
+        private IMealDB mealDB;
 
-        private IPlaceDB placeDataBase = getPlaceDatabase();
+        private IPlaceDB placeDB;
+        
+        public MealController(IMealDB mealDB, IPlaceDB placeDB)
+        {
+            this.mealDB = mealDB;
+            this.placeDB = placeDB;
+        }
 
-        /// <summary>
-        /// Returns the current Meal database
-        /// </summary>
-        /// <returns></returns>
-        private static IMealDB getMealDatabase()
-        {
-            return new OfflineMealDB();
-        }
-        /// <summary>
-        /// Returns the Place database   
-        /// </summary>
-        /// <returns></returns>
-        private static IPlaceDB getPlaceDatabase()
-        {
-            return new OfflinePlaceDB();
-        }
         /// <summary>
         /// returns the MealItem for the given ID. If the ID is not found, it returns NotFound.
         /// </summary>
@@ -45,7 +35,7 @@ namespace api.Controllers
         [NonAction]
         public ActionResult<MealItem> getMealItem(int id)
         {   // get the meal Item from the datebase
-            MealItem item = mealDatabase.getMealItem(id);
+            MealItem item = mealDB.getMealItem(id);
             // if this item not found 
             if (item == null)
             {
@@ -67,7 +57,7 @@ namespace api.Controllers
         public ActionResult<MealItem[]> getAllMeals(int placeID)
         {
             // get all the Meal item 
-            MealItem[] items = mealDatabase.getMealItemsByPlaceID(placeID);
+            MealItem[] items = mealDB.getMealItemsByPlaceID(placeID);
 
             if (items.Length == 0)
             {
@@ -92,13 +82,13 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
             //Check if id is valid
-            if (mealDatabase.getMealItem(id) == null)
+            if (mealDB.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
 
             //update existing item
-            MealItem item_out = mealDatabase.saveNewMeal(meal);
+            MealItem item_out = mealDB.saveNewMeal(meal);
 
             //return new item
             return Ok(item_out);
@@ -114,12 +104,12 @@ namespace api.Controllers
         public ActionResult deleteMeal(int id)
         {
                 // check if the given Id is not null
-            if (mealDatabase.getMealItem(id) == null)
+            if (mealDB.getMealItem(id) == null)
             {
                 return NotFound(($"No MealItem found for id: {id}"));
             }
             // if not null then delete this item 
-            mealDatabase.deleteMeal(id);
+            mealDB.deleteMeal(id);
             return Ok();
         }
 
@@ -142,11 +132,11 @@ namespace api.Controllers
                 return BadRequest("MealItem not found");
             }
             PlaceItem foundedPlace = null;
-            foundedPlace = placeDataBase.getPlaceItemByName(meal.Place.PlaceName);
+            foundedPlace = placeDB.getPlaceItemByName(meal.Place.PlaceName);
 
             if (foundedPlace == null && meal.Place.PlaceID != 0)
             {
-                foundedPlace = placeDataBase.getPlaceItem(meal.Place.PlaceID);
+                foundedPlace = placeDB.getPlaceItem(meal.Place.PlaceID);
             }
 
             if (foundedPlace == null)
@@ -155,7 +145,7 @@ namespace api.Controllers
             }
             meal.Place = foundedPlace;
             // if not then created new mealItem 
-            MealItem mealNew = mealDatabase.saveNewMeal(meal);
+            MealItem mealNew = mealDB.saveNewMeal(meal);
             return Created("", mealNew);
         }
     }
