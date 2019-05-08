@@ -39,14 +39,14 @@ namespace api.Models
         /// topic he's learning
         /// e.g. "WI16"
         /// </summary>
-        public string StudyCourse { get; set; }
+        public StudyCourse StudyCourse { get; set; }
 
         /// <summary>
         /// group of profil
         /// specific name of group in the course
         /// e.g. "WI16-1"
         /// </summary>
-        public string StudyGroup { get; set; }
+        public StudyGroup StudyGroup { get; set; }
 
         /// <summary>
         /// ID of PostGroups, where user can post news

@@ -13,6 +13,9 @@ namespace api.offlineDB
         private static string offlineDBPath = Environment.CurrentDirectory + "\\offlineDB";
         private string user_filename = offlineDBPath + "\\Files\\users.csv";
 
+        private IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
+        private IStudyGroupDB studyGroupDB = new offlineStudyGroupDB();
+
         /// <summary>
         /// Creates the string output for User
         /// </summary>
@@ -20,6 +23,9 @@ namespace api.offlineDB
         /// <returns></returns>
         private string convertUserToLine(UserItem user)
         {
+            string course = "";
+
+            if (user.StudyCourse != null) course = user.StudyCourse.ID.ToString();
             return user.UserID + ";" + user.Active + ";" + user.Username + ";" + user.Firstname + ";" + user.Lastname + ";" + user.Email + ";" + user.StudyCourse + ";" + user.StudyGroup; 
         }
 
@@ -34,10 +40,22 @@ namespace api.offlineDB
                 Firstname = args[3],
                 Lastname = args[4],
                 Email = args[5],
-                StudyCourse = args[6],
-                StudyGroup = args[7]
+                StudyCourse = getStudyCourse(args[6]),
+                StudyGroup = getStudyGroup(args[7])
             };
             return user;
+        }
+
+        private StudyGroup getStudyGroup(string arg)
+        {
+            if (arg == null || arg == string.Empty) return null;
+            return studyGroupDB.getByID(Convert.ToInt32(arg));
+        }
+
+        private StudyCourse getStudyCourse(string arg)
+        {
+            if (arg == null || arg == string.Empty) return null;
+            return studyCourseDB.getCourseById(Convert.ToInt32(arg));
         }
 
         public UserItem editUserItem(long id, UserItem item)
