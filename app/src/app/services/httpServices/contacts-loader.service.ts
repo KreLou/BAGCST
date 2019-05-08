@@ -14,4 +14,8 @@ export class ContactsLoaderService {
   getAllContacts(): Observable<ContactItem[]> {
     return this.http.get<ContactItem[]>(environment.apiURL + `/api/contacts`);
   }
+
+  getContact(id: number): Observable<ContactItem> {
+    return this.http.get<ContactItem>(environment.apiURL + `/api/contacts/` + id);
+  }
 }
