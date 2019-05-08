@@ -10,16 +10,11 @@
 </ion-header>
 
 <ion-content>
-<!-- <p> OhLongJohnson</p>
+<p> OhLongJohnson</p>
 <ion-list>
-	<ion-item id="testID">
-		<ion-label>Test1</ion-label>
+	<ion-item *ngFor="let contact of contactList"> 
+		<ion-label {{contact.contactID}}></ion-label>
 	</ion-item>
-	<script>
-	src="contacts.page.ts"
-	</script>
-{{contactList}}
-<app-contacts></app-contacts>
-</ion-list> -->
+</ion-list>
 
 </ion-content>
