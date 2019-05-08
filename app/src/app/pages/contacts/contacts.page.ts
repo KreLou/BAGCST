@@ -15,7 +15,7 @@ export class ContactsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contactLoader.getAllContacts().subscribe(data => console.log(data));
+    this.contactLoader.getAllContacts().subscribe(data => {console.log(data)}, error => {console.error(error);});
   }
 
 }
