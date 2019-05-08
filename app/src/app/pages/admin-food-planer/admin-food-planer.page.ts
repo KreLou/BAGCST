@@ -76,7 +76,8 @@ export class AdminFoodPlanerPage implements OnInit {
    * Determines whether add new menu click on
    */
   onAddNewMenuClick() {
-    this.router.navigate(['admin-food-planer', this.activePlace.placeID ,'0']);
+    const placeID = this.activePlace ? this.activePlace.placeID : 0;
+    this.router.navigate(['admin-food-planer', placeID ,'0']);
   }
 
   /**
