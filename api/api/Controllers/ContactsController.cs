@@ -16,6 +16,8 @@ namespace api.Controllers
     [ApiController]
     public class ContactsController : ControllerBase
     {
+        private readonly IStudyCourseDB studyCourseDB;
+        private readonly IUserTypeDB userTypeDB;
         private readonly IContactsDB contactsDB;
 
         public ContactsController(IContactsDB contactsDB)
