@@ -27,6 +27,9 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id"></param>
         void deleteUserItem(long id);
+      
+      
+        UserItem getUserByName(string username);
 
         /// <summary>
         /// Return all User-Items

@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using api.Handler;
+using api.Interfaces;
+using api.offlineDB;
+using api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using api.database;
 using api.Databases;
 using api.Interfaces;
@@ -14,12 +21,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -33,8 +42,38 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => options.SerializerSettings.Culture = new System.Globalization.CultureInfo("de-DE"));
 
+            services.AddCors();
+
+            //Add Authentiation
+            var key = Encoding.ASCII.GetBytes(ServerConfigHandler.ServerConfig.JWT_SecurityKey);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            //Add Authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("activatedSession", policy =>
+                policy.Requirements.Add(new ActivatedSessionRequirement()));
+            });
+            services.AddTransient<IAuthorizationHandler, ActivatedSessionHandler>();
 
             //Register dependencies
             registerDependencies(services);
@@ -91,9 +130,13 @@ namespace api
             }
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(builder =>
+                    builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
+                    .UseRequestLocalization(new RequestLocalizationOptions {DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(new System.Globalization.CultureInfo("de-DE"))});
             if (env.IsDevelopment())
             {
                 //Enable Swagger
@@ -114,8 +157,11 @@ namespace api
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+        
     }
 }

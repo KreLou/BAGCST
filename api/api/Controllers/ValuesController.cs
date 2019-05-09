@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using api.database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
+    [Authorize(Policy ="activatedSession")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -20,7 +24,11 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            TokenDecoderService service = new TokenDecoderService();
+
+            TokenInformation token = service.GetTokenInfo(User);
+
+            return Ok($"HEllo {token.Username}");
         }
 
         /// <summary>
