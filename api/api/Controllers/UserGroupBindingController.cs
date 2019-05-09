@@ -26,7 +26,7 @@ namespace api.Controllers
         }
         private static IGroupsDB getGroupDatabase()
         {
-            return new offlineDB_Groups();
+            return new offlineGroupsDB();
         }
 
         [HttpGet]
