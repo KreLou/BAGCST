@@ -13,6 +13,7 @@
 <ion-list>
 	<ion-item *ngFor="let contact of contactList" (click)="goToDetails(contact.contactID)" detail> 
 		<ion-label>{{contact.firstName}} {{contact.lastName}}
+			<p>{{contact.course}}</p>
 		</ion-label>
 	</ion-item>
 </ion-list>
