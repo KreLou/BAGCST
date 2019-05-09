@@ -260,7 +260,7 @@ namespace api.offlineDB
             {
                 return null;
             }
-            throw new Exception("Username no unique");
+            throw new System.Exception("Username no unique");
         }
     }
 }
