@@ -77,7 +77,7 @@ export class AdminFoodPlanerPage implements OnInit {
    */
   onAddNewMenuClick() {
     const placeID = this.activePlace ? this.activePlace.placeID : 0;
-    this.router.navigate(['admin-food-planer', placeID ,'0']);
+    this.router.navigate([ 'tabs', 'admin-food-planer', placeID ,'0']);
   }
 
   /**
@@ -85,7 +85,7 @@ export class AdminFoodPlanerPage implements OnInit {
    * @param menu 
    */
   onEditClick(menu: Menu) {
-    this.router.navigate(['admin-food-planer', this.activePlace.placeID, menu.menuID]);
+    this.router.navigate(['tabs', 'admin-food-planer', this.activePlace.placeID, menu.menuID]);
   }
 
   /**

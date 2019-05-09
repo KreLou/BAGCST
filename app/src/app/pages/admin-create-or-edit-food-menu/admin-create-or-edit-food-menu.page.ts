@@ -112,6 +112,7 @@ export class AdminCreateOrEditFoodMenuPage implements OnInit {
     console.log('CreateMenu');
     this.menuLoader.createNewMenuItem(this.menu).subscribe(data => {
       this.popup.showAPISuccess('Eintrag angelegt');
+      this.router.navigate(['tabs', 'admin-food-planer']);
     })
   }
 

@@ -14,7 +14,7 @@ export class FoodMenuPage implements OnInit {
   }
 
   goToAdminPage() {
-    this.router.navigate(['admin-food-planer']);
+    this.router.navigate(['tabs', 'admin-food-planer']);
   }
 
 }
