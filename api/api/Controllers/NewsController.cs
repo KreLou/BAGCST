@@ -44,7 +44,7 @@ namespace api.Controllers
         /// <param name="groups">Which group-id should loaded</param>
         /// <returns></returns>
         [HttpGet]
-        public NewsItem[] getAllNews([FromQuery] int start = 0, [FromQuery] int amount = 10)
+        public NewsItem[] getAllNews([FromQuery] int start = int.MaxValue, [FromQuery] int amount = 10)
         {
             long userID = 1; //TODO Get User-ID by Token
 
