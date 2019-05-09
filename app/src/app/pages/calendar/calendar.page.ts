@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TimetableItem } from "../../models/TimetableItem";
 
 @Component({
   selector: 'app-calendar',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendar.page.css'],
 })
 export class CalendarPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+    slideOpts = {
+        initialSlide: 0,
+        speed: 400
+    };
+  ngOnInit(): void {
   }
-
 }
+
+
