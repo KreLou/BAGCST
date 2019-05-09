@@ -10,7 +10,7 @@
 <ion-content padding>
 
   <ion-item *ngIf="activePlace">
-    <ion-label>Place</ion-label>
+    <ion-label>Ort</ion-label>
     <ion-select #placeSelector interface="action-sheet" [(ngModel)]="activePlace" (ionChange)="handlePlaceSelection()">
       <ion-select-option *ngFor="let place of foundedPlaces" [value]="place">{{place.placeName}}</ion-select-option>
     </ion-select>
