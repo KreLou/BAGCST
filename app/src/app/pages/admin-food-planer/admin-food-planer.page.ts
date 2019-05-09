@@ -55,8 +55,6 @@ export class AdminFoodPlanerPage implements OnInit {
   handlePlaceSelection() {
     if (this.activePlace) {
       this.menuLoader.getMenuForecast(this.activePlace.placeID).subscribe(data => {
-        console.log(data);
-
         this.menuForecast = new Array();
 
         var days = Array.from(new Set(data.map(x => x.date)));
@@ -67,8 +65,6 @@ export class AdminFoodPlanerPage implements OnInit {
             menus: data.filter(dataElement => dataElement.date === x)
           });
         });
-
-        console.log(this.menuForecast);
 
       })
     }
@@ -96,19 +92,18 @@ export class AdminFoodPlanerPage implements OnInit {
    * @param menu 
    */
   onDeleteClick(menu: Menu) {
-    console.log('Delete Menu', menu);
     this.alertController.create({
-      header: 'Delete',
-      subHeader: menu.meal.mealName,
-      message: 'Do you want to delete this item?',
+      header: 'Speise löschen',
+      subHeader: `${menu.meal.mealName}`,
+      message: 'Soll die oben genannte Speise wirklich gelöscht werden?',
       buttons: [
         {
-          text: 'Yes',
+          text: 'Ja',
           handler: () => {
             this.deleteMenuAndRefreshPage(menu);
           }
-        },{
-          text: 'No'
+        },{ 
+          text: 'Nein'
         }
       ]
     }).then((obj) => {
