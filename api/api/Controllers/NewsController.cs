@@ -24,17 +24,7 @@ namespace api.Controllers
             this.postGroupDB = postGroupDB;
             this.userSettingsDB = userrSettingsDB;
         }
-
-        /// <summary>
-        /// Returns the current database
-        /// TODO Implementing a switch which depends on the environment
-        /// </summary>
-        /// <returns></returns>
-        private static INewsDB getDatabase()
-        {
-            //return new offlineNewsDB();
-            return new onlineNewsDB();
-        }
+        
 
         /// <summary>
         /// Get all News-Post by filtering

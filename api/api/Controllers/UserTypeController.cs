@@ -14,7 +14,12 @@ namespace api.Controllers
     [ApiController]
     public class UserTypeController : ControllerBase
     {
-        private readonly IUserTypeDB userTypeDB = new offlineUserTypeDB();
+        private readonly IUserTypeDB userTypeDB;
+
+        public UserTypeController(IUserTypeDB userTypeDB)
+        {
+            this.userTypeDB = userTypeDB;
+        }
 
         [HttpGet]
         public UserType[] getAll()

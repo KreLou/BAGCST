@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IUserTypeDB
+    public interface IUserTypeDB
     {
         bool UserTypeExistsById(int id);
 

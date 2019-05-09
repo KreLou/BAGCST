@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using api.Controllers;
 
 namespace api
 {
@@ -112,6 +113,9 @@ namespace api
                 services.AddSingleton<ITimetableDB, offlineTimetableDB>();
                 services.AddSingleton<IUserDB, offlineUserDB>();
                 services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+                services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
+                services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
+                services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
             }else
             {
                 //Production
@@ -127,6 +131,9 @@ namespace api
                 services.AddSingleton<ITimetableDB, offlineTimetableDB>();
                 services.AddSingleton<IUserDB, onlineUserDB>();
                 services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+                services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
+                services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
+                services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
             }
         }
 

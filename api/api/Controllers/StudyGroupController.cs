@@ -14,7 +14,12 @@ namespace api.Controllers
     [ApiController]
     public class StudyGroupController : ControllerBase
     {
-        private readonly IStudyGroupDB studyGroupDB = new offlineStudyGroupDB();
+        private readonly IStudyGroupDB studyGroupDB;
+
+        public StudyGroupController(IStudyGroupDB studyGroupDB)
+        {
+            this.studyGroupDB = studyGroupDB;
+        }
 
         [HttpGet]
         public StudyGroup[] getAll()
