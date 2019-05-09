@@ -16,7 +16,7 @@
     <ion-item lines="full">
       <ion-label>Datum:</ion-label>
       <ion-button icon-right>
-        <ion-datetime #datePicker placeholder="Date" display-format="YYYY-MM-DD" picker-format="YYYY-MM-DD" [(ngModel)]="menu.date"></ion-datetime>
+        <ion-datetime #datePicker placeholder="Date" day-short-names="Son, Mon, Die, Mit, Don, Fre, Sam" display-format="DDD DD.MM.YYYY" picker-format="DDD DD.MM.YYYY" [(ngModel)]="menu.date"></ion-datetime>
         <ion-icon name="calendar"></ion-icon>
       </ion-button>
     </ion-item>
@@ -50,59 +50,6 @@
     <ion-button (click)="save()">
       Speichern
     </ion-button>
-
-
-
-    <!--Grid-->
-    <ion-grid>
-      <ion-row>
-        <ion-col size="4">
-          <ion-item lines="none">
-            <ion-label>Name</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="6">
-          <ion-item>
-            <ion-input #nameInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.mealName" autocapitalize="on"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="2">
-          <ion-button color="light" (click)="clearInput(nameInput)" class="clearButton">
-            <ion-icon color="danger" name="close" type="icon-only"></ion-icon>
-          </ion-button>
-        </ion-col>
-        
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="4">
-          <ion-item lines="none">
-            <ion-label>Beschreibung</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="8">
-          <ion-item lines="full">
-            <ion-input clearInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="3">
-          <ion-item lines="full">
-            <ion-label>Preis:</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="9">
-          <ion-item lines="full">
-            <ion-input required="true" name="name" inputmode="number" max="10" min="0" [(ngModel)]="menu.price" autocapitalize="on"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid>
-
-
   </div>
 
 </ion-content>

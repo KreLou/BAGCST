@@ -17,6 +17,7 @@ export class AdminCreateOrEditFoodMenuPage implements OnInit {
 
   menu: Menu;
 
+
   inputMenuID: number;
   inputPlaceID: number;
 
@@ -104,8 +105,8 @@ export class AdminCreateOrEditFoodMenuPage implements OnInit {
     console.log('updateMenu');
     this.menuLoader.updateMenuItem(this.menu).subscribe(data => {
       console.log('Update successfully', data);
-      this.router.navigate(['admin-food-planer']);
-      this.popup.showAPISuccess('Eintrag aktuallisiert');
+      this.router.navigate(['tabs', 'admin-food-planer']);
+      this.popup.showAPISuccess('Eintrag aktualisiert');
     })
   }
   createNewMenu() {

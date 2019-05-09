@@ -11,8 +11,8 @@
 
   <ion-item *ngIf="activePlace">
     <ion-label>Place</ion-label>
-    <ion-select interface="action-sheet" [(ngModel)]="activePlace">
-      <ion-select-option *ngFor="let place of foundedPlaces">{{place}}</ion-select-option>
+    <ion-select #placeSelector interface="action-sheet" [(ngModel)]="activePlace" (ionChange)="handlePlaceSelection()">
+      <ion-select-option *ngFor="let place of foundedPlaces" [value]="place">{{place.placeName}}</ion-select-option>
     </ion-select>
   </ion-item>
 

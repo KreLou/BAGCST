@@ -36,8 +36,10 @@ export class AdminFoodPlanerPage implements OnInit {
     this.placeLoader.getPlaces().subscribe(data => {
       this.foundedPlaces = data;
       console.table(this.foundedPlaces);
-      this.foundedPlaces.length > 1 ? this.activePlace = this.foundedPlaces[0] : this.activePlace = undefined;
-      this.testID = 0;
+      if (!this.activePlace) {
+        this.foundedPlaces.length > 1 ? this.activePlace = this.foundedPlaces[0] : this.activePlace = undefined;
+        this.testID = 0;
+      }
       this.handlePlaceSelection();
     });
   }
