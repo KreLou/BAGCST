@@ -5,9 +5,24 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item {{contactItem.firstName}}>
-
-    </ion-item>
-  </ion-list>
+  <ng-container *ngIf="contactItem">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon name="call"></ion-icon>
+        </ion-col>
+        <ion-col size="10">
+          <ion-label>{{contactItem.telNumber}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon name="mail"></ion-icon>
+        </ion-col>
+        <ion-col size="10">
+          <ion-label>{{contactItem.email}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
 </ion-content>
