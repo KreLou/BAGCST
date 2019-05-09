@@ -28,6 +28,7 @@ namespace api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -41,8 +42,11 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => options.SerializerSettings.Culture = new System.Globalization.CultureInfo("de-DE"));
 
+            services.AddCors();
 
             //Add Authentiation
             var key = Encoding.ASCII.GetBytes(ServerConfigHandler.ServerConfig.JWT_SecurityKey);
@@ -126,9 +130,13 @@ namespace api
             }
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(builder =>
+                    builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
+                    .UseRequestLocalization(new RequestLocalizationOptions {DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(new System.Globalization.CultureInfo("de-DE"))});
             if (env.IsDevelopment())
             {
                 //Enable Swagger
@@ -154,5 +162,6 @@ namespace api
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+        
     }
 }
