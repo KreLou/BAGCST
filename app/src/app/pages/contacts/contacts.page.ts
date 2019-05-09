@@ -25,13 +25,16 @@ export class ContactsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contactLoader.getAllContacts().subscribe(data => {console.log(data);}, error => {console.error(error); });
-    this.contactLoader.getAllContacts().subscribe(data => {this.contactList = data;});    
+    this.contactLoader.getAllContacts().subscribe(data => {
+      console.log(data);
+      this.contactList = data;
+    }, error => {console.error(error); });
   }
 
   goToDetails(id:number){
     // ContactDetailsPage.contactID = id;
-    this.router.navigate([ContactDetailsPage])
+    console.log(id);
+    this.router.navigate(['contacts',id.toString()]);
   }
 
 }

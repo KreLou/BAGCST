@@ -8,13 +8,14 @@ import { ContactItem } from 'src/app/models/ContactItem';
   templateUrl: './contact-details.page.html',
   styleUrls: ['./contact-details.page.css'],
 })
+
 export class ContactDetailsPage implements OnInit {
 
 
   /**
    * Contact id of contact details page
    */
-  contactID: number;
+  public contactID: number;
   contactItem: ContactItem
 
 
