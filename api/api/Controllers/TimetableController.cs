@@ -92,14 +92,24 @@ namespace api.Controllers
             if (isStudent)
             {
                 SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
-                DateTime startDate = currentSemester == null ? getFirstOfMonth() : currentSemester.Start;
-                lectures = timetableDB.getSemesterLectures(studygroup, startDate);
+                if (currentSemester == null)
+                {
+                    //Create pseudo-semester
+                    currentSemester = new SemesterItem
+                    {
+                        Start = getFirstOfMonth(),
+                        End = getFirstOfMonth().AddMonths(3),
+                        StudyGroup = studygroup
+                    };
+                }
+                lectures = timetableDB.getSemesterLectures(studygroup, currentSemester);
             }
             else
             {
                 string dozID = "Prof. Penzel";
                 DateTime startDate = getFirstOfMonth();
-                lectures = timetableDB.getLecturesByLecturer(dozID, startDate);
+                DateTime endDate = startDate.AddMonths(3);
+                lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
             }
 
             return lectures;

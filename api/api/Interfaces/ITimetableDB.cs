@@ -15,7 +15,7 @@ namespace api.Interfaces
         /// <param name="studyGroup"></param>
         /// <param name="semester"></param>
         /// <returns></returns>
-        LectureItem[] getSemesterLectures(string studyGroup, DateTime startTime);
+        LectureItem[] getSemesterLectures(string studyGroup, SemesterItem currentSemster);
 
         /// <summary>
         /// Get the Lectures for the Lecturer
@@ -23,6 +23,6 @@ namespace api.Interfaces
         /// <param name="lecturer"></param>
         /// <param name="startTime"></param>
         /// <returns></returns>
-        LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime);
+        LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime, DateTime endDate);
     }
 }

@@ -3,6 +3,7 @@ using api.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace api.database
 {
@@ -85,6 +86,11 @@ namespace api.database
         public int[] getSubscribedPostGroups(long UserID)
         {
             throw new NotImplementedException();
+        }
+
+        public UserItem getUserByName(string username)
+        {
+            return this.getUserItems().SingleOrDefault(x => x.Username == username);
         }
 
         public UserItem getUserItem(long id)
