@@ -32,7 +32,8 @@ namespace api.offlineDB
                 Lecturer = args[3],
                 Place = args[4],
                 Start = Convert.ToDateTime(args[5]),
-                End = Convert.ToDateTime(args[6])
+                End = Convert.ToDateTime(args[6]),
+                Comment = "Placehodler für weitere Kommentare"
             };
         }
         public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime, DateTime endDate)

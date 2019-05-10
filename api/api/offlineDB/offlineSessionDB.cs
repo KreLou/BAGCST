@@ -64,7 +64,7 @@ namespace api.offlineDB
             {
                 return null;
             }
-            throw new Exception("No Unique Session found");
+            throw new System.Exception("No Unique Session found");
         }
 
         public SessionItem[] getAllSessions()

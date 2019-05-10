@@ -12,6 +12,10 @@ namespace api.Models
         public string Place { get; set; }
         public string Title { get; set; }
         public string Lecturer { get; set; }
+        /// <summary>
+        /// Other textfield
+        /// </summary>
+        public string Comment { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
     }

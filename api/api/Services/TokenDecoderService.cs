@@ -20,9 +20,9 @@ namespace api.Services
                 if (_tokenInfo == null) DecodeToken(User);
                 return _tokenInfo;
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw new Exception($"{MethodInfo.GetCurrentMethod().Name}-Fehler. {ex.ToString()}");
+                throw new System.Exception($"{MethodInfo.GetCurrentMethod().Name}-Fehler. {ex.ToString()}");
             }
                 
         }
@@ -42,7 +42,7 @@ namespace api.Services
                 
 
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 throw new ArgumentNullException($"{MethodInfo.GetCurrentMethod().Name}-Fehler: Token konnte nicht gelesen werden. {ex.ToString()}");
             }
