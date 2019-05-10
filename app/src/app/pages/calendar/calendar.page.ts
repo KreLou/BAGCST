@@ -18,10 +18,7 @@ export class CalendarPage implements OnInit {
             console.table(data);
             this.listTimetable = data;
             this.displayTimetable = new Array();
-            var days = Array.from(new Set(this.listTimetable.map(x => x.start)));
-            days.forEach(x =>{
-                return x.toDateString();
-            })
+            var days = Array.from(new Set(this.listTimetable.map(x => x.start.toString().split('T')[0])));
             console.log(days);
         })
   }
