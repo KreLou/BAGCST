@@ -1,16 +1,55 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Stundenplan</ion-title>
+      <ion-buttons slot="end">
+          <ion-button icon-only ng-click="download()">
+              <ion-icon name="download"></ion-icon>
+          </ion-button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <ion-item>
-        <ion-list>
-
-        </ion-list>
-    </ion-item>
-    <hr>
-    <ion-item class="btn-download" lines="none">
-      <ion-button style="width: 100%; align-content: center" expand="block" ng-click="download()">Download Stundenplan</ion-button>
-    </ion-item>
+    <ng-container *ngIf="displayTimetable">
+        <ion-grid>
+            <ng-container *ngFor="let day of displayTimetable">
+                <ion-row (click)="changeExpandable(day)" class="weekday">
+                    <ion-col size="9">
+                        {{day.date | date: 'E dd.MM.yyyy'}}
+                    </ion-col>
+                    <ion-col size="3">
+                        <!--<ion-button icon-only (click)="changeExpandable(day)"> -->
+                            <ion-icon *ngIf="day.expand == false" name="arrow-dropdown"></ion-icon>
+                            <ion-icon *ngIf="day.expand == true" name="arrow-dropup"></ion-icon>
+                        <!--</ion-button> -->
+                    </ion-col>
+                </ion-row>
+                <ng-container *ngIf="day.expand">
+                    <div class="lectures" *ngFor="let lecture of day.lectures">
+                        <ion-row>
+                            <ion-col>
+                                {{lecture.start | date: 'HH:mm'}} - {{lecture.end | date: 'HH:mm'}}
+                            </ion-col>
+                            <ion-col align-items-end>
+                                {{lecture.title}}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                {{lecture.lecturer}}
+                            </ion-col>
+                            <ion-col>
+                                {{lecture.place}}
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </ion-grid>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    loadingText="Lade weitere Tage...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </ng-container>
 </ion-content>
