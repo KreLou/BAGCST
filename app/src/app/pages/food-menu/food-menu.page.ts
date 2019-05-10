@@ -42,14 +42,19 @@ export class FoodMenuPage implements OnInit {
   }
 
   startAndEndOfWeek(d) {
+    //Array of Weekdays
     var weekMap = [6, 0, 1, 2, 3, 4, 5];
+    //get actual date
     var now = new Date(d);
     now.setHours(0, 0, 0, 0);
+    //set Monday
     var monday = new Date(now);
+    //set Sunday
     monday.setDate(monday.getDate() - weekMap[monday.getDay()]);
     var sunday = new Date(now);
     sunday.setDate(sunday.getDate() - weekMap[sunday.getDay()] + 6);
     sunday.setHours(23, 59, 59, 999);
+
     //formatting Date
     var monMonth = monday.getMonth().toString();
     var monDate = monday.getDate().toString();
