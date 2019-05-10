@@ -3,6 +3,7 @@ export interface TimetableItem {
     place: string;
     title: string;
     lecturer: string;
+    comment: string;
     start: Date;
     end: Date;
 }
