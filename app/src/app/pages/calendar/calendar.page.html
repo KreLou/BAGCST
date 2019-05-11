@@ -45,7 +45,12 @@
                 </ng-container>
             </ng-container>
         </ion-grid>
-        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+
+        
+        <ion-item lines="none" *ngIf="noMoreLectureItemsToShow">
+            <ion-label color="danger">Keine weiteren Tage gefunden...</ion-label>
+        </ion-item>
+        <ion-infinite-scroll threshold="0px" (ionInfinite)="loadData($event)" *ngIf="!noMoreLectureItemsToShow">
             <ion-infinite-scroll-content
                     loadingSpinner="bubbles"
                     loadingText="Lade weitere Tage...">
