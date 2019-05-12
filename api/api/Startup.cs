@@ -106,6 +106,7 @@ namespace api
                 services.AddSingleton<ITimetableDB, offlineTimetableDB>();
                 services.AddSingleton<IUserDB, offlineUserDB>();
                 services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+                
             }else
             {
                 //Production
@@ -120,7 +121,7 @@ namespace api
                 services.AddSingleton<ISemesterDB, offlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, onlineTimetableDB>();
                 services.AddSingleton<IUserDB, onlineUserDB>();
-                services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+                services.AddSingleton<IUserSettingsDB, onlineUserSettings>();
             }
         }
 

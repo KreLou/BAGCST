@@ -1,3 +1,4 @@
+using System;
 namespace api.Models
 {
     public class UserItem
@@ -68,5 +69,10 @@ namespace api.Models
         /// DSGVO accepted
         /// </summary>
         public bool DSGVO { get; set; }
+
+        /// <summary>
+        /// DSGVO Date accepted/non accepted
+        /// </summary>
+        public DateTime DSGVODate{ get; set; }
     }
 }

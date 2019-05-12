@@ -64,23 +64,22 @@ namespace api.database
                 using (sqlConnection)
                 {
 
-                    //DSGVO fehlt im Model
-                    //"[usertypid]='" + item.??? + "'" +
                     string SQL = "UPDATE [user] SET " +
                         "[mail]='" + item.Email + "'," +
                         "[lastname]='" + item.Lastname + "'," +
                         "[firstname]='" + item.Firstname + "'," +
                         "[studentnumber]='" + item.Username + "',"+
                         "[groupid]='" + item.StudyGroup.ID.ToString() + "'," +
-                        "[usertypid]='" + item.UserType.ID.ToString() + "'," +
-                        "[dsgvo]='" + item.DSGVO.ToString() + "'" +
+                        "[relationtypid]='" + item.UserType.ID.ToString() + "'," +
+                        "[dsgvo]='" + item.DSGVO.ToString() + "'," +
+                        "[dsgvodate]='" + item.DSGVODate.ToString() + "'" +
                         " WHERE [userid] ='" + id.ToString() + "';";
                     sqlConnection.Open();
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
                     myCommand.ExecuteNonQuery();
                     sqlConnection.Close();
                     sqlConnection = null;
-                    return item;
+                    return getUserItem(id);
                 }
             }
             catch (System.Exception)
@@ -103,15 +102,21 @@ namespace api.database
                 using (sqlConnection)
                 {
 
+
                     UserItem SQLItem = new UserItem();
                     SQLItem.UserType = new UserType();
                     SQLItem.StudyGroup = new StudyGroup();
+                    SQLItem.StudyGroup.StudyCourse = new StudyCourse();
 
-                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[studentnumber], [usertyp].usertypid, [usertyp].[usertypname],[group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active] " +
-                        " FROM [user] WHERE [studentnumber]='" + username + "'" +
-                        " INNER JOIN[usertyp] on[user].usertypid = usertyp.usertypid " +
-                        " INNER JOIN[group] on[user].groupid = [group].[groupid] " +
-                        ";";
+
+                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[studentnumber], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
+                        " [group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active], " +
+                        " [coursetyp].[coursetypid],[coursetyp].[shortname],[coursetyp].[longname] " +
+                        " FROM [user] " +
+                        " INNER JOIN [relationtyp] on [user].[relationtypid] = [relationtyp].[relationtypid] " +
+                        " INNER JOIN [group] on[user].[groupid] = [group].[groupid] " +
+                        " INNER JOIN [coursetyp] on[group].[coursetypid] = [coursetyp].[coursetypid] " +
+                        "WHERE [studentnumber]='" + username + "';";
 
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
@@ -127,13 +132,30 @@ namespace api.database
                         SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
                         SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
 
-                        SQLItem.UserType.ID = Convert.ToInt32(myReader["usertypid"]);
-                        SQLItem.UserType.Name = myReader["usertypname"].ToString();
+                        SQLItem.UserType.ID = Convert.ToInt32(myReader["relationtypid"]);
+                        SQLItem.UserType.Name = myReader["relationtypname"].ToString();
 
                         SQLItem.StudyGroup.ID = Convert.ToInt32(myReader["groupid"]);
                         SQLItem.StudyGroup.LongName = myReader["groupname"].ToString();
                         SQLItem.StudyGroup.ShortName = myReader["groupnameshort"].ToString();
                         SQLItem.StudyGroup.Active = Convert.ToBoolean(myReader["groupid"]);
+
+
+                        if (myReader["coursetypid"].ToString() != "")
+                        {
+                            SQLItem.StudyGroup.StudyCourse.ID = Convert.ToInt32(myReader["coursetypid"]);
+                            SQLItem.StudyGroup.StudyCourse.LongText = myReader["longname"].ToString();
+                            SQLItem.StudyGroup.StudyCourse.ShortText = myReader["shortname"].ToString();
+                            SQLItem.StudyCourse = SQLItem.StudyGroup.StudyCourse;
+                        }
+
+
+                        if (myReader["dsgvodate"].ToString() != "")
+                        {
+                            SQLItem.DSGVODate = Convert.ToDateTime(myReader["dsgvodate"]);
+                        }
+
+
                         sqlConnection.Close();
                         sqlConnection = null;
                         return SQLItem;
@@ -166,11 +188,16 @@ namespace api.database
                     UserItem SQLItem = new UserItem();
                     SQLItem.UserType = new UserType();
                     SQLItem.StudyGroup = new StudyGroup();
+                    SQLItem.StudyGroup.StudyCourse = new StudyCourse();
 
-                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[studentnumber], [usertyp].usertypid, [usertyp].[usertypname],[group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active] " +
+
+                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[studentnumber], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
+                        " [group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active], " +
+                        " [coursetyp].[coursetypid],[coursetyp].[shortname],[coursetyp].[longname] " +
                         " FROM [user] " +
-                        " INNER JOIN[usertyp] on[user].usertypid = usertyp.usertypid " +
-                        " INNER JOIN[group] on[user].groupid = [group].[groupid] "+
+                        " INNER JOIN [relationtyp] on [user].[relationtypid] = [relationtyp].[relationtypid] " +
+                        " INNER JOIN [group] on[user].[groupid] = [group].[groupid] " +
+                        " INNER JOIN [coursetyp] on[group].[coursetypid] = [coursetyp].[coursetypid] "+
                         " WHERE [userid]=" + id.ToString() + ";";
 
                     sqlConnection.Open();
@@ -187,13 +214,28 @@ namespace api.database
                         SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
                         SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
 
-                        SQLItem.UserType.ID = Convert.ToInt32(myReader["usertypid"]);
-                        SQLItem.UserType.Name = myReader["usertypname"].ToString();
+                        SQLItem.UserType.ID = Convert.ToInt32(myReader["relationtypid"]);
+                        SQLItem.UserType.Name = myReader["relationtypname"].ToString();
 
                         SQLItem.StudyGroup.ID = Convert.ToInt32(myReader["groupid"]);
                         SQLItem.StudyGroup.LongName = myReader["groupname"].ToString();
                         SQLItem.StudyGroup.ShortName = myReader["groupnameshort"].ToString();
                         SQLItem.StudyGroup.Active = Convert.ToBoolean(myReader["groupid"]);
+
+
+                        if (myReader["coursetypid"].ToString() != "")
+                        {
+                            SQLItem.StudyGroup.StudyCourse.ID = Convert.ToInt32(myReader["coursetypid"]);
+                            SQLItem.StudyGroup.StudyCourse.LongText = myReader["longname"].ToString();
+                            SQLItem.StudyGroup.StudyCourse.ShortText = myReader["shortname"].ToString();
+                            SQLItem.StudyCourse = SQLItem.StudyGroup.StudyCourse;
+                        }
+
+
+                        if (myReader["dsgvodate"].ToString() != "")
+                        {
+                            SQLItem.DSGVODate = Convert.ToDateTime(myReader["dsgvodate"]);
+                        }
 
                         sqlConnection.Close();
                         sqlConnection = null;
@@ -228,39 +270,60 @@ namespace api.database
                     UserItem SQLItem = new UserItem();
                     SQLItem.UserType = new UserType();
                     SQLItem.StudyGroup = new StudyGroup();
+                    SQLItem.StudyGroup.StudyCourse = new StudyCourse();
+                    
                     List<UserItem> list = new List<UserItem>();
-                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[studentnumber], [usertyp].usertypid, [usertyp].[usertypname],[group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active] " +
+                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[studentnumber], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
+                        " [group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active], " +
+                        " [coursetyp].[coursetypid],[coursetyp].[shortname],[coursetyp].[longname] " +
                         " FROM [user] " +
-                        " INNER JOIN[usertyp] on[user].usertypid = usertyp.usertypid " +
-                        " INNER JOIN[group] on[user].groupid = [group].[groupid];";
-
+                        " INNER JOIN [relationtyp] on [user].[relationtypid] = [relationtyp].[relationtypid] " +
+                        " INNER JOIN [group] on[user].[groupid] = [group].[groupid] " +
+                        " INNER JOIN [coursetyp] on[group].[coursetypid] = [coursetyp].[coursetypid];";
+                    
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
                     myReader = myCommand.ExecuteReader();
 
                     while (myReader.Read())
-                    {
-                        SQLItem.Email = myReader["mail"].ToString();
-                        SQLItem.Firstname = myReader["firstname"].ToString();
-                        SQLItem.Lastname = myReader["lastname"].ToString();
-                        SQLItem.Username = myReader["studentnumber"].ToString();
-                        SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
-                        SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
+                    { 
+                    SQLItem.Email = myReader["mail"].ToString();
+                    SQLItem.Firstname = myReader["firstname"].ToString();
+                    SQLItem.Lastname = myReader["lastname"].ToString();
+                    SQLItem.Username = myReader["studentnumber"].ToString();
+                    SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
+                    SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
 
-                        SQLItem.UserType.ID = Convert.ToInt32(myReader["usertypid"]);
-                        SQLItem.UserType.Name= myReader["usertypname"].ToString();
+                    SQLItem.UserType.ID = Convert.ToInt32(myReader["relationtypid"]);
+                    SQLItem.UserType.Name = myReader["relationtypname"].ToString();
 
-                        SQLItem.StudyGroup.ID = Convert.ToInt32(myReader["groupid"]);
-                        SQLItem.StudyGroup.LongName = myReader["groupname"].ToString();
-                        SQLItem.StudyGroup.ShortName = myReader["groupnameshort"].ToString();
-                        SQLItem.StudyGroup.Active = Convert.ToBoolean(myReader["groupid"]);
+                    SQLItem.StudyGroup.ID = Convert.ToInt32(myReader["groupid"]);
+                    SQLItem.StudyGroup.LongName = myReader["groupname"].ToString();
+                    SQLItem.StudyGroup.ShortName = myReader["groupnameshort"].ToString();
+                    SQLItem.StudyGroup.Active = Convert.ToBoolean(myReader["groupid"]);
+                        
 
-                        list.Add(SQLItem);
+                        if (myReader["coursetypid"].ToString() != "")
+                        {
+                            SQLItem.StudyGroup.StudyCourse.ID = Convert.ToInt32(myReader["coursetypid"]);
+                            SQLItem.StudyGroup.StudyCourse.LongText= myReader["longname"].ToString();
+                            SQLItem.StudyGroup.StudyCourse.ShortText = myReader["shortname"].ToString();
+                            SQLItem.StudyCourse = SQLItem.StudyGroup.StudyCourse;
+                        }
+
+
+                        if (myReader["dsgvodate"].ToString() != "")
+                        {
+                            SQLItem.DSGVODate = Convert.ToDateTime(myReader["dsgvodate"]);
+                        }
+
+                    list.Add(SQLItem);
                         //if (SQLItem.Active) list.Add(SQLItem);                        
                         SQLItem = new UserItem();
                         SQLItem.UserType = new UserType();
                         SQLItem.StudyGroup = new StudyGroup();
+                        SQLItem.StudyGroup.StudyCourse = new StudyCourse();
                     }
                         sqlConnection.Close();
                         sqlConnection = null;
@@ -285,8 +348,8 @@ namespace api.database
                 {
                     //In der SQL Anweisung muss noch Contacttypid und CourseTypID und Verantwortlicher geändert werden.
                     string SQL = "INSERT INTO [contact] " +
-                        "([mail],[lastname],[firstname],[dsgvo],[studentnumber], [groupid],[usertypid]) " +
-                        "VALUES('" + item.Email + "','" + item.Lastname + "','" + item.Firstname + "','"+ item.DSGVO.ToString() +"','" + item.Username + "','"+item.StudyGroup.ID.ToString()+"','"+item.UserType.ID.ToString()+"');" +
+                        "([mail],[lastname],[firstname],[dsgvo],[studentnumber], [groupid],[relationtypid],[dsgvodate]) " +
+                        "VALUES('" + item.Email + "','" + item.Lastname + "','" + item.Firstname + "','"+ item.DSGVO.ToString() +"','" + item.Username + "','"+item.StudyGroup.ID.ToString()+"','"+item.UserType.ID.ToString()+"','"+ item.DSGVODate.ToString() +"');" +
                         "SELECT SCOPE_IDENTITY();";
                     sqlConnection.Open();
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);

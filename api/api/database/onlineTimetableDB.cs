@@ -21,7 +21,10 @@ namespace api.database
                 using (sqlConnection)
                 {
                     DateTime endTime = new DateTime();
-                    endTime = DateTime.Now;
+                    endTime = Convert.ToDateTime("2030-01-01");//DateTime.Now;
+                    DateTime StartHourLessons = new DateTime();
+                    DateTime EndHourLessons = new DateTime();
+                    DateTime LessonsDay = new DateTime();
                     LectureItem SQLItem = new LectureItem();
 
                     List<LectureItem> list = new List<LectureItem>();
@@ -53,9 +56,12 @@ namespace api.database
 
                     while (myReader.Read())
                     {
-
-                        SQLItem.Start = Convert.ToDateTime(myReader["Anfang"]);
-                        SQLItem.End = Convert.ToDateTime(myReader["Ende"]); ;
+                        StartHourLessons = Convert.ToDateTime(myReader["Anfang"]);
+                        EndHourLessons = Convert.ToDateTime(myReader["Ende"]);
+                        LessonsDay = Convert.ToDateTime(myReader["Tag"]);
+                        
+                        SQLItem.Start = Convert.ToDateTime(LessonsDay.Date + StartHourLessons.TimeOfDay);
+                        SQLItem.End = Convert.ToDateTime(LessonsDay.Date + EndHourLessons.TimeOfDay); ;
                         SQLItem.Lecturer = myReader["DozentID"].ToString();
                         SQLItem.Place = myReader["OrtsID"].ToString();
                         SQLItem.StudyGroup = myReader["SGID"].ToString();

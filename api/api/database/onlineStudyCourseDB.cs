@@ -22,7 +22,7 @@ namespace api.database
                     List<StudyCourse> list = new List<StudyCourse>();
 
 
-                    string SQL = "SELECT [coursetypid],[typname],[typnameshort]" +
+                    string SQL = "SELECT [coursetypid],[shortname],[longname]" +
                     " FROM [coursetyp];";
 
                 sqlConnection.Open();
@@ -33,8 +33,8 @@ namespace api.database
                 while (myReader.Read())
                 {
                         SQLItem.ID = Convert.ToInt32(myReader["coursetypid"].ToString());
-                        SQLItem.LongText = myReader["typname"].ToString();
-                        SQLItem.ShortText = myReader["typnameshort"].ToString();
+                        SQLItem.LongText = myReader["longname"].ToString();
+                        SQLItem.ShortText = myReader["shortname"].ToString();
                         list.Add(SQLItem);
                         SQLItem = new StudyCourse();
                     }
@@ -62,7 +62,7 @@ namespace api.database
 
                     StudyCourse SQLItem = new StudyCourse();
 
-                    string SQL = "SELECT [coursetypid],[typname],[typnameshort]" +
+                    string SQL = "SELECT [coursetypid],[shortname],[longname]" +
                     " FROM [coursetyp] WHERE [coursetypid] = '" + id.ToString()+"';";
 
                     sqlConnection.Open();
@@ -73,8 +73,9 @@ namespace api.database
                     if (myReader.Read())
                     {
                         SQLItem.ID = Convert.ToInt32(myReader["coursetypid"].ToString());
-                        SQLItem.LongText = myReader["typname"].ToString();
-                        SQLItem.ShortText = myReader["typnameshort"].ToString();
+                        SQLItem.LongText = myReader["longname"].ToString();
+                        SQLItem.ShortText = myReader["shortname"].ToString();
+                        
                         sqlConnection.Close();
                         sqlConnection = null;
                         return SQLItem;
