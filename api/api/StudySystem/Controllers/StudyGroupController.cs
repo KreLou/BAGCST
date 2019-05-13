@@ -2,7 +2,7 @@
 using BAGCST.api.StudySystem.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace BAGCST.api.StudySystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
