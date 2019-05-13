@@ -22,6 +22,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using api.Controllers;
+using BAGCST.api.Contacts.Database;
+using BAGCST.api.FoodMenu.Database;
+using BAGCST.api.News.Database;
+using BAGCST.api.User.Database;
+using BAGCST.api.StudySystem.Database;
+using BAGCST.api.User.Controllers;
+using BAGCST.api.Timetable.Controllers;
+using BAGCST.api.Timetable.Database;
 
 namespace api
 {
@@ -96,12 +104,12 @@ namespace api
 
 
             //Configure Environment Dependencies
-            if (CurrentEnvironment.IsDevelopment())
+            if (!CurrentEnvironment.IsDevelopment())
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
                 services.AddSingleton<IGroupsDB, offlineGroupsDB>();
-                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, offlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
@@ -119,7 +127,7 @@ namespace api
                 //Production
                 services.AddSingleton<IContactsDB, onlineContactsDB>();
                 services.AddSingleton<IGroupsDB, offlineGroupsDB>();
-                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, onlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
