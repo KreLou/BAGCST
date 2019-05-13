@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Interfaces
+namespace BAGCST.api.News.Database
 {
     public interface IPostGroupDB
     {

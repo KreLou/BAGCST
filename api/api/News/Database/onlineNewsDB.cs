@@ -1,4 +1,5 @@
-﻿using api.Interfaces;
+﻿using api.database;
+using api.Interfaces;
 using api.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.database
+namespace BAGCST.api.News.Database
 {
     
     public class onlineNewsDB : INewsDB

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using api.Models;
 using System.Threading.Tasks;
+using BAGCST.api.Contacts.Models;
 
 namespace BAGCST.api.Contacts.Database
 {

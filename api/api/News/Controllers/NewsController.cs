@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using api.database;
 
-namespace api.Controllers
+namespace BAGCST.api.News.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

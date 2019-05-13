@@ -1,18 +1,21 @@
-﻿using api.Interfaces;
-using api.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
+using BAGCST.api.FoodMenu.Models;
 
 namespace BAGCST.api.FoodMenu.Database
 {
-    public class OfflineMenuDB:IMenuDB
+    public class OfflineMenuDB: IMenuDB
     {
 
-        private IMealDB mealDataBase = new OfflineMealDB();
+        private readonly IMealDB mealDB;
         private string menu_filename = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","menus.csv");
+
+        public OfflineMenuDB(IMealDB mealDB)
+        {
+            this.mealDB = mealDB;
+        }
 
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace BAGCST.api.FoodMenu.Database
             MenuItem item = new MenuItem
             {
                 MenuID = Convert.ToInt32(args[0]),
-                Meal = mealDataBase.getMealItem(Convert.ToInt32(args[1])),
+                Meal = mealDB.getMealItem(Convert.ToInt32(args[1])),
                 Price = decimal.Parse(args[2]),
                 Date = DateTime.Parse(args[3]).Date
             };

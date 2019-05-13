@@ -6,7 +6,7 @@ using System.Reflection;
 using api.Interfaces;
 using api.Models;
 
-namespace api.offlineDB
+namespace BAGCST.api.News.Database
 {
     public class offlinePostGroupDB : IPostGroupDB
     {

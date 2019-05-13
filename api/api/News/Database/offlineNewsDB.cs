@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace api.offlineDB
+namespace BAGCST.api.News.Database
 {
     public class offlineNewsDB : INewsDB
     {
