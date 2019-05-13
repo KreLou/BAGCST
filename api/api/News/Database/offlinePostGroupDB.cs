@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using api.Interfaces;
 using api.Models;
+using BAGCST.api.News.Models;
 
 namespace BAGCST.api.News.Database
 {

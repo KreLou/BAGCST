@@ -2,6 +2,7 @@ using System;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.News.Database;
+using BAGCST.api.News.Models;
 
 namespace BAGCST.api.News.Controllers
 {

@@ -1,11 +1,9 @@
-﻿using api.Interfaces;
-using api.Models;
-using BAGCST.api.User.Database;
+﻿using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BAGCST.api.User.Databasae
 {

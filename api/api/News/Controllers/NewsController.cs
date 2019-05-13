@@ -7,6 +7,7 @@ using System.Linq;
 using api.database;
 using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
+using BAGCST.api.News.Models;
 
 namespace BAGCST.api.News.Controllers
 {

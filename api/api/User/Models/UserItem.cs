@@ -1,4 +1,5 @@
 using api.Models;
+using BAGCST.api.News.Models;
 using BAGCST.api.StudySystem.Models;
 using System;
 

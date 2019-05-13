@@ -10,7 +10,6 @@
     <Folder Include="Food-Menu\Exceptions\" />
     <Folder Include="Food-Menu\Services\" />
     <Folder Include="News\Exceptions\" />
-    <Folder Include="News\Models\" />
     <Folder Include="News\Services\" />
     <Folder Include="StudySystem\Exceptions\" />
     <Folder Include="StudySystem\Services\" />

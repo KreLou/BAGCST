@@ -1,4 +1,5 @@
 using api.Models;
+using BAGCST.api.News.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
