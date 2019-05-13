@@ -47,7 +47,7 @@ namespace api.database
                     return getContactItem(LastID);
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
                return null;
@@ -190,7 +190,7 @@ namespace api.database
                 }
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
                 return null;
