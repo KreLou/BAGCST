@@ -1,71 +1,91 @@
 import { Component, OnInit } from '@angular/core';
+import {MenuloaderService} from '../../services/httpServices/menuloader.service';
+import {Menu} from '../../models/Menu';
 
 @Component({
-  selector: 'app-food-menu',
-  templateUrl: './food-menu.page.html',
-  styleUrls: ['./food-menu.page.css'],
+    selector: 'app-food-menu',
+    templateUrl: './food-menu.page.html',
+    styleUrls: ['./food-menu.page.css'],
 })
 export class FoodMenuPage implements OnInit {
-  currentDate;
-  formattedDate;
-  weekNumber;
-  startEndDate;
-  constructor() {
-    this.currentDate = new Date()
-    this.getFormattedDate()
-    this.weekNumber = this.getWeekNumber(new Date());
-    this.startEndDate = this.startAndEndOfWeek(new Date());
-  }
-  getFormattedDate(){
-    var dateObj = new Date()
+    currentDate;
+    formattedDate;
+    weekNumber;
+    startEndDate;
+    foodMenu: Menu[];
+    firstDayofWeek: Date;
+    lastDayofWeek: Date;
+    constructor(
+        private menuloader: MenuloaderService
+    ) {
+        this.currentDate = new Date();
+        this.getFormattedDate();
+        this.weekNumber = this.getWeekNumber(new Date());
+        this.startEndDate = this.startAndEndOfWeek(new Date());
+    }
+    getFormattedDate() {
+        const dateObj = new Date();
 
-    var year = dateObj.getFullYear().toString()
-    var month = dateObj.getMonth().toString()
-    var date = dateObj.getDate().toString()
+        const year = dateObj.getFullYear().toString();
+        const month = dateObj.getMonth().toString();
+        const date = dateObj.getDate().toString();
 
-    var monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+        const monthArray = ['Januar', 'Februar', 'März' , 'April' , 'Mai' , 'Juni' , 'Juli' , 'August' , 'September' ,
+            'Oktober', 'November', 'Dezember'];
 
-    this.formattedDate = date + '. ' + monthArray[month] + ' ' + year
-  }
-  getWeekNumber(d) {
-    // Copy date so don't modify original
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    // Set to nearest Thursday: current date + 4 - current day number
-    // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-    // Get first day of year
-    var yearStart : any = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-    // Calculate full weeks to nearest Thursday
-    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-    // Return array of year and week number
-    return [weekNo];
-  }
+        this.formattedDate = date + '. ' + monthArray[month] + ' ' + year;
+    }
+    getWeekNumber(d) {
+        // Copy date so don't modify original
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        // Get first day of year
+        const yearStart: any = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        // Calculate full weeks to nearest Thursday
+        const weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
+        // Return array of year and week number
+        return [weekNo];
+    }
 
-  startAndEndOfWeek(d) {
-    //Array of Weekdays
-    var weekMap = [6, 0, 1, 2, 3, 4, 5];
-    //get actual date
-    var now = new Date(d);
-    now.setHours(0, 0, 0, 0);
-    //set Monday
-    var monday = new Date(now);
-    //set Sunday
-    monday.setDate(monday.getDate() - weekMap[monday.getDay()]);
-    var sunday = new Date(now);
-    sunday.setDate(sunday.getDate() - weekMap[sunday.getDay()] + 6);
-    sunday.setHours(23, 59, 59, 999);
+    startAndEndOfWeek(d) {
+        // Array of Weekdays
+        const weekMap = [6, 0, 1, 2, 3, 4, 5];
+        // get actual date
+        const now = new Date(d);
+        now.setHours(0, 0, 0, 0);
+        // set Monday
+        const monday = new Date(now);
+        // set Sunday
+        monday.setDate(monday.getDate() - weekMap[monday.getDay()]);
+        const sunday = new Date(now);
+        sunday.setDate(sunday.getDate() - weekMap[sunday.getDay()] + 6);
+        sunday.setHours(23, 59, 59, 999);
+        this.firstDayofWeek = monday;
+        this.lastDayofWeek = sunday;
+        // formatting Date
+        const monMonth = monday.getMonth().toString();
+        const monDate = monday.getDate().toString();
+        const sunMonth = sunday.getMonth().toString();
+        const sunDate = sunday.getDate().toString();
 
-    //formatting Date
-    var monMonth = monday.getMonth().toString();
-    var monDate = monday.getDate().toString();
-    var sunMonth = sunday.getMonth().toString();
-    var sunDate = sunday.getDate().toString();
+        const monthArray = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September',
+            'Oktober', 'November', 'Dezember'];
 
-    var monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-
-    var startAndEndofWeek = monDate + '.' + ' ' + monthArray[monMonth] + ' ' + '-' + ' ' + sunDate + '.' + ' ' + monthArray[sunMonth];
-    return [startAndEndofWeek];
-  }
-
-  ngOnInit() {}
+        const startAndEndofWeek = monDate + '.' + ' ' + monthArray[monMonth] + ' ' + '-' + ' ' + sunDate + '.' + ' ' + monthArray[sunMonth];
+        return [startAndEndofWeek];
+    }
+    placeSwap (id: number) {
+        this.showFoodplan(id);
+    }
+    showFoodplan (id: number) {
+        this.menuloader.getMenu(this.firstDayofWeek, this.lastDayofWeek, id).subscribe(data => {
+            console.log(data);
+            this.foodMenu = data;
+        });
+    }
+    ngOnInit() {
+        this.showFoodplan(1);
+    }
 }

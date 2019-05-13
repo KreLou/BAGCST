@@ -10,93 +10,26 @@
       </ion-label>
     </ion-item>
     <div class=spacer></div>
-    <h3 id="ShowKW" class="h3size_center">Mensa KW {{weekNumber}}, {{startEndDate}}</h3>
+    <h3 id="ShowKW" class="h3size_center">{{foodMenu[0].meal.place.placeName}} KW {{firstDayofWeek | date: 'w'}}, {{firstDayofWeek | date: 'dd.MM.'}} -
+    {{lastDayofWeek | date: 'dd.MM.'}}</h3>
     <div class="spacer2" id="ContSpeisepläne"></div>
     <hr class="divider">
     <ion-text color="Primary">
     <ion-grid>
-      <ion-row>
-        <ion-col size="2">
-          <div id="Mo">
-            <p>Mo:</p>
-          </div>
-        </ion-col>
-        <ion-col size="auto">
-          <div id="MoMeal">
-            <p>Schnitzel mit Pommes</p>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div id="MoPreis">
-            <p class="align-end">4,90€</p>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
+      <ion-row *ngFor="let day of foodMenu">
         <ion-col size="2">
           <div id="Di">
-            <p>Di:</p>
+            <p>{{day.date | date: 'EEEEEE:'}}</p>
           </div>
         </ion-col>
-        <ion-col size="auto">
+        <ion-col size="7">
           <div id="DiMeal">
-            <p>Schnitzel mit Kartoffel</p>
+            <p>{{day.meal.mealName}} {{day.meal.description}}</p>
           </div>
         </ion-col>
-        <ion-col>
+        <ion-col size="3">
           <div id="DiPreis">
-            <p class="align-end">4,80€</p>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="2">
-          <div id="Mi">
-            <p>Mi:</p>
-          </div>
-        </ion-col>
-        <ion-col size="auto">
-          <div id="MiMeal">
-            <p>Schnitzel mit Spiegelei</p>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div id="MiPreis">
-            <p class="align-end">5,20€</p>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="2">
-          <div id="Do">
-            <p>Do:</p>
-          </div>
-        </ion-col>
-        <ion-col size="auto">
-          <div id="DoMeal">
-            <p>Schnitzel mit Safransauce</p>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div id="DoPreis">
-            <p class="align-end">4,50€</p>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="2">
-          <div id="Fr">
-            <p>Fr:</p>
-          </div>
-        </ion-col>
-        <ion-col size="auto">
-          <div id="FrMeal">
-            <p>Schnitzel mit Kartoffelsalat</p>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div id="FrPreis">
-            <p class="align-end">6,00€</p>
+            <p class="align-end">{{day.price | currency: 'EUR' : 'symbol' : '1.2-2' : 'de'}}</p>
           </div>
         </ion-col>
       </ion-row>
@@ -104,8 +37,8 @@
     </ion-text>
     <div class="spacer"></div>
     <div id="Auswahl_buttons" class="centered_buttons">
-      <ion-button id="Button_show_Mensa"><ion-icon name="arrow-dropleft"></ion-icon>Mensa</ion-button>
-      <ion-button id="Button_show_Lennarts">Lennart's<ion-icon name="arrow-dropright"></ion-icon></ion-button>
+      <ion-button id="Button_show_Mensa" (click)="placeSwap(1)" ><ion-icon name="arrow-dropleft"></ion-icon>Mensa</ion-button>
+      <ion-button id="Button_show_Lennarts" (click)="placeSwap(2)">Lennards<ion-icon name="arrow-dropright"></ion-icon></ion-button>
     </div>
   </ion-content>
 
