@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using api.database;
 using api.Databases;
-using api.Interfaces;
-using api.offlineDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -98,7 +96,7 @@ namespace api
 
 
             //Configure Environment Dependencies
-            if (CurrentEnvironment.IsDevelopment())
+            if (!CurrentEnvironment.IsDevelopment())
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
@@ -128,9 +126,9 @@ namespace api
                 services.AddSingleton<IPostGroupDB, onlinePostGroupDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
                 services.AddSingleton<ISemesterDB, offlineSemesterDB>();
-                services.AddSingleton<ITimetableDB, offlineTimetableDB>();
+                services.AddSingleton<ITimetableDB, onlineTimetableDB>();
                 services.AddSingleton<IUserDB, onlineUserDB>();
-                services.AddSingleton<IUserSettingsDB, offlineUserSettings>();
+                services.AddSingleton<IUserSettingsDB, onlineUserSettings>();
                 services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
                 services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
                 services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();

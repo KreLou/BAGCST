@@ -24,7 +24,7 @@ namespace api.Services
             {
                 throw new System.Exception($"{MethodInfo.GetCurrentMethod().Name}-Fehler. {ex.ToString()}");
             }
-                
+
         }
         private void DecodeToken(ClaimsPrincipal User)
         {

@@ -27,8 +27,8 @@ namespace api.database
                         sqlConnection = null;
                         sqlConnection = TimeTableDatabase.getConnection();
 
-                        string SQL = "INSERT INTO [subscribe] ([userid],[newsgroupid],[disable])  " +
-                            "VALUES (" + userID.ToString() + "," + postGroupID.ToString() + ",1);";
+                        string SQL = "INSERT INTO [postgroupauthor] ([userid],[newsgroupid])  " +
+                            "VALUES (" + userID.ToString() + "," + postGroupID.ToString() + ");";
                         sqlConnection.Open();
                         SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
                         myCommand.ExecuteNonQuery();
@@ -41,7 +41,8 @@ namespace api.database
             }
             catch (System.Exception)
             {
-                
+                sqlConnection.Close();
+                sqlConnection = null;
             }
 }
 
@@ -54,8 +55,8 @@ namespace api.database
                 using (sqlConnection)
                 {
 
-                    string SQL = "SELECT [subscribeid] " +
-                        " FROM [subscribe] WHERE [newsgroupid]=" + postGroupID.ToString() + " AND [userid] = "+userID.ToString()+";";
+                    string SQL = "SELECT [postgroupauthorid] " +
+                        " FROM [postgroupauthor] WHERE [newsgroupid]=" + postGroupID.ToString() + " AND [userid] = "+userID.ToString()+";";
 
                     sqlConnection.Open();
                     SqlDataReader myReader = null;
@@ -79,7 +80,8 @@ namespace api.database
             }
             catch (System.Exception)
             {
-
+                sqlConnection.Close();
+                sqlConnection = null;
                 return false;
             }
         }
@@ -107,7 +109,8 @@ namespace api.database
             }
             catch (System.Exception)
             {
-
+                sqlConnection.Close();
+                sqlConnection = null;
                 return;
             }
         }
@@ -120,7 +123,7 @@ namespace api.database
             {
                 using (sqlConnection)
                 {
-                    string SQL = "DELETE FROM [subscribe] WHERE [newsgroupid] =" + postGroupID.ToString() + " AND [userid] = "+userID.ToString()+";";
+                    string SQL = "DELETE FROM [postgroupauthor] WHERE [newsgroupid] =" + postGroupID.ToString() + " AND [userid] = "+userID.ToString()+";";
                     sqlConnection.Open();
                     SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
                     myCommand.ExecuteNonQuery();
@@ -131,7 +134,8 @@ namespace api.database
             }
             catch (System.Exception)
             {
-
+                sqlConnection.Close();
+                sqlConnection = null;
                 return;
             }
         }
@@ -257,7 +261,43 @@ namespace api.database
 
         public PostGroupItem[] getPostGroupsWhereUserIsAuthor(long userID)
         {
-            throw new NotImplementedException();
+            sqlConnection = null;
+            sqlConnection = TimeTableDatabase.getConnection();
+            try
+            {
+                using (sqlConnection)
+                {
+
+                    PostGroupItem SQLItem = new PostGroupItem();
+                    List<PostGroupItem> lstPGI = new List<PostGroupItem>();
+                    string SQL = "SELECT [newsgroupid],[newsgroupname] " +
+                        " FROM[newsgroup]" +
+                        "WHERE [userid] = '" + userID.ToString() + "';";
+
+                    sqlConnection.Open();
+                    SqlDataReader myReader = null;
+                    SqlCommand myCommand = new SqlCommand(SQL, sqlConnection);
+                    myReader = myCommand.ExecuteReader();
+
+                    while (myReader.Read())
+                    {
+                        SQLItem.Name = myReader["newsgroupname"].ToString();
+                        SQLItem.PostGroupID = Convert.ToInt32(myReader["newsgroupid"]);
+                        lstPGI.Add(SQLItem);
+                        SQLItem = new PostGroupItem();
+                    }
+                    sqlConnection.Close();
+                    sqlConnection = null;
+                    return lstPGI.ToArray();
+                }
+
+            }
+            catch (System.Exception)
+            {
+                sqlConnection.Close();
+                sqlConnection = null;
+                return null;
+            }
         }
 
         /// <summary>

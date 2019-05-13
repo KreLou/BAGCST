@@ -84,16 +84,16 @@ namespace api.Controllers
             }
 
             //TODO handle evaluation better
-            if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
-            {
-                return BadRequest("No Studycourse found for " + item_in.Course.ID);
-            }
+  //          if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
+  //          {
+  //              return BadRequest("No Studycourse found for " + item_in.Course.ID);
+  //          }
 
             //TODO handle better evaluation
-            if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
-            {
-                return BadRequest("No UserType found for " + item_in.Type.ID);
-            }
+            //if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
+            //{
+            //    return BadRequest("No UserType found for " + item_in.Type.ID);
+            //}
 
             //update existing item
             ContactItem item_out = contactsDB.editContactItem(id, item_in);
@@ -134,16 +134,16 @@ namespace api.Controllers
             }
 
             //TODO handle evaluation better
-            if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
-            {
-                return BadRequest("No Studycourse found for " + item_in.Course.ID);
-            }
+            //if (item_in.Course != null && studyCourseDB.getCourseById(item_in.Course.ID) == null)
+            //{
+            //    return BadRequest("No Studycourse found for " + item_in.Course.ID);
+            //}
 
-            //TODO handle better evaluation
-            if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
-            {
-                return BadRequest("No UserType found for " + item_in.Type.ID);
-            }
+            ////TODO handle better evaluation
+            //if (item_in.Type != null && userTypeDB.getByID(item_in.Type.ID) == null)
+            //{
+            //    return BadRequest("No UserType found for " + item_in.Type.ID);
+            //}
 
             ContactItem foundByEmail = contactsDB.getContactItem(item_in.Email);
             if (foundByEmail != null)

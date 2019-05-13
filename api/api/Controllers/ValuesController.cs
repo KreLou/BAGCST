@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Authorize(Policy ="activatedSession")]
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -27,11 +25,12 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            TokenDecoderService service = new TokenDecoderService();
+            //TokenDecoderService service = new TokenDecoderService();
 
-            TokenInformation token = service.GetTokenInfo(User);
+            //TokenInformation token = service.GetTokenInfo(User);
 
-            return Ok($"HEllo {token.Username}");
+            //return Ok($"HEllo {token.Username}");
+            return Ok($"HEllo ");
         }
 
         /// <summary>

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Selectors;
 using api.Models;
-using System.Linq;
 
 namespace api.Services
 {

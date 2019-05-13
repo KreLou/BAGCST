@@ -87,11 +87,12 @@ namespace api.Controllers
             //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
             //TODO Ad Switch and Adapter for the UserItem
             string studygroup = "WI16-1";
-            bool isStudent = true;
+            bool isStudent = false;
 
             if (isStudent)
             {
                 SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
+
                 if (currentSemester == null)
                 {
                     //Create pseudo-semester
@@ -110,6 +111,7 @@ namespace api.Controllers
                 DateTime startDate = getFirstOfMonth();
                 DateTime endDate = startDate.AddMonths(3);
                 lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
+
             }
 
             return lectures;
