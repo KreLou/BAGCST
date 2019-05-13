@@ -1,10 +1,10 @@
-﻿using api.Interfaces;
-using api.Models;
+﻿using api.database;
+using BAGCST.api.Timetable.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace api.database
+namespace BAGCST.api.Timetable.Database
 {
     public class onlineTimetableDB : ITimetableDB
     {

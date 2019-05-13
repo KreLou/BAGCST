@@ -1,12 +1,10 @@
-﻿using api.Interfaces;
-using api.Models;
+﻿using BAGCST.api.Timetable.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace api.offlineDB
+namespace BAGCST.api.Timetable.Database
 {
     public class offlineTimetableDB : ITimetableDB
     {

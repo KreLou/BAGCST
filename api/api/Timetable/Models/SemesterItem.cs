@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace BAGCST.api.Timetable.Models
 {
     public class SemesterItem
     {

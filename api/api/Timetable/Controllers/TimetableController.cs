@@ -3,9 +3,11 @@ using System.Text;
 using api.Interfaces;
 using api.Models;
 using api.offlineDB;
+using BAGCST.api.Timetable.Controllers;
+using BAGCST.api.Timetable.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace BAGCST.api.Timetable.Database
 {
     [Route("api/[controller]")]
     [ApiController]

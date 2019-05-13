@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
-using api.Models;
-using api.Databases;
-using api.offlineDB;
-using api.database;
+﻿using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.StudySystem.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.Contacts.Database;
