@@ -86,15 +86,17 @@ namespace api.database
 
         }
 
-        public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime)
+        public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime, DateTime endTime)
         {
+            //TODO ABU Add End-Date
             return getTimeTable(lecturer, startTime, 1);
 
         }
 
-        public LectureItem[] getSemesterLectures(string studyGroup, DateTime startTime)
+        public LectureItem[] getSemesterLectures(string studyGroup, SemesterItem semester)
         {
-            return getTimeTable(studyGroup, startTime, 0);
+            //TODO ABU Add End-Date
+            return getTimeTable(studyGroup, semester.Start, 0);
         }
     }
 }

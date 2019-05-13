@@ -96,7 +96,7 @@ namespace api
 
 
             //Configure Environment Dependencies
-            if (!CurrentEnvironment.IsDevelopment())
+            if (CurrentEnvironment.IsDevelopment())
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
