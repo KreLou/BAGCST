@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace BAGCST.api.User.Models
 {
     public class SessionItem
     {

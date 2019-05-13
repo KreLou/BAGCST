@@ -1,12 +1,13 @@
 ﻿using api.Interfaces;
 using api.Models;
+using BAGCST.api.User.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.offlineDB
+namespace BAGCST.api.User.Databasae
 {
     public class offlineSessionDB : ISessionDB
     {
