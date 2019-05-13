@@ -12,21 +12,15 @@ namespace api.Controllers
 
     public class UserGroupBindingController : ControllerBase
     {
-        private IUserGroupBindingDB database = getDatabase();
-        private IUserDB databaseUser = getUserDatabase();
-        private IGroupsDB databaseGroup = getGroupDatabase();
+        private IUserGroupBindingDB userGroupBindingDB;
+        private IUserDB userDB;
+        private IGroupsDB groupsDB;
 
-        private static IUserGroupBindingDB getDatabase()
+        public UserGroupBindingController(IUserGroupBindingDB userGroupBindingDB, IUserDB userDB, IGroupsDB groupsDB)
         {
-            return new offlineUserGroupBindingDB();
-        }
-        private static IUserDB getUserDatabase()
-        {
-            return new offlineUserDB();
-        }
-        private static IGroupsDB getGroupDatabase()
-        {
-            return new offlineGroupsDB();
+            this.userGroupBindingDB = userGroupBindingDB;
+            this.userDB = userDB;
+            this.groupsDB = groupsDB;
         }
 
         [HttpGet]
@@ -39,18 +33,18 @@ namespace api.Controllers
         {
             IActionResult ret = null;
             //check User
-            if ( databaseUser.getUserItem(UserID) == null) ret = BadRequest($"No UserItem with id {UserID} found");
+            if ( userDB.getUserItem(UserID) == null) ret = BadRequest($"No UserItem with id {UserID} found");
             //check Group
-            if ( databaseGroup.getGroup(GroupID) == null) ret = BadRequest($"No GroupItem with id {GroupID} found");
+            if ( groupsDB.getGroup(GroupID) == null) ret = BadRequest($"No GroupItem with id {GroupID} found");
             //create binding
-            if (ret == null) ret = Ok(database.addUserGroupBinding(UserID, GroupID));
+            if (ret == null) ret = Ok(userGroupBindingDB.addUserGroupBinding(UserID, GroupID));
             return ret;
         }
 
         [HttpDelete]
         public IActionResult deleteUserGroupBinding([FromQuery] int UserID,[FromQuery] int GroupID)
         {
-            database.deleteUserGroupBinding(UserID, GroupID);
+            userGroupBindingDB.deleteUserGroupBinding(UserID, GroupID);
             return Ok();
         }
 
@@ -58,7 +52,7 @@ namespace api.Controllers
         public UserItem[] getUsersOfGroup([FromQuery] int[] GroupIDs)
         {
             List<UserItem> ret = new List<UserItem>();            
-            database.getUsersOfGroup(GroupIDs).ForEach(GID => ret.Add(databaseUser.getUserItem(GID)));
+            userGroupBindingDB.getUsersOfGroup(GroupIDs).ForEach(GID => ret.Add(userDB.getUserItem(GID)));
             return ret.ToArray();
         }
 
@@ -66,7 +60,7 @@ namespace api.Controllers
         public Group[] getGroupsofUser([FromQuery] int[] UserIDs)
         {
             List<Group> ret = new List<Group>();
-            database.getGroupsOfUser(UserIDs).ForEach(UID => ret.Add(databaseGroup.getGroup(UID)));
+            userGroupBindingDB.getGroupsOfUser(UserIDs).ForEach(UID => ret.Add(groupsDB.getGroup(UID)));
             return ret.ToArray();
         }
     }

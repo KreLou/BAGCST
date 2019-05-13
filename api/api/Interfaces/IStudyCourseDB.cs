@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IStudyCourseDB
+    public interface IStudyCourseDB
     {
         StudyCourse[] getAllCourses();
 

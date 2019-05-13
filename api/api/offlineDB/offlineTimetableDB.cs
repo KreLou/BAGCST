@@ -32,10 +32,11 @@ namespace api.offlineDB
                 Lecturer = args[3],
                 Place = args[4],
                 Start = Convert.ToDateTime(args[5]),
-                End = Convert.ToDateTime(args[6])
+                End = Convert.ToDateTime(args[6]),
+                Comment = "Placehodler für weitere Kommentare"
             };
         }
-        public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime)
+        public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime, DateTime endDate)
         {
             List<LectureItem> lectures = new List<LectureItem>();
             using (StreamReader sr = new StreamReader(filepath))
@@ -53,10 +54,11 @@ namespace api.offlineDB
                 }
             }
             lectures = sortLectures(lectures);
+            lectures = lectures.Where(x => x.Start <= endDate).ToList();
             return lectures.ToArray();
         }
 
-        public LectureItem[] getSemesterLectures(string studyGroup, DateTime startTime)
+        public LectureItem[] getSemesterLectures(string studyGroup, SemesterItem semesterItem)
         {
             List<LectureItem> lectures = new List<LectureItem>();
             using (StreamReader sr = new StreamReader(filepath))
@@ -65,7 +67,7 @@ namespace api.offlineDB
                 while((line = sr.ReadLine())!= null)
                 {
                     LectureItem item = convertStringToLectureItem(line);
-                    if (item.Start >= startTime && item.StudyGroup == studyGroup)
+                    if (item.Start >= semesterItem.Start && item.StudyGroup == studyGroup && item.Start <= semesterItem.End)
                     {
                         lectures.Add(item);
                     }

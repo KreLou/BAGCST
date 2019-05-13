@@ -160,6 +160,7 @@ namespace api.database
                         SQLItem.TelNumber = myReader["phonenumber"].ToString();
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
+
                         SQLItem.Responsibility = myReader["responsibility"].ToString();
 
 
@@ -174,6 +175,7 @@ namespace api.database
 
                         SQLItem.Type.ID = Convert.ToInt32(myReader["relationtypid"]);
                         SQLItem.Type.Name = myReader["relationtypname"].ToString();
+
 
                         ContactItemList.Add(SQLItem);
 
@@ -261,6 +263,7 @@ namespace api.database
                         SQLItem.TelNumber = myReader["phonenumber"].ToString();
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Room = myReader["roomnumber"].ToString();
+
                         SQLItem.Responsibility = myReader["responsibility"].ToString();
 
 
@@ -275,7 +278,6 @@ namespace api.database
 
                         SQLItem.Type.ID = Convert.ToInt32(myReader["relationtypid"]);
                         SQLItem.Type.Name = myReader["relationtypname"].ToString();
-
                         sqlConnection.Close();
                         sqlConnection = null;
                         return SQLItem;

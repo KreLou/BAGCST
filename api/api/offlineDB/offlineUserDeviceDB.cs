@@ -65,7 +65,6 @@ namespace api.offlineDB
             {
                 return possibleItems[0];
             }
-
             throw new System.Exception("Not unique Item found");
         }
 

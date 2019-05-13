@@ -14,7 +14,12 @@ namespace api.Controllers
     [ApiController]
     public class StudyCourseController : ControllerBase
     {
-        private readonly IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
+        private readonly IStudyCourseDB studyCourseDB;
+        
+        public StudyCourseController(IStudyCourseDB studyCourseDB)
+        {
+            this.studyCourseDB = studyCourseDB;
+        }
 
         [HttpGet]
         public StudyCourse[] getAll()

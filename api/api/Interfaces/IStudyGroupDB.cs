@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Interfaces
 {
-    interface IStudyGroupDB
+    public interface IStudyGroupDB
     {
         StudyGroup[] getAll();
 

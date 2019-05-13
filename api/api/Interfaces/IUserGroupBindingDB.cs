@@ -3,9 +3,9 @@ using api.Models;
 using api.Controllers;
 using System.Collections.Generic;
 
-namespace api.Controllers
+namespace api.Interfaces
 {
-    interface IUserGroupBindingDB
+    public interface IUserGroupBindingDB
     {
         UserGroupBindingItem addUserGroupBinding(int UserID, int GroupID);
 
