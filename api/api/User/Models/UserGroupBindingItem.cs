@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace BAGCST.api.User.Models
 {
     public class UserGroupBindingItem
     {

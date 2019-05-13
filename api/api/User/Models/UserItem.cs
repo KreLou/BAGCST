@@ -1,5 +1,8 @@
+using api.Models;
+using BAGCST.api.StudySystem.Models;
 using System;
-namespace api.Models
+
+namespace BAGCST.api.User.Models
 {
     public class UserItem
     {

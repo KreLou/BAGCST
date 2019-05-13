@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
-using api.offlineDB;
-using api.database;
+using BAGCST.api.News.Database;
 
 namespace BAGCST.api.News.Controllers
 {

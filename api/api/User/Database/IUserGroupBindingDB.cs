@@ -1,9 +1,7 @@
-using System;
-using api.Models;
-using api.Controllers;
 using System.Collections.Generic;
+using BAGCST.api.User.Models;
 
-namespace api.Interfaces
+namespace BAGCST.api.User.Database
 {
     public interface IUserGroupBindingDB
     {

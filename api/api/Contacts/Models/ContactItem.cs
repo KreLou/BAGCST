@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using api.Models;
+using BAGCST.api.User.Models;
+using BAGCST.api.StudySystem.Models;
 
 namespace BAGCST.api.Contacts.Models
 {

@@ -1,11 +1,15 @@
-﻿using api.Interfaces;
+﻿using api.database;
+using api.Interfaces;
 using api.Models;
+using BAGCST.api.StudySystem.Models;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace api.database
+namespace BAGCST.api.User.Controllers
 {
     public class onlineUserDB : IUserDB
     {

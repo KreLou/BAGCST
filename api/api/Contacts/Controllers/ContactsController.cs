@@ -9,6 +9,10 @@ using api.Models;
 using api.Databases;
 using api.offlineDB;
 using api.database;
+using BAGCST.api.StudySystem.Database;
+using BAGCST.api.User.Database;
+using BAGCST.api.Contacts.Database;
+using BAGCST.api.Contacts.Models;
 
 namespace BAGCST.api.Contacts.Controllers
 {

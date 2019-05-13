@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using api.Handler;
 using System.Threading;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 
 namespace api.Controllers
 {

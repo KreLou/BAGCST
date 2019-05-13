@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using api.database;
+using BAGCST.api.News.Database;
+using BAGCST.api.User.Database;
 
 namespace BAGCST.api.News.Controllers
 {

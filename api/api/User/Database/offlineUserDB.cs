@@ -1,11 +1,12 @@
-using api.Interfaces;
-using api.Models;
+using BAGCST.api.StudySystem.Database;
+using BAGCST.api.StudySystem.Models;
+using BAGCST.api.User.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace api.offlineDB
+namespace BAGCST.api.User.Database
 {
     public class offlineUserDB : IUserDB
     {
@@ -13,8 +14,14 @@ namespace api.offlineDB
         private static string offlineDBPath = Environment.CurrentDirectory + "\\offlineDB";
         private string user_filename = offlineDBPath + "\\Files\\users.csv";
 
-        private IStudyCourseDB studyCourseDB = new offlineStudyCourseDB();
-        private IStudyGroupDB studyGroupDB = new offlineStudyGroupDB();
+        private IStudyCourseDB studyCourseDB;
+        private IStudyGroupDB studyGroupDB;
+
+        public offlineUserDB(IStudyCourseDB studyCourseDB, IStudyGroupDB studyGroupDB)
+        {
+            this.studyCourseDB = studyCourseDB;
+            this.studyGroupDB = studyGroupDB;
+        }
 
         /// <summary>
         /// Creates the string output for User

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using api.Interfaces;
-using api.Models;
-using api.offlineDB;
-using Microsoft.AspNetCore.Http;
+﻿using BAGCST.api.StudySystem.Database;
+using BAGCST.api.StudySystem.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers

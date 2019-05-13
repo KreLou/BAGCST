@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using api.Models;
-using api.Interfaces;
 using System.IO;
 using api.offlineDB;
+using BAGCST.api.User.Database;
+using BAGCST.api.StudySystem.Database;
+using BAGCST.api.Contacts.Models;
+using BAGCST.api.StudySystem.Models;
+using BAGCST.api.User.Models;
 
 namespace BAGCST.api.Contacts.Database
 {

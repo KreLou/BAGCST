@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Security.Cryptography;
 using api.Selectors;
+using BAGCST.api.User.Models;
 
 namespace api.Handler
 {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
-using api.Models;
-using api.offlineDB;
+﻿using Microsoft.AspNetCore.Mvc;
+using BAGCST.api.FoodMenu.Database;
+using BAGCST.api.FoodMenu.Models;
 
 namespace BAGCST.api.FoodMenu.Controllers
 {

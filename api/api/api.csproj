@@ -5,7 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Contacts\Exceptions\" />
+    <Folder Include="Contacts\Services\" />
+    <Folder Include="Food-Menu\Exceptions\" />
+    <Folder Include="Food-Menu\Services\" />
+    <Folder Include="News\Exceptions\" />
+    <Folder Include="News\Models\" />
+    <Folder Include="News\Services\" />
+    <Folder Include="StudySystem\Controllers\" />
+    <Folder Include="StudySystem\Exceptions\" />
+    <Folder Include="StudySystem\Services\" />
+    <Folder Include="User\Exceptions\" />
+    <Folder Include="User\Services\" />
+    <Folder Include="_Template\Models\" />
+    <Folder Include="_Template\Controllers\" />
+    <Folder Include="_Template\Database\" />
+    <Folder Include="_Template\Exceptions\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="_Template\Services\" />
   </ItemGroup>
 
   <ItemGroup>

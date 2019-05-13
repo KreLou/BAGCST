@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using api.Interfaces;
-using api.Models;
-using api.offlineDB;
-using Microsoft.AspNetCore.Http;
+﻿using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace BAGCST.api.User.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

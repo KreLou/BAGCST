@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
-using api.Interfaces;
-using api.Models;
-using System.Reflection;
-using api.Controllers;
+using BAGCST.api.FoodMenu.Models;
 
 namespace BAGCST.api.FoodMenu.Database
 {
-    public class offlineMealDB:IMealDB
+    public class offlineMealDB: IMealDB
     {
 
         //TODO @Louis what will be doing when Place is null 

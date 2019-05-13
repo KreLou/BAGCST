@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using api.Models;
-using api.Interfaces;
-using api.Controllers;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 
 namespace api.offlineDB
 {

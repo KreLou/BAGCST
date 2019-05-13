@@ -4,8 +4,11 @@ using api.Interfaces;
 using api.offlineDB;
 using api.database;
 using Microsoft.AspNetCore.Mvc;
+using BAGCST.api.News.Database;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 
-namespace api.Controllers
+namespace BAGCST.api.User.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
