@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace BAGCST.api.StudySystem.Models
 {
     public class StudyCourse
     {

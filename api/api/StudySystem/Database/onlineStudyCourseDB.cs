@@ -1,10 +1,12 @@
-﻿using api.Interfaces;
+﻿using api.database;
+using api.Interfaces;
 using api.Models;
+using BAGCST.api.StudySystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace api.database
+namespace BAGCST.api.StudySystem.Database
 {
     public class onlineStudyCourseDB : IStudyCourseDB
     {

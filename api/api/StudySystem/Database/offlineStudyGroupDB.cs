@@ -1,12 +1,13 @@
 ﻿using api.Interfaces;
 using api.Models;
+using BAGCST.api.StudySystem.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.offlineDB
+namespace BAGCST.api.StudySystem.Database
 {
     public class offlineStudyGroupDB : IStudyGroupDB
     {
