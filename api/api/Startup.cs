@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using api.Handler;
-using api.Interfaces;
 using api.offlineDB;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using api.database;
-using api.Databases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,7 +19,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
-using api.Controllers;
+using BAGCST.api.Contacts.Database;
+using BAGCST.api.FoodMenu.Database;
+using BAGCST.api.News.Database;
+using BAGCST.api.User.Database;
+using BAGCST.api.StudySystem.Database;
+using BAGCST.api.User.Controllers;
+using BAGCST.api.Timetable.Controllers;
+using BAGCST.api.Timetable.Database;
+using BAGCST.api.RightsSystem.Database;
 
 namespace api
 {
@@ -101,7 +107,7 @@ namespace api
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
                 services.AddSingleton<IGroupsDB, offlineGroupsDB>();
-                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, offlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
@@ -119,7 +125,7 @@ namespace api
                 //Production
                 services.AddSingleton<IContactsDB, onlineContactsDB>();
                 services.AddSingleton<IGroupsDB, offlineGroupsDB>();
-                services.AddSingleton<IMealDB, OfflineMealDB>();
+                services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, onlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();

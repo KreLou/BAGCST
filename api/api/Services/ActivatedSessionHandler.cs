@@ -1,11 +1,12 @@
-﻿using api.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Selectors;
 using api.Models;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 
 namespace api.Services
 {

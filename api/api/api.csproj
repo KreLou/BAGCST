@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Contacts\Exceptions\" />
+    <Folder Include="Contacts\Services\" />
+    <Folder Include="Food-Menu\Exceptions\" />
+    <Folder Include="Food-Menu\Services\" />
+    <Folder Include="News\Exceptions\" />
+    <Folder Include="News\Services\" />
+    <Folder Include="StudySystem\Exceptions\" />
+    <Folder Include="StudySystem\Services\" />
+    <Folder Include="User\Exceptions\" />
+    <Folder Include="User\Services\" />
+    <Folder Include="Timetable\Exceptions\" />
+    <Folder Include="Timetable\Services\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
