@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.database
+namespace BAGCST.api.Contacts.Database
 {
     public class onlineContactsDB : IContactsDB
     {

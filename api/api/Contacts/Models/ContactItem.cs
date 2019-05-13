@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using api.Models;
 
-namespace api.Models
+namespace BAGCST.api.Contacts.Models
 {
     public class ContactItem
     {

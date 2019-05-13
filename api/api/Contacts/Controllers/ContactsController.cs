@@ -10,7 +10,7 @@ using api.Databases;
 using api.offlineDB;
 using api.database;
 
-namespace api.Controllers
+namespace BAGCST.api.Contacts.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

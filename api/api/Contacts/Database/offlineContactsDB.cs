@@ -7,7 +7,7 @@ using api.Interfaces;
 using System.IO;
 using api.offlineDB;
 
-namespace api.Databases
+namespace BAGCST.api.Contacts.Database
 {
     public class offlineContactsDB : IContactsDB
     {

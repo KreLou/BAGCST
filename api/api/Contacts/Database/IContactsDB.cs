@@ -4,7 +4,7 @@ using System.Linq;
 using api.Models;
 using System.Threading.Tasks;
 
-namespace api.Interfaces
+namespace BAGCST.api.Contacts.Database
 {
     public interface IContactsDB
     {
