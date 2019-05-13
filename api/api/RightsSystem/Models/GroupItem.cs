@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace BAGCST.api.RightsSystem.Models
 {
-    public class Group
+    public class GroupItem
     {
         /// <summary>
         /// the ID of the group
@@ -23,6 +23,6 @@ namespace api.Models
         /// the groups rights
         /// </summary>
         [Required]
-        public Right[] Rights { get; set; }
+        public RightItem[] Rights { get; set; }
     }
 }

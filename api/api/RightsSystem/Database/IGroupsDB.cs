@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
 
-namespace api.Interfaces
+namespace BAGCST.api.RightsSystem.Database
 {
     public interface IGroupsDB
     {
@@ -13,20 +13,20 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns>Group|null</returns>
-        Group getGroup(int id);
+        GroupItem getGroup(int id);
 
         /// <summary>
         /// get all Groups
         /// </summary>
         /// <returns>Array of Rights with length>=0</returns>
-        Group[] getAllGroups();
+        GroupItem[] getAllGroups();
 
         /// <summary>
         /// creates a Group
         /// </summary>
         /// <param name="item">Group</param>
         /// <returns>full Group</returns>
-        Group createGroup(Group item);
+        GroupItem createGroup(GroupItem item);
 
         /// <summary>
         /// edit Group
@@ -34,7 +34,7 @@ namespace api.Interfaces
         /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>edited Group|null</returns>
-        Group editGroup(int id, Group item);
+        GroupItem editGroup(int id, GroupItem item);
 
         /// <summary>
         /// delete Group

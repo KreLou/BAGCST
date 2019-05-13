@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
-using api.Models;
-using api.Databases;
+using BAGCST.api.RightsSystem.Database;
+using BAGCST.api.RightsSystem.Models;
 
-namespace api.Controllers
+namespace BAGCST.api.RightsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,9 +27,9 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns>Right</returns>
         [HttpGet("{id}")]
-        public ActionResult<Right> getRight(int id)
+        public ActionResult<RightItem> getRight(int id)
         {
-            Right right = rightsDB.getRight(id);
+            RightItem right = rightsDB.getRight(id);
             if (right == null)
             {
                 return NotFound($"No right found for id: {id}");
@@ -41,14 +41,14 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Right[]> getAllRights()
+        public ActionResult<RightItem[]> getAllRights()
         {
-            Right[] rights = rightsDB.getAllRights();
+            RightItem[] rights = rightsDB.getAllRights();
             return Ok(rights);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Right> editRight(int id, [FromBody] Right right_in)
+        public ActionResult<RightItem> editRight(int id, [FromBody] RightItem right_in)
         {
             //Check if id is valid
             if (rightsDB.getRight(id) == null)
@@ -63,7 +63,7 @@ namespace api.Controllers
             }
 
             //update existing right
-            Right right_out = rightsDB.editRight(id, right_in);
+            RightItem right_out = rightsDB.editRight(id, right_in);
 
             //return new item
             return Ok(right_out);
@@ -87,7 +87,7 @@ namespace api.Controllers
         /// <param name="right_in"></param>
         /// <returns>Right|BadRequest</returns>
         [HttpPost]
-        public ActionResult<Right> createRight(Right right_in)
+        public ActionResult<RightItem> createRight(RightItem right_in)
         {
             if (!ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace api.Controllers
                 return BadRequest("Right not found");
             }
 
-            foreach(Right right in rightsDB.getAllRights())
+            foreach(RightItem right in rightsDB.getAllRights())
             {
                 if(right_in.Path == right.Path)
                 {
@@ -111,7 +111,7 @@ namespace api.Controllers
             {
                 return BadRequest("Failure. No RightID entered.");
             }
-            Right right_out = rightsDB.createRight(right_in);
+            RightItem right_out = rightsDB.createRight(right_in);
             return Created("", right_out);
         }
 

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using api.Models;
 using api.Interfaces;
 using System.IO;
+using BAGCST.api.RightsSystem.Models;
 
-namespace api.Databases
+namespace BAGCST.api.RightsSystem.Database
 {
     public class offlineRightsDB : IRightsDB
     {

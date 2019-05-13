@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using BAGCST.api.RightsSystem;
 
-namespace api.Models
+namespace BAGCST.api.RightsSystem.Models
 {
-    public class Right
+    public class RightItem
     {
         /// <summary>
         /// Primary key of the Rights
