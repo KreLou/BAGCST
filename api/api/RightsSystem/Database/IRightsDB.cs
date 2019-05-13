@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using BAGCST.api.RightsSystem.Models;
 
-namespace api.Interfaces
+namespace BAGCST.api.RightsSystem.Database
 {
     public interface IRightsDB
     {
@@ -13,20 +14,20 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns>Right|null</returns>
-        Right getRight(int id);
+        RightItem getRight(int id);
 
         /// <summary>
         /// get all Rights
         /// </summary>
         /// <returns>Array of Rights with length>=0</returns>
-        Right[] getAllRights();
+        RightItem[] getAllRights();
 
         /// <summary>
         /// creates a Right
         /// </summary>
         /// <param name="item">Right</param>
         /// <returns>full Right</returns>
-        Right createRight(Right item);
+        RightItem createRight(RightItem item);
 
         /// <summary>
         /// edit Right
@@ -34,7 +35,7 @@ namespace api.Interfaces
         /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns>edited Right|null</returns>
-        Right editRight(int id, Right item);
+        RightItem editRight(int id, RightItem item);
 
         /// <summary>
         /// delete Right
@@ -47,6 +48,6 @@ namespace api.Interfaces
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Right getRightbyPath(string path);
+        RightItem getRightbyPath(string path);
     }
 }
