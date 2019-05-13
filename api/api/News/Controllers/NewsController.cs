@@ -1,5 +1,4 @@
-﻿using api.Interfaces;
-using api.Models;
+﻿using api.Models;
 using api.offlineDB;
 using Microsoft.AspNetCore.Mvc;
 using System;

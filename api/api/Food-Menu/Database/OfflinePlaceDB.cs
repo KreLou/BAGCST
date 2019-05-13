@@ -1,5 +1,4 @@
-﻿using api.Interfaces;
-using api.Models;
+﻿using api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
 using api.offlineDB;
 using api.Models;
 using api.Exception;

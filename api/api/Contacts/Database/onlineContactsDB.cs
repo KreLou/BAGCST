@@ -1,6 +1,4 @@
 ﻿using api.database;
-using api.Interfaces;
-using api.Models;
 using BAGCST.api.Contacts.Models;
 using BAGCST.api.StudySystem.Models;
 using BAGCST.api.User.Models;

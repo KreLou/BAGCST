@@ -1,9 +1,10 @@
 using api.Models;
-using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
+using BAGCST.api.RightsSystem.Database;
+using BAGCST.api.RightsSystem.Models;
 
 namespace BAGCST.api.User.Controllers
 {
@@ -57,9 +58,9 @@ namespace BAGCST.api.User.Controllers
         }
 
         [HttpGet("groups/{UserID}")]
-        public Group[] getGroupsofUser([FromQuery] int[] UserIDs)
+        public GroupItem[] getGroupsofUser([FromQuery] int[] UserIDs)
         {
-            List<Group> ret = new List<Group>();
+            List<GroupItem> ret = new List<GroupItem>();
             userGroupBindingDB.getGroupsOfUser(UserIDs).ForEach(UID => ret.Add(groupsDB.getGroup(UID)));
             return ret.ToArray();
         }

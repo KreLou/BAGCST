@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using api.Interfaces;
 using api.Models;
 using api.offlineDB;
 using BAGCST.api.Timetable.Controllers;
