@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using BAGCST.api.RightsSystem.Models;
 
 namespace BAGCST.api.RightsSystem.Database
 {

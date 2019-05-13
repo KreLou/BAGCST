@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
-using api.Interfaces;
 using System.IO;
 using BAGCST.api.RightsSystem.Models;
 
@@ -18,10 +17,10 @@ namespace BAGCST.api.RightsSystem.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Right|null</returns>
-        public Right getRight(int id)
+        public RightItem getRight(int id)
         {
-            Right[] rights = getAllRights();
-            foreach (Right right in rights)
+            RightItem[] rights = getAllRights();
+            foreach (RightItem right in rights)
             {
                 if (right.RightID == id)
                 {
@@ -35,16 +34,16 @@ namespace BAGCST.api.RightsSystem.Database
         /// returns array of Rights
         /// </summary>
         /// <returns>Right[]</returns>
-        public Right[] getAllRights()
+        public RightItem[] getAllRights()
         {
-            List<Right> list = new List<Right>();
+            List<RightItem> list = new List<RightItem>();
             using (StreamReader reader = new StreamReader(csvFile))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] args = line.Split(";");
-                    Right right = new Right()
+                    RightItem right = new RightItem()
                     {
                         RightID = Convert.ToInt32(args[0]),
                         Path = args[1],
@@ -61,12 +60,12 @@ namespace BAGCST.api.RightsSystem.Database
         /// </summary>
         /// <param name="right"></param>
         /// <returns>Right</returns>
-        public Right createRight(Right right)
+        public RightItem createRight(RightItem right)
         {
             //1. Generate ID
-            Right[] rights = getAllRights();
+            RightItem[] rights = getAllRights();
             int id = 0;
-            foreach (Right right_ in rights)
+            foreach (RightItem right_ in rights)
             {
                 if (right_.RightID >= id)
                 {
@@ -89,7 +88,7 @@ namespace BAGCST.api.RightsSystem.Database
         /// <param name="id"></param>
         /// <param name="Right"></param>
         /// <returns>Right</returns>
-        public Right editRight(int id, Right right)
+        public RightItem editRight(int id, RightItem right)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -136,11 +135,11 @@ namespace BAGCST.api.RightsSystem.Database
             File.Move(tempFile, csvFile);
         }
 
-        public Right getRightbyPath(string path)
+        public RightItem getRightbyPath(string path)
         {
-            Right[] allRights = getAllRights();
+            RightItem[] allRights = getAllRights();
 
-            Right right = allRights.Where(item => item.Path.ToLower() == path.ToLower()).Single();
+            RightItem right = allRights.Where(item => item.Path.ToLower() == path.ToLower()).Single();
 
             return right;
         }

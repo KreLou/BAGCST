@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
 using api.Models;
-using api.Databases;
 using api.offlineDB;
 using api.Exception;
+using BAGCST.api.RightsSystem.Database;
+using BAGCST.api.RightsSystem.Models;
+using BAGCST.api.RightsSystem.Exception;
 
-namespace api.Controllers
+namespace BAGCST.api.RightsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,9 +32,9 @@ namespace api.Controllers
         /// <param name="id"></param>
         /// <returns>Group</returns>
         [HttpGet("{id}")]
-        public ActionResult<Group> getGroup(int id)
+        public ActionResult<GroupItem> getGroup(int id)
         {
-            Group group = groupsDB.getGroup(id);
+            GroupItem group = groupsDB.getGroup(id);
             if (group == null)
             {
                 return NotFound($"No Group found for id: {id}");
@@ -45,14 +46,14 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Group[]> getAllGroups()
+        public ActionResult<GroupItem[]> getAllGroups()
         {
-            Group[] groups = groupsDB.getAllGroups();
+            GroupItem[] groups = groupsDB.getAllGroups();
             return Ok(groups);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Group> editGroup(int id, [FromBody] Group group_in)
+        public ActionResult<GroupItem> editGroup(int id, [FromBody] GroupItem group_in)
         {
             //Check if id is valid
             //if (database.getGroup(id) == null)
@@ -89,7 +90,7 @@ namespace api.Controllers
             }
 
             //update existing group
-            Group group_out = groupsDB.editGroup(id, group_in);
+            GroupItem group_out = groupsDB.editGroup(id, group_in);
 
             //return new item
             return Ok(group_out);
@@ -113,7 +114,7 @@ namespace api.Controllers
         /// <param name="group_in"></param>
         /// <returns>Group|BadRequest</returns>
         [HttpPost]
-        public ActionResult<Group> createGroup(Group group_in)
+        public ActionResult<GroupItem> createGroup(GroupItem group_in)
         {
             //TODO check for permission
 
@@ -142,7 +143,7 @@ namespace api.Controllers
                 return BadRequest("Duplicate RightsID found: " + dpi.RightID);
             }
 
-            foreach(Group group in groupsDB.getAllGroups())
+            foreach(GroupItem group in groupsDB.getAllGroups())
             {
                 if(group_in.Name == group.Name)
                 {
@@ -151,7 +152,7 @@ namespace api.Controllers
             }
 
             
-            Group group_out = groupsDB.createGroup(group_in);
+            GroupItem group_out = groupsDB.createGroup(group_in);
             return Created("", group_out);
         }
 
@@ -160,10 +161,10 @@ namespace api.Controllers
         /// Throws RightIDNotFoundException and RightItemNotFoundException
         /// </summary>
         /// <param name="rights"></param>
-        private void validateRights(Right[] rights)
+        private void validateRights(RightItem[] rights)
         {
             if (rights.Length == 0) throw new RightsNotFoundException();
-            foreach (Right right in rights)
+            foreach (RightItem right in rights)
             {
                 if (String.IsNullOrWhiteSpace(right.RightID.ToString()))
                 {
@@ -171,7 +172,7 @@ namespace api.Controllers
                 }
                 else
                 {
-                    Right databaseRight = rightsDB.getRight(right.RightID);
+                    RightItem databaseRight = rightsDB.getRight(right.RightID);
                     if (databaseRight == null)
                     {
                         throw new RightItemNotFoundException(right.RightID);

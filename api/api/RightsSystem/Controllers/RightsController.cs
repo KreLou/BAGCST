@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
 using BAGCST.api.RightsSystem.Database;
 using BAGCST.api.RightsSystem.Models;
 

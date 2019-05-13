@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
-using api.Interfaces;
 using System.IO;
-using api.Databases;
+using BAGCST.api.RightsSystem.Models;
 
-namespace api.offlineDB
+namespace BAGCST.api.RightsSystem.Database
 {
     public class offlineGroupsDB : IGroupsDB
     {
         private string csvFile = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groups.csv");
-        List<Right> rightsTemp;
+        List<RightItem> rightsTemp;
 
         /// <summary>
         /// returns a Group based on the given ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Group|null</returns>
-        public Group getGroup(int id)
+        public GroupItem getGroup(int id)
         {
-            Group[] groups = getAllGroups();
-            foreach (Group group in groups)
+            GroupItem[] groups = getAllGroups();
+            foreach (GroupItem group in groups)
             {
                 if (group.ID == id)
                 {
@@ -36,17 +35,17 @@ namespace api.offlineDB
         /// returns array of Groups
         /// </summary>
         /// <returns>Group[]</returns>
-        public Group[] getAllGroups()
+        public GroupItem[] getAllGroups()
         {
-            List<Group> list = new List<Group>();
+            List<GroupItem> list = new List<GroupItem>();
             using (StreamReader reader = new StreamReader(csvFile))
             {
-                 rightsTemp = new List<Right>();
+                 rightsTemp = new List<RightItem>();
                  string line;
                  while ((line = reader.ReadLine()) != null)
                  {
                      string[] args = line.Split(";");
-                     Group group = new Group()
+                     GroupItem group = new GroupItem()
                      {
                          ID = Convert.ToInt32(args[0]),
                          Name = args[1],
@@ -61,7 +60,7 @@ namespace api.offlineDB
                             rightsTemp.Add(dbRights.getRight(Convert.ToInt32(rightID)));
                      }
                      
-                     foreach(Right right in rightsTemp.ToArray())
+                     foreach(RightItem right in rightsTemp.ToArray())
                      {
                         if(right == null)
                         {
@@ -81,13 +80,13 @@ namespace api.offlineDB
         /// </summary>
         /// <param name="group"></param>
         /// <returns>Group</returns>
-        public Group createGroup(Group group)
+        public GroupItem createGroup(GroupItem group)
         {
             //1. Generate ID
-            Group[] groups = getAllGroups();
+            GroupItem[] groups = getAllGroups();
             int id = 0;
 
-            foreach (Group group_ in groups)
+            foreach (GroupItem group_ in groups)
             {
                 if (group_.ID >= id)
                 {
@@ -110,7 +109,7 @@ namespace api.offlineDB
         /// <param name="id"></param>
         /// <param name="Group"></param>
         /// <returns>Group</returns>
-        public Group editGroup(int id, Group group)
+        public GroupItem editGroup(int id, GroupItem group)
         {
             string tempFile = Path.GetTempFileName();
             using (StreamWriter writer = new StreamWriter(tempFile))
@@ -160,7 +159,7 @@ namespace api.offlineDB
         //TODO UserID from Token
         //long userID = 1;
 
-        private string groupUser_csv = Environment.CurrentDirectory + "\\offlineDB\\Files\\groupUser.csv";
+        private string groupUser_csv = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groupUser.csv");
         public int[] getGroupsByUser(long userID)
         {
             List<int> associatedGroups = new List<int>();
@@ -193,10 +192,10 @@ namespace api.offlineDB
             File.AppendAllLines(groupUser_csv, lines);
         }
 
-        public string rightsToString(Right[] rights)
+        public string rightsToString(RightItem[] rights)
         {
             string string_out = new string("");
-            foreach(Right right in rights)
+            foreach(RightItem right in rights)
             {
                 string_out += right.RightID.ToString();
 
