@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace BAGCST.api.FoodMenu.Models
 {
     public class PlaceItem
     {

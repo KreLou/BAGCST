@@ -9,7 +9,7 @@ using api.offlineDB;
 using api.Models;
 using api.Exception;
 
-namespace api.Controllers
+namespace BAGCST.api.FoodMenu.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

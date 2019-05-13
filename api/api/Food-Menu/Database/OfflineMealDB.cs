@@ -8,9 +8,9 @@ using api.Models;
 using System.Reflection;
 using api.Controllers;
 
-namespace api.offlineDB
+namespace BAGCST.api.FoodMenu.Database
 {
-    public class OfflineMealDB:IMealDB
+    public class offlineMealDB:IMealDB
     {
 
         //TODO @Louis what will be doing when Place is null 

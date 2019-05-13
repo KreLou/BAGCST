@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace api.offlineDB
+namespace BAGCST.api.FoodMenu.Database
 {
     public class OfflineMenuDB:IMenuDB
     {

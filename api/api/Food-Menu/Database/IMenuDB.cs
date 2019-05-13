@@ -1,10 +1,7 @@
-﻿using api.Models;
+﻿using BAGCST.api.FoodMenu.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace api.Interfaces
+namespace BAGCST.api.FoodMenu.Database
 {
     public interface IMenuDB
     {

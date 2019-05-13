@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Numerics;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace BAGCST.api.FoodMenu.Models
 {   
     /// <summary>
     /// Menu model show all elments for the objekt menu in the database

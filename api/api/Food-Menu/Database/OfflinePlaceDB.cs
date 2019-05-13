@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
-
 using api.offlineDB;
-namespace api.offlineDB
+using BAGCST.api.FoodMenu.Models;
+
+namespace BAGCST.api.FoodMenu.Database
 {
     public class OfflinePlaceDB : IPlaceDB
     {
