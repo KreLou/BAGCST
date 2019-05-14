@@ -10,8 +10,8 @@ namespace api.offlineDB
     public class offlineUserDB : IUserDB
     {
 
-        private static string offlineDBPath = Environment.CurrentDirectory + "\\offlineDB";
-        private string user_filename = offlineDBPath + "\\Files\\users.csv";
+        private static string offlineDBPath = Path.Combine(Environment.CurrentDirectory, "offlineDB");
+        private string user_filename = Path.Combine(offlineDBPath, "Files","users.csv");
 
         /// <summary>
         /// Creates the string output for User

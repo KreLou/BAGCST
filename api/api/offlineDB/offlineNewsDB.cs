@@ -14,7 +14,7 @@ namespace api.offlineDB
 
         private IPostGroupDB postGroupDatabase = new offlinePostGroupDB();
 
-        private string filename = Environment.CurrentDirectory + "\\offlineDB\\Files\\news.csv";
+        private string filename = Path.Combine(Environment.CurrentDirectory, "offlineDB","Files","news.csv");
 
         /// <summary>
         /// Delete a News-item from db by id

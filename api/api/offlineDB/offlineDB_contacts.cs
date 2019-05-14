@@ -10,8 +10,7 @@ namespace api.Databases
 {
     public class offlineDB_contacts : IContactsDB
     {
-        private string csvFile = Environment.CurrentDirectory + "\\offlineDB\\Files\\contacts.csv";
-
+        private string csvFile = Path.Combine(Environment.CurrentDirectory, "offlineDB","Files","contacts.csv");
 
 
         private static ContactItem convertToContactItem(string line)

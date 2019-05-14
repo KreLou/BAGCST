@@ -11,7 +11,7 @@ namespace api.offlineDB
 {
     public class offlineUserSettings : IUserSettingsDB
     {
-        private string file_subscribedPostGroups = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroupuser.csv";
+        private string file_subscribedPostGroups = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","postgroupuser.csv");
 
         private readonly offlineUserDB userDB;
         private readonly offlinePostGroupDB postGroupDB;
