@@ -16,22 +16,19 @@ export class ContactDetailsPage implements OnInit {
    * Contact id of contact details page
    */
   public contactID: number;
-  contactItem: ContactItem
+  contactItem: ContactItem;
 
 
-  constructor(private activedRoute: ActivatedRoute, private contactLoader:ContactsLoaderService) {
+  constructor(private activedRoute: ActivatedRoute, private contactLoader: ContactsLoaderService) {
     this.activedRoute.params.subscribe(paraMap => {
       this.contactID = paraMap['contactID'];
       console.log('ContactID: ', this.contactID);
-
-      //Hier kannst du jetzt weitermachen, die variable contactID beinhaltet die ID der aufgerufenen Seite
-
-    })
+    });
    }
 
   ngOnInit() {
-    this.contactLoader.getContact(this.contactID).subscribe(data => {console.log(data);}, error => {console.error(error);});
-    this.contactLoader.getContact(this.contactID).subscribe(data => {this.contactItem = data;});
+    this.contactLoader.getContact(this.contactID).subscribe(data => {console.log(data); }, error => {console.error(error); });
+    this.contactLoader.getContact(this.contactID).subscribe(data => {this.contactItem = data; });
   }
 
 }

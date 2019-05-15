@@ -6,7 +6,6 @@ import {ContactDetailsPage} from 'src/app/pages/contact-details/contact-details.
 import { NavController } from '@ionic/angular';
 import {Router} from '@angular/router';
 
-
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.page.html',
@@ -29,12 +28,15 @@ export class ContactsPage implements OnInit {
       console.log(data);
       this.contactList = data;
     }, error => {console.error(error); });
+
+    this.contactList.sort((a,b) => (a.lastName > b.lastName) ? 1 : -1)
   }
 
-  goToDetails(id:number){
-    // ContactDetailsPage.contactID = id;
+   /**
+   * directs to contact-details.page
+   */
+  goToDetails(id: number) {
     console.log(id);
-    this.router.navigate(['contacts',id.toString()]);
+    this.router.navigate(['contacts', id.toString()]);
   }
-
 }
