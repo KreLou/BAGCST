@@ -11,7 +11,7 @@ namespace BAGCST.api.Timetable.Database
         SqlConnection sqlConnection = null;
 
 
-        private LectureItem[] getTimeTable(string value, DateTime startTime, int typ)
+        private LectureItem[] getTimeTable(string value, DateTime startTime, DateTime endTime, int typ)
         {
             sqlConnection = null;
             sqlConnection = TimeTableDatabase.getConnectionTimeTable();
@@ -20,8 +20,8 @@ namespace BAGCST.api.Timetable.Database
             {
                 using (sqlConnection)
                 {
-                    DateTime endTime = new DateTime();
-                    endTime = Convert.ToDateTime("2030-01-01");//DateTime.Now;
+                    //DateTime endTime = new DateTime();
+                    endTime = Convert.ToDateTime(endTime);//DateTime.Now;
                     DateTime StartHourLessons = new DateTime();
                     DateTime EndHourLessons = new DateTime();
                     DateTime LessonsDay = new DateTime();
@@ -56,8 +56,24 @@ namespace BAGCST.api.Timetable.Database
 
                     while (myReader.Read())
                     {
-                        StartHourLessons = Convert.ToDateTime(myReader["Anfang"]);
-                        EndHourLessons = Convert.ToDateTime(myReader["Ende"]);
+                        if (myReader["Anfang"].ToString() != "")
+                        {
+                            StartHourLessons = Convert.ToDateTime(myReader["Anfang"]);
+                        }
+                        else
+                        {
+                            StartHourLessons = Convert.ToDateTime("01.01.2000 00:00");
+                        }
+
+                        if (myReader["Ende"].ToString() != "")
+                        {
+                            EndHourLessons = Convert.ToDateTime(myReader["Ende"]);
+                        }
+                        else
+                        {
+                            EndHourLessons = Convert.ToDateTime("01.01.2000 00:00");
+                        }
+
                         LessonsDay = Convert.ToDateTime(myReader["Tag"]);
                         
                         SQLItem.Start = Convert.ToDateTime(LessonsDay.Date + StartHourLessons.TimeOfDay);
@@ -89,14 +105,14 @@ namespace BAGCST.api.Timetable.Database
         public LectureItem[] getLecturesByLecturer(string lecturer, DateTime startTime, DateTime endTime)
         {
             //TODO ABU Add End-Date
-            return getTimeTable(lecturer, startTime, 1);
+            return getTimeTable(lecturer, startTime, endTime, 1);
 
         }
 
         public LectureItem[] getSemesterLectures(string studyGroup, SemesterItem semester)
         {
             //TODO ABU Add End-Date
-            return getTimeTable(studyGroup, semester.Start, 0);
+            return getTimeTable(studyGroup, semester.Start,semester.End,0);
         }
     }
 }
