@@ -71,19 +71,14 @@
 .headerbutton {
   position: absolute;
   right: 2vw;
-  top: -45px;
-  height: 40px;
-}
-
-.headerbutton-ios {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	height: 20px;
-	
+  top: -42px;
 }
 
 .headerlogo {
+  height: 40px;
+}
+
+.headerlogosizing {
   height: 40px;
 }
 
@@ -93,13 +88,57 @@
   left: 25px;
 }
 
+.menutitle {
+  position: relative;
+  top: 5px;
+}
+
 /** iOS Header Title Layout **/
 .ios .headerlogo {
   display: none;
 }
 
+.ios .headerlogoback {
+  display: none;
+}
+
 .ios .headertitle {
-  position: relative;
+  width: 300px;
   top: 5px;
   left: 0px;
+}
+
+.ios .headertitleback {
+  width: 300px;
+  top: 5px;
+  left: -63px;
+}
+
+.ios .headerbutton {
+  right: 2vw;
+  top: -20px;
+}
+
+/** Android Menu Title Layout **/
+.md .menutitle {
+  top: 10px;
+  height: 70px;
+}
+
+/** Header Title Layout with Back-Button **/
+.backbutton {
+  position: relative;
+  top: 7px;
+  left: 0px;
+}
+
+.headertitleback {
+  position: relative;
+  top: 25px;
+  left: 3px;
+}
+
+.headerlogoback {
+  position: relative;
+  left: -21px;
 }
