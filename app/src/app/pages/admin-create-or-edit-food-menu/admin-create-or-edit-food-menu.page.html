@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="admin-food-planer"></ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="inputMenuID == 0; else elseMenu">Neue Menü anlegen</ion-title>
+    <ion-title *ngIf="inputMenuID == 0; else elseMenu">Neues Menü anlegen</ion-title>
     <ng-template #elseMenu>
       <ion-title>Menü bearbeiten</ion-title>
     </ng-template>
@@ -16,7 +16,7 @@
     <ion-item lines="full">
       <ion-label>Datum:</ion-label>
       <ion-button icon-right>
-        <ion-datetime #datePicker placeholder="Date" day-short-names="Son, Mon, Die, Mit, Don, Fre, Sam" display-format="DDD DD.MM.YYYY" picker-format="DDD DD.MM.YYYY" [(ngModel)]="menu.date"></ion-datetime>
+        <ion-datetime class="datepicker" #datePicker placeholder="Datum" day-short-names="Son, Mon, Die, Mit, Don, Fre, Sam" display-format="DDD DD.MM.YYYY" picker-format="DDD DD.MM.YYYY" [(ngModel)]="menu.date"></ion-datetime>
         <ion-icon name="calendar"></ion-icon>
       </ion-button>
     </ion-item>
