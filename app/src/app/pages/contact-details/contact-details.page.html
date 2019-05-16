@@ -12,74 +12,74 @@
   <ng-container *ngIf="contactItem">
     <ion-grid>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="contact"></ion-icon>
             <ion-label class="contactdetaillabel"> Vorname:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.firstName}}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="contact"></ion-icon>
           <ion-label class="contactdetaillabel"> Nachn.:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.lastName}}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="call"></ion-icon>
           <ion-label class="contactdetaillabel"> Telefon:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <a href="tel:{{contactItem.telNumber}}">{{contactItem.telNumber}}</a>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="mail"></ion-icon>
           <ion-label class="contactdetaillabel"> E-Mail:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <a href="mailto:{{contactItem.email}}">{{contactItem.email}}</a>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="pin"></ion-icon>
           <ion-label class="contactdetaillabel"> Raum:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.room}}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="list-box"></ion-icon>
           <ion-label class="contactdetaillabel"> Funktion:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.responsibility}}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="contacts"></ion-icon>
           <ion-label class="contactdetaillabel"> Stu.gang:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.course.longText}}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <ion-icon name="body"></ion-icon>
           <ion-label class="contactdetaillabel"> Typ:</ion-label>
         </ion-col>
-        <ion-col size="8" lines="full">
+        <ion-col size="7" lines="full">
           <ion-label>{{contactItem.type.name}}</ion-label>
         </ion-col>
       </ion-row>
