@@ -19,12 +19,41 @@ export class DashboardPage implements OnInit {
 		{title: 'Über diese APP', url: 'about', icon: undefined},
 	]
 
-  constructor(private menu: MenuController, private router: Router, private timeTableLoader: TimetableLoaderService) { }
+  timeTableItem: TimetableItem;
+  today: Date;
+    enddate: Date;
+    listUpcomingLectures: any;
+    listTimetable: TimetableItem[];
+    displayTimetable: any;
 
+    CONST_HowManyItemsAddedAtEndOfView = 3;
+    CONST_HowManyMilliSecondsPerDay = 1000 * 60 * 60 * 24;
 
-  ngOnInit() {
+  constructor(private menu: MenuController, private router: Router, private timeTableLoader: TimetableLoaderService) {
+    this.today = new Date();
+    this.today.setHours(0,0,0,0);
+    this.enddate = new Date(this.today.getTime() + (this.CONST_HowManyMilliSecondsPerDay * 8));
+   }
+
+   ngOnInit(): void {
     this.menu.enable(true, 'dashboardMenu');
-  }
+    this.timeTableLoader.getTimetable().subscribe(data => {
+
+        this.listTimetable = data;
+        this.displayTimetable = new Array();
+        var days = Array.from(new Set(this.listTimetable.map(x => x.start.toString().split('T')[0])));
+
+        days.forEach(date => {
+            this.displayTimetable.push({
+                date: new Date(date),
+                lectures: this.listTimetable.filter(x => x.start.toString().indexOf(date) > -1),
+                expand: false,
+            });
+        });
+        this.listUpcomingLectures = this.displayTimetable.filter(x => x.date >= this.today);
+        this.displayTimetable = this.listUpcomingLectures.filter(x => x.date <= this.enddate);
+        this.displayTimetable[0].expand = true;
+    })};
 
   toggleMenu(): void {
     this.menu.toggle('dashboardMenu');
