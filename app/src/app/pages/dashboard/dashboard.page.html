@@ -38,20 +38,12 @@
     <ng-container *ngIf="displayTimetable">
         <ion-grid style="margin-top: -30px">
             <ng-container *ngFor="let day of displayTimetable">
-                <ion-row (click)="changeExpandable(day)" class="weekday">
-                    <ion-col size="11">
-                        <ion-label>
-                                {{day.date | date: 'E dd.MM.yyyy'}}
-                        </ion-label>
-                    </ion-col>
-                    <ion-col size="1">
-                        <!--<ion-button icon-only (click)="changeExpandable(day)"> -->
-                            <ion-icon *ngIf="day.expand == false" name="arrow-dropdown"></ion-icon>
-                            <ion-icon *ngIf="day.expand == true" name="arrow-dropup"></ion-icon>
-                        <!--</ion-button> -->
-                    </ion-col>
+                <ion-row class="weekday">
+                  <ion-label>
+                    Stundenplan {{day.date | date: 'E dd.MM.yyyy'}}
+                  </ion-label>
                 </ion-row>
-                <ng-container *ngIf="day.expand">
+                <ng-container>
                     <div class="lectures" *ngFor="let lecture of day.lectures">
                         <ion-row>
                             <ion-col class="lecturecenter">
@@ -73,15 +65,5 @@
                 </ng-container>
             </ng-container>
         </ion-grid>
-        
-        <ion-item lines="none" *ngIf="noMoreLectureItemsToShow">
-            <ion-label color="danger">Keine weiteren Tage gefunden...</ion-label>
-        </ion-item>
-        <ion-infinite-scroll threshold="0px" (ionInfinite)="loadData($event)" *ngIf="!noMoreLectureItemsToShow">
-            <ion-infinite-scroll-content
-                    loadingSpinner="bubbles"
-                    loadingText="Lade weitere Tage...">
-            </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
     </ng-container>
 </ion-content>
