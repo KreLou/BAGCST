@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuController} from '@ionic/angular';
 import {Router} from '@angular/router';
+import { TimetableItem } from "../../models/TimetableItem";
+import {TimetableLoaderService} from 'src/app/services/httpServices/timetable-loader.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +19,7 @@ export class DashboardPage implements OnInit {
 		{title: 'Über diese APP', url: 'about', icon: undefined},
 	]
 
-  constructor(private menu: MenuController, private router: Router) { }
+  constructor(private menu: MenuController, private router: Router, private timeTableLoader: TimetableLoaderService) { }
 
 
   ngOnInit() {
