@@ -15,11 +15,9 @@ import {Router} from '@angular/router';
 export class ContactsPage implements OnInit {
 
   contactList: ContactItem[];
-  contactDetailsPage: ContactDetailsPage;
 
   constructor(
     private contactLoader: ContactsLoaderService,
-    public navCtrl: NavController,
     public router: Router
   ) {}
 
