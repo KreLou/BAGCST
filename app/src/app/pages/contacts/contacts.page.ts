@@ -16,6 +16,8 @@ export class ContactsPage implements OnInit {
 
   contactList: ContactItem[];
 
+  groupedList: any[];
+
   constructor(
     private contactLoader: ContactsLoaderService,
     public router: Router
@@ -25,6 +27,18 @@ export class ContactsPage implements OnInit {
     this.contactLoader.getAllContacts().subscribe(data => {
       console.log(data);
       this.contactList = data;
+
+
+      this.groupedList = new Array();
+      const groups = Array.from(new Set(this.contactList.map(x => x.lastName[0])));
+
+      groups.forEach(letter => {
+        this.groupedList.push({
+          letter: letter,
+          contacts: this.contactList.filter(x => x.lastName[0] === letter)
+        })
+      });
+
     }, error => {console.error(error); });
 
     this.contactList.sort((a,b) => (a.lastName > b.lastName) ? 1 : -1)
@@ -35,6 +49,6 @@ export class ContactsPage implements OnInit {
    */
   goToDetails(id: number) {
     console.log(id);
-    this.router.navigate(['contacts', id.toString()]);
+    this.router.navigate(['tabs', 'contacts', id.toString()]);
   }
 }
