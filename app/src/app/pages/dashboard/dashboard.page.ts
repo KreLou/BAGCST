@@ -28,5 +28,9 @@ export class DashboardPage implements OnInit {
     this.menu.toggle('dashboardMenu');
   }
 
+  navigateTo(url: string) {
+    console.log('Navigate to ', url);
+  }
+
 
 }
