@@ -1,3 +1,5 @@
+
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -11,7 +13,19 @@
 </ion-header>
 
 <ion-content padding>
-
-  <button ion-button full (click)="doLogin()">Login</button>
-
+  <div class="logindiv">
+    <img src="assets/ba_glauchau_logo.svg" class="loginfullwidth"/>
+    <br/>
+    <p>
+      Willkommen in der App der BA-Glauchau!
+      <br/>
+      Um Zugriff zu erhalten, müssen Sie Ihre E-Mail-Adresse eingeben.
+      <br/>
+      Sie werden eine Bestätigungsmail erhalten, welche Ihnen Zugang zur App gewährt.
+    </p>
+    <ion-item style="margin: 5vh 1vw 5vh 1vw;" lines="full">
+      <ion-input type="email" color="dark" placeholder="E-Mail-Adresse"></ion-input>
+    </ion-item>
+    <ion-button ion-button full (click)="doLogin()" class="loginfullwidth">Login anfordern</ion-button>
+  </div>
 </ion-content>

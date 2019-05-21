@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuController} from '@ionic/angular';
+import {MenuController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
+import { LoginComponent } from 'src/app/components/login/login.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,8 @@ export class DashboardPage implements OnInit {
 		{title: 'Über diese APP', url: 'about', icon: undefined},
 	]
 
-  constructor(private menu: MenuController, private router: Router) { }
+  constructor(private menu: MenuController, private router: Router,
+    private modalController: ModalController) { }
 
 
   ngOnInit() {
@@ -28,6 +30,16 @@ export class DashboardPage implements OnInit {
     this.menu.toggle('dashboardMenu');
   }
 
+  async showModal(): Promise<any> {
+    try{
+      const loginModal = await this.modalController.create({
+        component: LoginComponent
+      });
+      console.log(loginModal);
+      return await loginModal.present();
+    }catch(ex) {
+      console.log(ex);
+    }
   navigateTo(url: string) {
     console.log('Navigate to ', url);
   }
