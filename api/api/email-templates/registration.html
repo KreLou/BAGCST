@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        p, a, h1, h2, h3, h4, h5, h6 {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        body {
+            margin-left: auto;
+            margin-right: auto;
+            width: 94vw;
+            max-width: 800px;
+        }
+
+        .header-container{
+            color: #fff;
+            background-color: #009ee3;
+            padding: 1vw;
+            margin: 0vw;
+            font-size: 2em;
+        }
+
+        .message{
+            background-color: #06629c;
+            padding: 1vw;
+            margin: 2vw 0vw 1vw 0vw;
+            font-size: large;
+            color: #fff;
+        }
+
+        .activationbutton {
+            display: inline-block;
+            padding: 2vw;
+            margin: 0vw;
+            vertical-align: middle;
+            text-align: center;
+            width: 94vw;
+            max-width: 800px;
+            background-color: #e5004b;
+            letter-spacing: 3px;
+            font-weight: bold;
+            border-radius: 4px;
+            border: none;
+            color: #fff;
+            -webkit-transition: right 0.4s;
+            transition: right 0.4s;
+            cursor: pointer;
+        }
+        
+        .activationbutton span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .activationbutton span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .activationbutton:hover span {
+            padding-right: 25px;
+        }
+
+        .activationbutton:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        .activationcode {
+            padding: 1vw;
+            margin: 1vw 0vw 1vw 0vw;
+            background-color: #989aa2;
+            letter-spacing: 2px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .disclaimertext {
+            font-size: x-small;
+            color: #989aa2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h4>Registrierung BA-Glauchau App</h4>
+    </div>
+    <div class="message">
+        <p>Herzlich Willkommen zur App, {{firstname}} {{lastname}}!</p>
+        <p>Deine E-Mail-Adresse wurde soeben zur Registrierung für die App der BA-Glauchau angegeben. Wenn du dich einloggen möchtest, klick bitte auf die folgende Schaltfläche um dein Gerät freizuschalten:</p>
+    </div>
+    <button class="activationbutton" href="http://{{serveraddress}}:{{serverport}}/api/auth/activate/{{activationcode}}"><span>REGISTRIERUNG BESTÄTIGEN</span></button>
+    <p class="activationcode">Dein Aktivierungscode: {{activationcode}}</p>
+    <p class="disclaimertext">
+        Wichtiger Hinweis: Diese E-Mail und etwaige Anlagen können Betriebs- oder Geschäftsgeheimnisse, dem Anwaltsgeheimnis  unterliegende oder sonstige vertrauliche Informationen enthalten. Sollten Sie diese E-Mail irrtümlich erhalten haben, ist Ihnen  der Status dieser E-Mails bekannt. Bitte benachrichtigen Sie uns in diesem Fall sofort durch Antwort-Mail und löschen Sie  diese E-Mail nebst etwaigen Anlagen von Ihrem System. Ebenso dürfen Sie diese E-Mail oder seine Anlagen nicht kopieren  oder an Dritte weitergeben. Vielen Dank.
+        <br/>Important Note: This e-mail and any attachment are confidential and may contain trade secrets and may well also be legally  privileged or otherwise protected from disclosure. If you have received it in error, you are on notice of its status. Please notify  us immediately by reply e-mail and then delete this e-mail and any attachment from your system. If you are not the intended recipient please understand that you must not copy this e-mail or any attachment or disclose the contents to any other person.  Thank you for your cooperation.
+    </p>
+</body>
+</html>

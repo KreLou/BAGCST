@@ -10,6 +10,7 @@ namespace api.Models
     public class PostGroupUserPushNotificationSetting
     {
         public int PostGroupID { get; set; }
+        public bool PostGroupActive { get; set; }
         public PushNotificationType Type { get; set; } = PushNotificationType.Always;
     }
 }
