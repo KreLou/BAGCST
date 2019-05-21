@@ -100,6 +100,7 @@ namespace api
             //Configure Static Dependencies
             services.AddSingleton<SendMailService>();
             services.AddSingleton<MailContentLoader>();
+            services.AddSingleton<TokenDecoderService>();
 
 
             //Configure Environment Dependencies

@@ -5,12 +5,13 @@ using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
 using BAGCST.api.RightsSystem.Database;
 using BAGCST.api.RightsSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.User.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize]
     public class UserGroupBindingController : ControllerBase
     {
         private IUserGroupBindingDB userGroupBindingDB;

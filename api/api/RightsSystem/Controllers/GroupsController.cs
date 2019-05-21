@@ -10,11 +10,13 @@ using api.Exception;
 using BAGCST.api.RightsSystem.Database;
 using BAGCST.api.RightsSystem.Models;
 using BAGCST.api.RightsSystem.Exception;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.RightsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GroupsController : ControllerBase
     {
         private IGroupsDB groupsDB;

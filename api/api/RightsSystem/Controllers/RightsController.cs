@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.RightsSystem.Database;
 using BAGCST.api.RightsSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.RightsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RightsController : ControllerBase
     {
         private IRightsDB rightsDB;

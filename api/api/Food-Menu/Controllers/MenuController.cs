@@ -9,11 +9,13 @@ using api.Models;
 using api.Exception;
 using BAGCST.api.FoodMenu.Database;
 using BAGCST.api.FoodMenu.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.FoodMenu.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MenuController : ControllerBase
     {
         private IMenuDB menuDB;

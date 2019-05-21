@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.User.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         
