@@ -3,20 +3,21 @@ import { Observable } from 'rxjs';
 import { Menu } from '../../models/Menu';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { GlobalHTTPService } from './global-http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuLoaderService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private globalHTTP: GlobalHTTPService) { }
 
   /**
    * 
    * @param placeid Search for Forcast for this palce
    */
   getMenuForecast(placeid: number): Observable<Menu[]> {
-    return this.http.get<Menu[]>(environment.apiURL + `/api/menu?placeids=${placeid}`);
+    return this.http.get<Menu[]>(environment.apiURL + `/api/menu?placeids=${placeid}`, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
   /**
@@ -25,7 +26,7 @@ export class MenuLoaderService {
    * @returns menu by id 
    */
   getMenuByID(id: number): Observable<Menu> {
-    return this.http.get<Menu>(environment.apiURL + `/api/menu/${id}`);
+    return this.http.get<Menu>(environment.apiURL + `/api/menu/${id}`, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
   /**
@@ -34,7 +35,7 @@ export class MenuLoaderService {
    * @returns new menu item 
    */
   createNewMenuItem(menu: Menu): Observable<Menu> {
-    return this.http.post<Menu>(environment.apiURL + '/api/menu', menu);
+    return this.http.post<Menu>(environment.apiURL + '/api/menu', menu, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
 
@@ -44,7 +45,7 @@ export class MenuLoaderService {
    * @returns menu item 
    */
   updateMenuItem(menu: Menu): Observable<Menu> {
-    return this.http.put<Menu>(environment.apiURL + '/api/menu/' + menu.menuID, menu);
+    return this.http.put<Menu>(environment.apiURL + '/api/menu/' + menu.menuID, menu, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
   /**
@@ -52,6 +53,6 @@ export class MenuLoaderService {
    * @param menuID MenuID which should deleted
    */
   deleteMenu(menuID: number): Observable<any> {
-    return this.http.delete(environment.apiURL + `/api/menu/${menuID}`);
+    return this.http.delete(environment.apiURL + `/api/menu/${menuID}`, this.globalHTTP.AuthorizedHTTPOptions);
   }
 }

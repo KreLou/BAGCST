@@ -4,16 +4,17 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
 import { Observable, throwError } from 'rxjs';
 import { Place } from '../../models/Place';
+import { GlobalHTTPService } from './global-http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceLoaderService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private globalHTTP: GlobalHTTPService) { }
 
   public getPlaces(): Observable<Place[]> {
-    return this.httpClient.get<Place[]>(environment.apiURL + '/api/place')
+    return this.httpClient.get<Place[]>(environment.apiURL + '/api/place', this.globalHTTP.AuthorizedHTTPOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -21,7 +22,7 @@ export class PlaceLoaderService {
   }
 
   public getPlaceByID(id: number): Observable<Place> {
-    return this.httpClient.get<Place>(environment.apiURL + '/api/place/' + id);
+    return this.httpClient.get<Place>(environment.apiURL + '/api/place/' + id, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
   handleError(error) {
