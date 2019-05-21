@@ -27,6 +27,9 @@ namespace BAGCST.api.User.Database
       
         UserItem getUserByName(string username);
 
+
+        UserItem getUserByEmail(string email);
+
         /// <summary>
         /// Return all User-Items
         /// </summary>

@@ -12,6 +12,6 @@ namespace api.Models
         public string DeviceName { get; set; }
 
         [Required]
-        public string Username { get; set; }
+        public string Email { get; set; }
     }
 }

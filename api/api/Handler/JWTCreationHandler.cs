@@ -41,6 +41,7 @@ namespace api.Handler
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(TokenFields.UserID, this.User.UserID.ToString()),
                     new Claim(TokenFields.Username, this.User.Username),
                     new Claim(TokenFields.Firstname, this.User.Firstname),
                     new Claim(TokenFields.Lastname, this.User.Lastname),

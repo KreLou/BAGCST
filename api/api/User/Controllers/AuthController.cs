@@ -5,6 +5,7 @@ using api.Handler;
 using System.Threading;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace BAGCST.api.User.Controllers
 {
@@ -26,7 +27,7 @@ namespace BAGCST.api.User.Controllers
             _sessionDB = sessionDB;
             _sendMailService = mailService;
         }
-
+    
         [HttpPost("register")]
         public ActionResult register([FromBody] LoginDataItem loginData)
         {
@@ -35,11 +36,11 @@ namespace BAGCST.api.User.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserItem user = _userDB.getUserByName(loginData.Username);
+            UserItem user = _userDB.getUserByEmail(loginData.Email);
 
             if (user == null)
             {
-                return NotFound($"No UserItem found for Username: {loginData.Username}");
+                return NotFound($"No UserItem found for Email: {loginData.Email}");
             }
             UserDeviceItem device = _userDeviceDB.getDeviceByNameAndUser(user.UserID, loginData.DeviceName);
 

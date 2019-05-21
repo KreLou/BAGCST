@@ -34,6 +34,7 @@ namespace api.Services
 
                 IEnumerable<Claim> claims = User.Claims;
 
+                _tokenInfo.UserID = Convert.ToInt64(extractFieldFromClaims(TokenFields.UserID, claims));
                 _tokenInfo.Username = extractFieldFromClaims(TokenFields.Username, claims);
                 _tokenInfo.Firstname = extractFieldFromClaims(TokenFields.Firstname, claims);
                 _tokenInfo.Lastname = extractFieldFromClaims(TokenFields.Lastname, claims);
