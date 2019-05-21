@@ -1,11 +1,13 @@
 ﻿using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BAGCST.api.User.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserTypeController : ControllerBase
     {
         private readonly IUserTypeDB userTypeDB;

@@ -4,11 +4,13 @@ using BAGCST.api.User.Database;
 using BAGCST.api.Contacts.Database;
 using BAGCST.api.Contacts.Models;
 using api.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.Contacts.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContactsController : ControllerBase
     {
         private readonly IStudyCourseDB studyCourseDB;

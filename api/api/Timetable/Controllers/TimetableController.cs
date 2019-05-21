@@ -3,12 +3,14 @@ using System.Text;
 using api.Models;
 using api.offlineDB;
 using BAGCST.api.Timetable.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BAGCST.api.Timetable.Database
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TimetableController : ControllerBase
     {
         private ITimetableDB timetableDB;

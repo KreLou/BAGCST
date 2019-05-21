@@ -3,11 +3,13 @@ using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.News.Database;
 using BAGCST.api.News.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BAGCST.api.News.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostGroupController : ControllerBase
     {
         private IPostGroupDB postGroupDB;
