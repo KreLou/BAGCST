@@ -40,6 +40,8 @@ export class DashboardPage implements OnInit {
     }catch(ex) {
       console.log(ex);
     }
+  navigateTo(url: string) {
+    console.log('Navigate to ', url);
   }
 
 
