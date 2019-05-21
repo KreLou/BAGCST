@@ -98,7 +98,8 @@ namespace api
         private void registerDependencies(IServiceCollection services)
         {
             //Configure Static Dependencies
-
+            services.AddSingleton<SendMailService>();
+            services.AddSingleton<MailContentLoader>();
 
 
             //Configure Environment Dependencies
@@ -120,6 +121,8 @@ namespace api
                 services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
                 services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
                 services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
+                services.AddSingleton<IUserDeviceDB, offlineUserDeviceDB>();
+                services.AddSingleton<ISessionDB, offlineSessionDB>();
             }else
             {
                 //Production
@@ -138,6 +141,8 @@ namespace api
                 services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
                 services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
                 services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
+                services.AddSingleton<IUserDeviceDB, offlineUserDeviceDB>();
+                services.AddSingleton<ISessionDB, offlineSessionDB>();
             }
         }
 

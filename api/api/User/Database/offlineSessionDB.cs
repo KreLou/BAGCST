@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace BAGCST.api.User.Databasae
+namespace BAGCST.api.User.Database
 {
     public class offlineSessionDB : ISessionDB
     {
