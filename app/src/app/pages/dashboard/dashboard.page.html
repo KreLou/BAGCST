@@ -1,40 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-	<ion-title class="headertitle">
-		Dashboard
-	</ion-title>
-	<ion-title>
-		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
-	</ion-title>
-	<ion-buttons end>
-		<ion-button class="headerbutton" (click)="toggleMenu()">
-			<ion-icon name="more"></ion-icon>
-		</ion-button>
-	</ion-buttons>
+  <ion-toolbar class="headersizing">
+    <ion-title>
+      <img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+    </ion-title>
+    <ion-title class="headertitle">
+      Dashboard
+    </ion-title>
+    <ion-buttons end>
+      <ion-button class="headerbutton" (click)="toggleMenu()">
+        <ion-icon name="more"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-menu side="end" menuId="dashboardMenu" contentId="content" type="overlay">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title class="menutitle">Menü</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-menu-toggle *ngFor="let page of sideMenuPages">
-        <ion-item [routerLink]="['/' + page.url]">
-          <ion-icon *ngIf="page.icon" slot="start" [name]="page.icon"></ion-icon>
-          <ion-label>
-            {{page.title}}
-          </ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-
-<ion-content>
+<ion-content padding="true">
 
 	<ion-button (click)="showModal()">Login</ion-button>
 
