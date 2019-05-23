@@ -12,11 +12,10 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   sideMenuPages = [
-		{title: 'Administration', url: 'administrator', icon: undefined},
-		{title: 'Einstellungen', url: 'settings', icon: undefined},
-		{title: 'Impressum', url: 'imprint', icon: undefined},
-		{title: 'Datenschutz', url: 'privacy', icon: undefined},
-		{title: 'Über diese APP', url: 'about', icon: undefined},
+		{title: 'Einstellungen', url: 'settings', icon: 'settings'},
+		{title: 'Impressum', url: 'imprint', icon: 'list'},
+		{title: 'Datenschutz', url: 'privacy', icon: 'finger-print'},
+		{title: 'Über diese APP', url: 'about', icon: 'pricetag'},
 	]
   constructor(
     private platform: Platform,

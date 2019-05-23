@@ -19,6 +19,9 @@ export class UserAuthLoaderService {
     return this.http.post(environment.apiURL + '/api/auth/register', postObjects, this.globalHttp.AnonymousHTTPOptions);
   }
 
+  sendActivation(code: string): Observable<any> {
+    return this.http.post(environment.apiURL + '/api/auth/activate/' + code, null);
+  }
 
   
 }
