@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { TabsPage } from './tabs.page';
+import { ActivatedRouteGuard } from '../guards/activated-route.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
+    canActivateChild: [ActivatedRouteGuard],
     children: [  
       {path: 'dashboard', loadChildren: './../pages/dashboard/dashboard.module#DashboardPageModule'},
       { path: 'contacts', loadChildren: './../pages/contacts/contacts.module#ContactsPageModule'},
