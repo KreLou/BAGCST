@@ -4,9 +4,9 @@ import { ParamMap, ActivatedRoute, Router } from '@angular/router';
 import { MenuController, IonDatetime, IonInput, PickerController } from '@ionic/angular';
 import { Meal } from 'src/app/models/Meal';
 import { Place } from 'src/app/models/Place';
-import { MenuLoaderService } from 'src/app/services/menu-loader.service';
+import { MenuLoaderService } from 'src/app/services/httpServices/menu-loader.service';
 import { PopUpMessageService } from 'src/app/services/pop-up-message.service';
-import { PlaceLoaderService } from 'src/app/services/place-loader.service';
+import { PlaceLoaderService } from 'src/app/services/httpServices/place-loader.service';
 
 @Component({
   selector: 'app-admin-create-or-edit-food-menu',

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="headertitleback">Aktivieren</ion-title>
+	<ion-title class="headerlogoback">
+		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogosizing"/>
+	</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <p>Status: {{status}}</p>
+
+  <div *ngIf="status === 'Waiting'">
+    <p>Waiting</p>
+  </div>
+
+  <div *ngIf="status === 'Accpted'">
+    <p>Accpted</p>
+  </div>
+
+  <div *ngIf="status === 'Rejected'">
+    <p>Rejected</p>
+  </div>
+
+  <div *ngIf="status === 'NotFound'">
+    <p>NotFound</p>
+  </div>
+
+
+
+</ion-content>
