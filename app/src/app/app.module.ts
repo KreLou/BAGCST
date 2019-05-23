@@ -14,7 +14,6 @@ import { TabsService } from './services/tabs.service';
 import { registerLocaleData } from '@angular/common';
 
 import localeDe from '@angular/common/locales/de';
-import {LOCALE_ID} from '@angular/core';
 
 registerLocaleData(localeDe, 'de');
 

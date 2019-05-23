@@ -20,30 +20,34 @@
       </ion-label>
     </ion-item>
     <div class=spacer></div>
-    <h3 id="ShowKW" class="h3size_center">{{foodMenu[0].meal.place.placeName}} KW {{firstDayofWeek | date: 'w'}}, {{firstDayofWeek | date: 'dd.MM.'}} -
+    <h3 id="ShowKW" class="h3size_center" *ngIf="foodMenu && foodMenu.length > 0">{{foodMenu[0].meal.place.placeName}} KW {{firstDayofWeek | date: 'w'}}, {{firstDayofWeek | date: 'dd.MM.'}} -
     {{lastDayofWeek | date: 'dd.MM.'}}</h3>
     <div class="spacer2" id="ContSpeisepläne"></div>
     <hr class="divider">
     <ion-text color="Primary">
-    <ion-grid>
-      <ion-row *ngFor="let day of foodMenu">
-        <ion-col size="2">
-          <div id="Di">
-            <p>{{day.date | date: 'EEEEEE:'}}</p>
-          </div>
-        </ion-col>
-        <ion-col size="7">
-          <div id="DiMeal">
-            <p>{{day.meal.mealName}} {{day.meal.description}}</p>
-          </div>
-        </ion-col>
-        <ion-col size="3">
-          <div id="DiPreis">
-            <p class="align-end">{{day.price | currency: 'EUR' : 'symbol' : '1.2-2' : 'de'}}</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ng-container *ngIf="!foodMenu || foodMenu.length == 0">
+        <p>Bitte einen Moment Geduld, Daten werden geladen.</p>
+        <!--TODO -->
+      </ng-container>
+      <ion-grid *ngIf="foodMenu">
+        <ion-row *ngFor="let day of foodMenu">
+          <ion-col size="2">
+            <div id="Di">
+              <p>{{day.date | date: 'EEEEEE:'}}</p>
+            </div>
+          </ion-col>
+          <ion-col size="7">
+            <div id="DiMeal">
+              <p>{{day.meal.mealName}} {{day.meal.description}}</p>
+            </div>
+          </ion-col>
+          <ion-col size="3">
+            <div id="DiPreis">
+              <p class="align-end">{{day.price | currency: 'EUR' : 'symbol' : '1.2-2' : 'de'}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-text>
     <div class="spacer"></div>
     <div id="Auswahl_buttons" class="centered_buttons">

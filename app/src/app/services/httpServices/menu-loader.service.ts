@@ -4,13 +4,16 @@ import { Menu } from '../../models/Menu';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { GlobalHTTPService } from './global-http.service';
+import { DateformatService } from '../dateformat.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuLoaderService {
 
-  constructor(private http: HttpClient, private globalHTTP: GlobalHTTPService) { }
+  constructor(private http: HttpClient, 
+    private globalHTTP: GlobalHTTPService,
+    private dateformat: DateformatService) { }
 
   /**
    * 
@@ -54,5 +57,10 @@ export class MenuLoaderService {
    */
   deleteMenu(menuID: number): Observable<any> {
     return this.http.delete(environment.apiURL + `/api/menu/${menuID}`, this.globalHTTP.AuthorizedHTTPOptions);
+  }
+
+  getMenu(start: Date, end: Date, placeID: number): Observable<Menu[]> {
+    return this.http.get<Menu[]>(environment.apiURL + `/api/Menu?startDate=${this.dateformat.toDateString(start)}
+    &endDate=${this.dateformat.toDateString(end)}&placeIDs=${placeID}`);
   }
 }
