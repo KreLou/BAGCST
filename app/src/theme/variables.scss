@@ -67,6 +67,7 @@
   --ion-color-light-tint: #e7e7e7;
 }
 
+/** Backgrounddiv with Corporate Colors **/
 .bgdiv {
   background-color: var(--ion-color-primary);
   color: white;
@@ -74,6 +75,7 @@
   padding: 1px 10px 10px 10px;
 }
 
+/** Link colors **/
 a {
   color: var(--ion-color-dark);
 }
@@ -81,33 +83,35 @@ a {
 a:link {
   color: var(--ion-color-dark);
 }
+
 /** Header Title Layout **/
+.headersizing {
+  height: 75px;
+}
+
 .headerbutton {
   position: absolute;
   right: 2vw;
-  top: -42px;
+  top: -65px;
 }
 
 .headerlogo {
-  height: 40px;
-}
-
-.headerlogosizing {
+  position: relative;
+  top: 2px;
   height: 40px;
 }
 
 .headertitle {
   position: relative;
-  top: 25px;
-  left: 25px;
-}
-
-.menutitle {
-  position: relative;
-  top: 5px;
+  top: -41px;
+  left: 24px;
 }
 
 /** iOS Header Title Layout **/
+.ios .headersizing {
+  height: 50px;
+}
+
 .ios .headerlogo {
   display: none;
 }
@@ -118,41 +122,56 @@ a:link {
 
 .ios .headertitle {
   width: 300px;
-  top: 5px;
+  top: -10px;
   left: 0px;
 }
 
 .ios .headertitleback {
   width: 300px;
-  top: 5px;
+  top: -10px;
   left: -63px;
 }
 
 .ios .headerbutton {
   right: 2vw;
-  top: -20px;
+  top: -37px;
 }
 
-/** Android Menu Title Layout **/
-.md .menutitle {
-  top: 10px;
-  height: 70px;
+.ios .menuheader {
+  height: 50px;
+}
+
+.ios .menutitle {
+  top: 6px;
+  left: 0px;
 }
 
 /** Header Title Layout with Back-Button **/
 .backbutton {
   position: relative;
-  top: 7px;
+  top: -10px;
   left: 0px;
 }
 
 .headertitleback {
   position: relative;
-  top: 25px;
+  top: 5px;
   left: 3px;
 }
 
 .headerlogoback {
   position: relative;
+  top: -22px;
   left: -21px;
+}
+
+/** Menüheaderlayout **/
+.menuheader {
+  height: 75px;
+}
+
+.menutitle {
+  position: relative;
+  top: 17px;
+  left: 25px;
 }

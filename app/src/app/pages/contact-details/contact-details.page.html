@@ -1,13 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-back-button defaultHref="/tabs/contacts"></ion-back-button>
-        </ion-buttons>
-    <ion-title>Kontaktdetails</ion-title>
+  <ion-toolbar class="headersizing">
+    <ion-buttons slot="start">
+      <ion-back-button class="backbutton" defaultHref="/tabs/contacts"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="headertitleback">Kontaktdetails</ion-title>
+	<ion-title class="headerlogoback">
+		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+	</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding="true">
   <div class="bgdiv">
   <ng-container *ngIf="contactItem">
     <ion-grid>
