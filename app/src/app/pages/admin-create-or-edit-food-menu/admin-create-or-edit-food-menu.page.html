@@ -10,7 +10,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding="true">
   <div *ngIf="menu">
 
     <ion-item lines="full">
@@ -20,8 +20,7 @@
         <ion-icon name="calendar"></ion-icon>
       </ion-button>
     </ion-item>
-    
-    
+
     <ion-item lines="full">
       <ion-label position="floating">Name:</ion-label>
       <ion-input #nameInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.mealName" autocapitalize="on"></ion-input>
@@ -30,22 +29,15 @@
       </ion-button>
     </ion-item>
 
-      
-    
     <ion-item lines="full">
-        <ion-label position="floating">Beschreibung:</ion-label>
-        <ion-input clearInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
-      </ion-item>
+      <ion-label position="floating">Beschreibung:</ion-label>
+      <ion-input clearInput required="true" name="name" inputmode="text" maxlength="40" [(ngModel)]="menu.meal.description" autocapitalize="on"></ion-input>
+    </ion-item>
 
-    
-    
     <ion-item lines="full">
-        <ion-label position="floating">Preis:</ion-label>
-        <ion-input required="true" name="name" inputmode="number" max="10" min="0" [(ngModel)]="menu.price" autocapitalize="on"></ion-input>
-      </ion-item>
-
-
-
+      <ion-label position="floating">Preis:</ion-label>
+      <ion-input required="true" name="name" inputmode="number" max="10" min="0" [(ngModel)]="menu.price" autocapitalize="on"></ion-input>
+    </ion-item>
 
     <ion-button (click)="save()">
       Speichern

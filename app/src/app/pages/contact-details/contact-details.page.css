@@ -1,12 +1,3 @@
-.bgdiv {
-    background-color: var(--ion-color-primary);
-    color: white;
-}
-
-a {
-    color: var(--ion-color-dark);
-}
-
 .contactdetaillabel {
     position: relative;
     top: -1.5px;
