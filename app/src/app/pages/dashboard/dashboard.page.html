@@ -1,36 +1,21 @@
-
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="headersizing">
     <ion-title>
-      BA-Glauchau
+      <img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
     </ion-title>
-
+    <ion-title class="headertitle">
+      Dashboard
+    </ion-title>
     <ion-buttons end>
-      <button ion-button>
+      <ion-button class="headerbutton" (click)="toggleMenu()">
         <ion-icon name="more"></ion-icon>
-      </button>
+      </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
+<ion-content padding="true">
 
-<!--<ion-menu menuId="dashboard-menu" contentId="content" type="reveal" side="start" swipe-gesture="false">
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Start Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item>Item 1</ion-item>
-      <ion-item>Item 2</ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>-->
-
-
-<ion-content>
-
+	<ion-button (click)="showModal()">Login</ion-button>
 
 </ion-content>

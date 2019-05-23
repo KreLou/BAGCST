@@ -1,8 +1,18 @@
  <ion-header id="speisepläne_out">
-    <ion-toolbar>
-      <ion-title class="center">Speisepläne BA Glauchau</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-toolbar class="headersizing">
+    <ion-title>
+      <img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+    </ion-title>
+    <ion-title class="headertitle">
+      Essensplan
+    </ion-title>
+    <ion-buttons end>
+        <ion-button class="headerbutton" (click)="goToAdminPage()">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
   <ion-content padding="true">
     <ion-item lines="none" class="center">
       <ion-label color="medium"><ion-icon name="pizza"></ion-icon>
@@ -41,4 +51,3 @@
       <ion-button id="Button_show_Lennarts" (click)="placeSwap(2)">Lennards<ion-icon name="arrow-dropright"></ion-icon></ion-button>
     </div>
   </ion-content>
-

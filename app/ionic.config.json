@@ -1,5 +1,7 @@
 {
   "name": "BA-Glauchau",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

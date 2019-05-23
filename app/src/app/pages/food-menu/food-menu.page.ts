@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuloaderService} from '../../services/httpServices/menuloader.service';
 import {Menu} from '../../models/Menu';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-food-menu',
@@ -16,7 +17,7 @@ export class FoodMenuPage implements OnInit {
     firstDayofWeek: Date;
     lastDayofWeek: Date;
     constructor(
-        private menuloader: MenuloaderService
+        private menuloader: MenuloaderService, private router: Router
     ) {
         this.currentDate = new Date();
         this.getFormattedDate();
@@ -88,4 +89,8 @@ export class FoodMenuPage implements OnInit {
     ngOnInit() {
         this.showFoodplan(1);
     }
+  goToAdminPage() {
+    this.router.navigate(['tabs', 'admin-food-planer']);
+  }
+
 }
