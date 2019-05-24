@@ -35,8 +35,14 @@
 </ion-menu>
 
 <ion-content padding>
-  <app-meal-today></app-meal-today>
-  <app-timetable-today></app-timetable-today>
+  <div class="dashboardBox">
+    <app-meal-today></app-meal-today>
+  </div>
+
+  <div class="dashboardBox">
+    <app-timetable-today></app-timetable-today>
+  </div>
+
     <ng-container *ngIf="displayTimetable && false">
         <ion-grid style="margin-top: -30px">
             <ng-container *ngFor="let day of displayTimetable">

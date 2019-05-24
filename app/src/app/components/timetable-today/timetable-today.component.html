@@ -1,3 +1,23 @@
-<p>
-  timetable-today works!
-</p>
+<h1>Heutige Vorlesungen</h1>
+<ng-container *ngIf="lectureItems">
+  <ion-grid>
+      <div class="lectures" *ngFor="let lecture of lectureItems">
+          <ion-row>
+              <ion-col class="lecturecenter">
+                  {{lecture.start | date: 'HH:mm'}} - {{lecture.end | date: 'HH:mm'}}
+              </ion-col>
+              <ion-col align-items-end>
+                  {{lecture.title}}
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col class="lecturecenter">
+                  {{lecture.lecturer}}
+              </ion-col>
+              <ion-col>
+                  {{lecture.place}}
+              </ion-col>
+          </ion-row>
+      </div>
+  </ion-grid>
+</ng-container>
