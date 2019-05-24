@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimetableItem } from "../../models/TimetableItem";
 import {TimetableLoaderService} from 'src/app/services/httpServices/timetable-loader.service';
 import {expand} from 'rxjs/operators';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-calendar',
@@ -23,7 +23,7 @@ export class CalendarPage implements OnInit {
     CONST_HowManyItemsAddedAtEndOfView = 3;
     CONST_HowManyMilliSecondsPerDay = 1000 * 60 * 60 * 24;
 
-    constructor(private timetableloader: TimetableLoaderService){
+    constructor(private timetableloader: TimetableLoaderService, private alertController: AlertController){
         this.today = new Date();
         this.today.setHours(0,0,0,0);
         this.enddate = new Date(this.today.getTime() + (this.CONST_HowManyMilliSecondsPerDay * 8));
@@ -73,6 +73,13 @@ export class CalendarPage implements OnInit {
         }
         event.target.complete();
     }, 500);
+  }
+
+  onDownloadClick() {
+      console.log('Download click');
+      this.timetableloader.downloadTimetableFile().subscribe(data => {
+          console.log('data');
+      });
   }
 }
 

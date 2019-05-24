@@ -91,10 +91,18 @@ export class ActivatedRouteGuard implements CanActivate, CanActivateChild {
    */
   evalutateRequestedPath(path: string): boolean {
     if (this.userRoutes.filter(x => path.toLowerCase().indexOf(x.toLowerCase().split('*')[0]) >= 0).length > 0) {
-      console.log('Path ', path , 'is allowed');
       return true;
     }
-    console.log('Path ', path , 'is rejected');
     return false;
+  }
+
+  /**
+   * Users is allowed to navigate to requested path
+   * @author KreLou
+   * @param path 
+   * @returns true if is allowed to navigate to 
+   */
+  public userIsAllowedToNavigateTo(path: string): boolean {
+    return this.evalutateRequestedPath(path);
   }
 }

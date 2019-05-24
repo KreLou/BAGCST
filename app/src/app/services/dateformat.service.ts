@@ -12,7 +12,6 @@ export class DateformatService {
     const day = datum.getDate().toString();
 
     const formattedDate = year + '-' +  month + '-' + day;
-    console.log(formattedDate);
     return formattedDate;
   }
 }

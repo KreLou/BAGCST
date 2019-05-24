@@ -6,7 +6,7 @@
     <ion-title class="headertitle">
       Essensplan
     </ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="activationGuard.userIsAllowedToNavigateTo('/tabs/admin-food-planer')">
         <ion-button class="headerbutton" (click)="goToAdminPage()">
           <ion-icon name="create"></ion-icon>
         </ion-button>

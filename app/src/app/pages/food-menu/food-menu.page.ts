@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Menu} from '../../models/Menu';
 import { Router } from '@angular/router';
 import { MenuLoaderService } from 'src/app/services/httpServices/menu-loader.service';
+import { ActivatedRouteGuard } from 'src/app/guards/activated-route.guard';
 
 @Component({
     selector: 'app-food-menu',
@@ -17,7 +18,8 @@ export class FoodMenuPage implements OnInit {
     firstDayofWeek: Date;
     lastDayofWeek: Date;
     constructor(
-        private menuloader: MenuLoaderService, private router: Router
+        private menuloader: MenuLoaderService, private router: Router,
+        public activationGuard: ActivatedRouteGuard
     ) {
         this.currentDate = new Date();
         this.getFormattedDate();

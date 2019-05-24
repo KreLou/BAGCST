@@ -6,8 +6,8 @@
 		<ion-title class="headertitle">
 			Stundenplan
 		</ion-title>
-      <ion-buttons slot="end">
-          <ion-button icon-only ng-click="download()">
+      <ion-buttons slot="end" *ngIf="false">
+          <ion-button icon-only (click)="onDownloadClick()">
               <ion-icon name="download"></ion-icon>
           </ion-button>
       </ion-buttons>
