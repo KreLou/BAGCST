@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PlaceLoaderService } from 'src/app/services/place-loader.service';
+import { PlaceLoaderService } from 'src/app/services/httpServices/place-loader.service';
 import { Place } from 'src/app/models/Place';
 import { Menu } from 'src/app/models/Menu';
-import { MenuLoaderService } from 'src/app/services/menu-loader.service';
+import { MenuLoaderService } from 'src/app/services/httpServices/menu-loader.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 

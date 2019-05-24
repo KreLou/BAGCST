@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuController} from '@ionic/angular';
+import {MenuController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
-import { TimetableItem } from "../../models/TimetableItem";
-import {TimetableLoaderService} from 'src/app/services/httpServices/timetable-loader.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,14 +19,15 @@ export class DashboardPage implements OnInit {
 	]
   displayTimetable: any;
 
-  constructor(private menu: MenuController) { }
+
+  constructor(private menu: MenuController, private router: Router,
+    private modalController: ModalController) { }
 
    ngOnInit() {}
 
   toggleMenu(): void {
     this.menu.toggle('dashboardMenu');
   }
-
   navigateTo(url: string) {
     console.log('Navigate to ', url);
   }

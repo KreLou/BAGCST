@@ -1,14 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-	<ion-title class="headertitle">
-		Ansprechpartner
-	</ion-title>
-	<ion-title>
-		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
-	</ion-title>
-  </ion-toolbar>
+	<ion-toolbar class="headersizing">
+		<ion-title>
+			<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+		</ion-title>
+		<ion-title class="headertitle">
+			Ansprechpartner
+		</ion-title>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+	<ion-list>
+		<ion-item-group *ngFor="let letterGroup of groupedList"> 
+			<ion-item-divider class="divider">
+				<ion-label>{{letterGroup.letter}}</ion-label>
+			</ion-item-divider>
+			<ion-item *ngFor="let contact of letterGroup.contacts" (click)="goToDetails(contact.contactID)" detail> 
+				<ion-label>{{contact.title}} {{contact.firstName}} {{contact.lastName}}
+					<p>{{contact.responsibility}}</p>
+				</ion-label>
+			</ion-item>
+		</ion-item-group>
+	</ion-list>
 </ion-content>

@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPage } from './dashboard.page';
 import { MyComponentsModule } from 'src/app/components/my-components.module';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -23,6 +24,6 @@ const routes: Routes = [
     MyComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage],
 })
 export class DashboardPageModule {}

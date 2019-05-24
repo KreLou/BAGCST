@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -9,16 +9,19 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
+import { TabsService } from './services/tabs.service';
 import { registerLocaleData } from '@angular/common';
 
 import localeDe from '@angular/common/locales/de';
-import {LOCALE_ID} from '@angular/core';
 
 registerLocaleData(localeDe, 'de');
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  entryComponents: [
+    LoginComponent
+  ],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -29,6 +32,7 @@ registerLocaleData(localeDe, 'de');
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    TabsService,
     {provide: LOCALE_ID, useValue: "de-DE"}
   ],
   bootstrap: [AppComponent]

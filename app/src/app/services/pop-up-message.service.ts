@@ -30,4 +30,15 @@ export class PopUpMessageService {
     });
     toast.present();
   }
+
+  async showPermissionDeniedForNavigateToRoute(message: string) {
+   this.toast.create({
+      message:message,
+      position: 'bottom',
+      color: 'danger',
+      duration: 2000,
+    }).then((obj) => {
+      obj.present();
+    })
+  }
 }
