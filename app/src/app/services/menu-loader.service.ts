@@ -54,4 +54,5 @@ export class MenuLoaderService {
   deleteMenu(menuID: number): Observable<any> {
     return this.http.delete(environment.apiURL + `/api/menu/${menuID}`);
   }
+
 }
