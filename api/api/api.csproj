@@ -5,12 +5,43 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Contacts\Exceptions\" />
+    <Folder Include="Contacts\Services\" />
+    <Folder Include="Food-Menu\Exceptions\" />
+    <Folder Include="Food-Menu\Services\" />
+    <Folder Include="News\Exceptions\" />
+    <Folder Include="News\Services\" />
+    <Folder Include="StudySystem\Exceptions\" />
+    <Folder Include="StudySystem\Services\" />
+    <Folder Include="User\Exceptions\" />
+    <Folder Include="User\Services\" />
+    <Folder Include="Timetable\Exceptions\" />
+    <Folder Include="Timetable\Services\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BouncyCastle" Version="1.8.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>
