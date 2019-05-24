@@ -37,15 +37,6 @@ export class PopUpMessageService {
       position: 'bottom',
       color: 'danger',
       duration: 2000,
-      buttons: [
-        {
-          side: 'end',
-          icon: 'close',
-          handler: () => {
-            console.log('Button clicked');
-          }
-        }
-      ]
     }).then((obj) => {
       obj.present();
     })
