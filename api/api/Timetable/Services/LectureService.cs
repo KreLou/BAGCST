@@ -1,4 +1,5 @@
 ﻿using System;
+using api.Exception;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
 using BAGCST.api.Timetable.Database;
@@ -21,33 +22,36 @@ namespace BAGCST.api.Timetable.Services
 
         public LectureItem[] getLectures(long userID)
         {
-            LectureItem[] lectures = null;
+            LectureItem[] lectures = new LectureItem[0];
             UserItem userItem = userDB.getUserItem(userID);
 
-            if (userItem.UserType.Name == "Student")
+            if (userItem != null)
             {
-                string studyGroup = userItem.StudyGroup.ShortName;
-                SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studyGroup);
-
-                if (currentSemester == null)
+                if (userItem != null && userItem.UserType.Name == "Student")
                 {
-                    //Create pseudo-semester
-                    currentSemester = new SemesterItem
+                    string studyGroup = userItem.StudyGroup.ShortName;
+                    SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studyGroup);
+
+                    if (currentSemester == null)
                     {
-                        Start = getFirstOfMonth(),
-                        End = getFirstOfMonth().AddMonths(3),
-                        StudyGroup = studyGroup
-                    };
+                        //Create pseudo-semester
+                        currentSemester = new SemesterItem
+                        {
+                            Start = getFirstOfMonth(),
+                            End = getFirstOfMonth().AddMonths(3),
+                            StudyGroup = studyGroup
+                        };
+                    }
+                    lectures = timetableDB.getSemesterLectures(studyGroup, currentSemester);
                 }
-                lectures = timetableDB.getSemesterLectures(studyGroup, currentSemester);
-            }
-            else if (userItem.UserType.Name == "Dozent")
-            {
-                //ToDo: get dozID
-                string dozID = "Prof. Penzel";
-                DateTime startDate = getFirstOfMonth();
-                DateTime endDate = startDate.AddMonths(3);
-                lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
+                else if (userItem.UserType.Name == "Dozent")
+                {
+                    //ToDo: get dozID
+                    string dozID = "Prof. Penzel";
+                    DateTime startDate = getFirstOfMonth();
+                    DateTime endDate = startDate.AddMonths(3);
+                    lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
+                }
             }
 
             return lectures;
