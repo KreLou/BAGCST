@@ -21,3 +21,8 @@
       </div>
   </ion-grid>
 </ng-container>
+<ng-container *ngIf="!lectureItems || lectureItems.length == 0">
+    <ion-item color="danger">
+        Keine Vorlesungen für heute gefunden.
+    </ion-item>
+</ng-container>
