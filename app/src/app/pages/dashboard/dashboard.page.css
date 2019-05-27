@@ -1,3 +1,5 @@
 .dashboardBox{
-    border: 1px solid lightgray;
+    background-color: var(--ion-color-primary);
+    color: white;
+    padding: 10px;
 }

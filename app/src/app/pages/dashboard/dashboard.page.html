@@ -34,44 +34,44 @@
   </ion-content>
 </ion-menu>
 
-<ion-content padding>
-  <div class="dashboardBox">
-    <app-meal-today></app-meal-today>
-  </div>
-
+<ion-content padding="true">
   <div class="dashboardBox">
     <app-timetable-today></app-timetable-today>
   </div>
-
-    <ng-container *ngIf="displayTimetable && false">
-        <ion-grid style="margin-top: -30px">
-            <ng-container *ngFor="let day of displayTimetable">
-                <ion-row class="weekday">
-                  <ion-label>
-                    Stundenplan {{day.date | date: 'E dd.MM.yyyy'}}
-                  </ion-label>
-                </ion-row>
-                <ng-container>
-                    <div class="lectures" *ngFor="let lecture of day.lectures">
-                        <ion-row>
-                            <ion-col class="lecturecenter">
-                                {{lecture.start | date: 'HH:mm'}} - {{lecture.end | date: 'HH:mm'}}
-                            </ion-col>
-                            <ion-col align-items-end>
-                                {{lecture.title}}
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col class="lecturecenter">
-                                {{lecture.lecturer}}
-                            </ion-col>
-                            <ion-col>
-                                {{lecture.place}}
-                            </ion-col>
-                        </ion-row>
-                    </div>
-                </ng-container>
+  <ng-container *ngIf="displayTimetable && false">
+    <ion-grid style="margin-top: -30px">
+        <ng-container *ngFor="let day of displayTimetable">
+            <ion-row class="weekday">
+              <ion-label>
+                Stundenplan {{day.date | date: 'E dd.MM.yyyy'}}
+              </ion-label>
+            </ion-row>
+            <ng-container>
+                <div class="lectures" *ngFor="let lecture of day.lectures">
+                    <ion-row>
+                        <ion-col class="lecturecenter">
+                            {{lecture.start | date: 'HH:mm'}} - {{lecture.end | date: 'HH:mm'}}
+                        </ion-col>
+                        <ion-col align-items-end>
+                            {{lecture.title}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col class="lecturecenter">
+                            {{lecture.lecturer}}
+                        </ion-col>
+                        <ion-col>
+                            {{lecture.place}}
+                        </ion-col>
+                    </ion-row>
+                </div>
             </ng-container>
-        </ion-grid>
-    </ng-container>
+        </ng-container>
+    </ion-grid>
+</ng-container>
+<br/>
+  <div class="dashboardBox">
+    <app-meal-today></app-meal-today>
+  </div>
+    
 </ion-content>
