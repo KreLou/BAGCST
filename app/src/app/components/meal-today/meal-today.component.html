@@ -3,7 +3,7 @@
     <ion-grid>
         <ng-container *ngFor="let entry of menuPlan">
           <ion-row>
-            <ion-label class="headerDate" color="primary">{{entry.meals[0].meal.place.placeName}}</ion-label>
+            <ion-label class="headerDate" color="dark">{{entry.meals[0].meal.place.placeName}}</ion-label>
           </ion-row>
   
           <ng-container *ngFor="let menu of entry.meals" lines="none">
