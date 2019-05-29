@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NewsItem } from 'src/app/models/NewsItem';
 import { NewsFeedLoaderService } from 'src/app/services/httpServices/news-feed-loader.service';
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-news-feed',
@@ -16,11 +17,13 @@ export class NewsFeedComponent implements OnInit {
   constructor(private newsFeedLoader: NewsFeedLoaderService) { }
 
   ngOnInit() {
-    this.loadFeed(0,10);
+    const maxValue = 2147483000;
+    this.loadFeed(maxValue,10);
   }
 
   loadFeed(start: number, amount: number) {
     console.log('Load id: ', start);
+    
     this.newsFeedLoader.load(start, amount).subscribe(data => {
 
       if (this.newsList){
@@ -35,10 +38,14 @@ export class NewsFeedComponent implements OnInit {
     });
   }
 
-  loadData(event: CustomEvent) {
-    console.log('Load infos', event);
+  loadData(event) {
     const minID = this.getMinUsedID();
-    this.loadFeed(minID -1 , 10);
+    //Stop loading, if minID is 1
+    if (minID > 1){
+      this.loadFeed(minID -1 , 10);
+    } else {
+      event.target.disabled = true;
+    }
     event.target.complete();
   }
 
