@@ -1,8 +1,8 @@
 {
-  "name": "app",
+  "name": "BA-Glauchau",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "WI16",
+  "homepage": "https://www.ba-glauchau.de/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -64,7 +64,7 @@
     "tslint": "~5.12.0",
     "typescript": "~3.1.6"
   },
-  "description": "An Ionic project",
+  "description": "BA-Glauchau-Projekt der WI16",
   "cordova": {
     "plugins": {
       "cordova-plugin-device": {},
