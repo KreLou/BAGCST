@@ -1,21 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-	<ion-title class="headertitle">
-		Dashboard
-	</ion-title>
-	<ion-title>
-		<img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
-	</ion-title>
-	<ion-buttons end>
-		<ion-button class="headerbutton" (click)="toggleMenu()">
-			<ion-icon name="more"></ion-icon>
-		</ion-button>
-	</ion-buttons>
+  <ion-toolbar class="headersizing">
+    <ion-title>
+      <img alt="logo" src="assets/studieren_im_markt_portal_logo_blank.svg" class="headerlogo"/>
+    </ion-title>
+    <ion-title class="headertitle">
+      Dashboard
+    </ion-title>
+    <ion-buttons end>
+      <ion-button class="headerbutton" (click)="toggleMenu()">
+        <ion-icon name="more"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-menu side="end" menuId="dashboardMenu" contentId="content" type="overlay">
-
   <ion-header>
     <ion-toolbar>
       <ion-title class="menutitle">Menü</ion-title>
@@ -36,8 +35,16 @@
 </ion-menu>
 
 
-<ion-content>
 
-	<!--News Feed-->
+<ion-content padding="true">
+  <div class="dashboardBox">
+    <app-timetable-today></app-timetable-today>
+  </div>
+  
+  <div class="dashboardBox">
+    <app-meal-today></app-meal-today>
+  </div>
+  
+  
 <app-news-feed></app-news-feed>
 </ion-content>

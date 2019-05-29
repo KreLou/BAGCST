@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuController} from '@ionic/angular';
+import {MenuController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 
 
@@ -17,16 +17,19 @@ export class DashboardPage implements OnInit {
 		{title: 'Datenschutz', url: 'privacy', icon: undefined},
 		{title: 'Über diese APP', url: 'about', icon: undefined},
 	]
+  displayTimetable: any;
 
-  constructor(private menu: MenuController, private router: Router) { }
 
+  constructor(private menu: MenuController, private router: Router,
+    private modalController: ModalController) { }
 
-  ngOnInit() {
-    this.menu.enable(true, 'dashboardMenu');
-  }
+   ngOnInit() {}
 
   toggleMenu(): void {
     this.menu.toggle('dashboardMenu');
+  }
+  navigateTo(url: string) {
+    console.log('Navigate to ', url);
   }
 
 
