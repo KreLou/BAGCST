@@ -59,8 +59,16 @@ export class MenuLoaderService {
     return this.http.delete(environment.apiURL + `/api/menu/${menuID}`, this.globalHTTP.AuthorizedHTTPOptions);
   }
 
-  getMenu(start: Date, end: Date, placeID: number): Observable<Menu[]> {
+  getMenuForSpecialPlace(start: Date, end: Date, placeID: number): Observable<Menu[]> {
     return this.http.get<Menu[]>(environment.apiURL + `/api/Menu?startDate=${this.dateformat.toDateString(start)}
     &endDate=${this.dateformat.toDateString(end)}&placeIDs=${placeID}`);
   }
+
+  
+
+  getMenuForAllPlaces(start: Date, end: Date): Observable<Menu[]> {
+    return this.http.get<Menu[]>(environment.apiURL + `/api/Menu?startDate=${this.dateformat.toDateString(start)}
+    &endDate=${this.dateformat.toDateString(end)}`);
+  }
+
 }
