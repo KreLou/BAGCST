@@ -1,4 +1,4 @@
 class PostGroupSubscribtionPushSetting {
     postGroupID: number;
-    type: PushType;
+    PostGroupActive: boolean
 }

@@ -15,4 +15,12 @@ export class MELoaderService {
   public getUserPermissionGroups(): Observable<any> {
     return this.http.get(environment.apiURL + '/api/me/rights', this.httpConfig.AuthorizedHTTPOptions);
   }
+
+  public getSubscribedPostGroups(): Observable<PostGroupSubscribtionPushSetting[]> {
+    return this.http.get<PostGroupSubscribtionPushSetting[]>(environment.apiURL + '/api/me/postGroups', this.httpConfig.AuthorizedHTTPOptions);
+  }
+
+  public setSubscribedPostGroups(settings: PostGroupSubscribtionPushSetting[]): Observable<any> {
+    return this.http.post(environment.apiURL + '/api/me/postGroups', settings, this.httpConfig.AuthorizedHTTPOptions);
+  }
 }

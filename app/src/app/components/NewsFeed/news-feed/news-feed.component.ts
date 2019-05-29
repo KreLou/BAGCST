@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NewsItem } from 'src/app/models/NewsItem';
 import { NewsFeedLoaderService } from 'src/app/services/httpServices/news-feed-loader.service';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, AlertController } from '@ionic/angular';
+import { PostGroup } from 'src/app/models/PostGroup';
+import { MELoaderService } from 'src/app/services/httpServices/meloader.service';
 
 @Component({
   selector: 'app-news-feed',
@@ -14,13 +16,30 @@ export class NewsFeedComponent implements OnInit {
 
   newsList: NewsItem[];
 
-  constructor(private newsFeedLoader: NewsFeedLoaderService) { }
+  postGroups: PostGroup[];
+
+  subscribedGroups: PostGroupSubscribtionPushSetting[];
+
+  constructor(private newsFeedLoader: NewsFeedLoaderService, private alert: AlertController, private meLoader: MELoaderService) { }
+
+  maxValue = 2147483000;
 
   ngOnInit() {
-    const maxValue = 2147483000;
-    this.loadFeed(maxValue,10);
+
+    this.loadSubscribedPostGroups();
+
+    this.newsFeedLoader.getAllPostGroups().subscribe(data => {
+      this.postGroups = data;
+    });
+    this.loadFeed(this.maxValue,10);
   }
 
+  /**
+   * Loads the next News-Items
+   * @author KreLou
+   * @param start 
+   * @param amount 
+   */
   loadFeed(start: number, amount: number) {
     console.log('Load id: ', start);
     
@@ -29,12 +48,21 @@ export class NewsFeedComponent implements OnInit {
       if (this.newsList){
         const newsItems: NewsItem[] = data;
         newsItems.forEach((item) => {
-          this.newsList.push(item);
+          if (this.newsList.filter(x => x.id === item.id).length === 0){ //Only if not allready implements
+            this.newsList.push(item);
+          }
         });
       }else {
         this.newsList = data;
       }
       console.log(this.newsList);
+    });
+  }
+
+  private loadSubscribedPostGroups() {
+    this.meLoader.getSubscribedPostGroups().subscribe(data => {
+      this.subscribedGroups = data;
+      console.log('Subscribed PostGroups: ', this.subscribedGroups);
     });
   }
 
@@ -48,8 +76,58 @@ export class NewsFeedComponent implements OnInit {
     }
     event.target.complete();
   }
+ 
+  openSelection(){
+    console.log('open selection')
+    var inputs = [];
+    this.postGroups.forEach(group => {
+      inputs.push({
+        name: group.name,
+        type: 'checkbox',
+        label: group.name,
+        value: group.postGroupID,
+        checked: this.subscribedGroups.filter(x => x.postGroupID === group.postGroupID).length === 1
+      });
+    });
+    this.alert.create({
+      header: 'Gruppen',
+      inputs: inputs,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }, {
+          text: 'Ok',
+          handler: (event) => {
+            this.handleUserPostGroupSelection(event);
+          }
+        }
+      ]
+    }).then((obj) => {
+      obj.present();
+    })
+  }
 
+  handleUserPostGroupSelection(input: number[]) {
+    console.log('SelectedIDs', input);
+    var sendSubscribedGroups: PostGroupSubscribtionPushSetting[] = [];
+    input.forEach(id => {
+      sendSubscribedGroups.push({
+        postGroupID: id,
+        PostGroupActive: true
+      })
+    });
 
+    this.meLoader.setSubscribedPostGroups(sendSubscribedGroups).subscribe(data => {
+      console.log('Settings gespeichert');
+      this.loadSubscribedPostGroups();
+
+      const end = this.getMinUsedID();
+      const length = Math.min(this.maxValue - end, this.maxValue);
+
+      this.loadFeed(this.maxValue, length);
+    })
+  } 
 
   /**
    * Gets min used id from newsList

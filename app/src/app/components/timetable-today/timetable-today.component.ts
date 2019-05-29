@@ -29,12 +29,8 @@ export class TimetableTodayComponent implements OnInit {
         x.start = new Date(x.start);
         x.end = new Date(x.end);
       })
-      console.log('Today', this.today);
-      console.log('End of date', this.endOfDay);
-      console.table(data);
       this.lectureItems = data.filter(x => x.start >= this.today).filter(x => x.end <= this.endOfDay);
 
-      console.log('Timetable', this.lectureItems);
     })
   }
 
