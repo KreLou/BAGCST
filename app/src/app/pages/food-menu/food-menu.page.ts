@@ -83,7 +83,7 @@ export class FoodMenuPage implements OnInit {
         this.showFoodplan(id);
     }
     showFoodplan (id: number) {
-        this.menuloader.getMenu(this.firstDayofWeek, this.lastDayofWeek, id).subscribe(data => {
+        this.menuloader.getMenuForSpecialPlace(this.firstDayofWeek, this.lastDayofWeek, id).subscribe(data => {
             console.log('Speiseplan: ', data);
             this.foodMenu = data;
         }, () => {}, () => {

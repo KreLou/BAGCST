@@ -1,0 +1,13 @@
+Config File for APP-Backend by WI16
+SQLConnectionString=<sql-connection-string>
+APIURl=http://localhost:5900
+SMTP_Host=smtp.ba-glauchau.de
+SMTP_Port=587
+SMTP_UseCurrentUser=false
+SMTP_User=smtp_user
+SMTP_Password=<password>
+SMTP_SendAs=noreply@app.ba-glauchau.de
+JWT_Issuer=api.ba-glauchau.de
+JWT_Audience=https://app.ba-glauchau.de
+JWT_SecurityKey=MySecretKeyByLouisKretzschmann
+Default_SessionUseTimeInMonth=10
