@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { DashboardPage } from './dashboard.page';
+import { NewsFeedModule } from 'src/app/components/NewsFeed/news-feed.module';
 import { MyComponentsModule } from 'src/app/components/my-components.module';
 
 
@@ -18,6 +19,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    NewsFeedModule,
     CommonModule,
     FormsModule,
     IonicModule,
