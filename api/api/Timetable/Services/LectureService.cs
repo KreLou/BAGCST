@@ -27,7 +27,7 @@ namespace BAGCST.api.Timetable.Services
 
             if (userItem != null)
             {
-                if (userItem != null && userItem.UserType.Name == "Student")
+                if (userItem.UserType.Name == "Student")
                 {
                     string studyGroup = userItem.StudyGroup.ShortName;
                     SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studyGroup);

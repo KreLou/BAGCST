@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using BAGCST.api.Timetable.Database;
 using BAGCST.api.Timetable.Models;
 using BAGCST.api.Timetable.Services;
@@ -21,16 +23,22 @@ namespace BAGCST.api.Timetable.Controllers
         }
 
         [HttpGet]
-        public IActionResult getLectureFeed([FromQuery] string studentNumber, [FromQuery] string hash)
+        public IActionResult getLectureFeed([FromQuery] string studentNumber = "", [FromQuery] string hash = "")
         {
-            //ToDo: implement exceptions for wrong/not existing studentNumber
-            long userID = userDB.getUserByName(studentNumber).UserID;
-            LectureItem[] lectures = lectureService.getLectures(userID);
+            LectureItem[] lectures = new LectureItem[0];
+            long userID = 0;
+
+            UserItem userItem = userDB.getUserByName(studentNumber);
+            if (userItem != null)
+            {
+                userID = userItem.UserID;
+                lectures = lectureService.getLectures(userID);
+            }
 
             return Ok(lectures);
         }
 
-        [HttpPost("{userID}")]
+        [HttpGet("{userID}")]
         public IActionResult getLectureView(long userID)
         {
             LectureItem[] lectures = lectureService.getLectures(userID);
@@ -38,7 +46,7 @@ namespace BAGCST.api.Timetable.Controllers
             return Ok(lectures);
         }
 
-        [HttpPost("export/{userID}")]
+        [HttpGet("export/{userID}")]
         public IActionResult getLectureExport(long userID)
         {
             string calDateFormat = "yyyyMMddTHHmm00Z";
@@ -82,7 +90,7 @@ namespace BAGCST.api.Timetable.Controllers
 
             var bytes = Encoding.UTF8.GetBytes(calendarString.ToString());
 
-            return File(bytes, "text/calendar", "bagcst_export.ics");
+            return File(bytes, "text/calendar", "bagcst_export.ics");  
         }
     }
 }
