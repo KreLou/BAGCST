@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'news-feed', loadChildren: './../pages/news-feed/news-feed.module#NewsFeedPageModule' },
       { path: 'admin-food-planer', loadChildren: './../pages/admin-food-planer/admin-food-planer.module#AdminFoodPlanerPageModule' },
       { path: 'admin-food-planer/:placeID/:menuID', loadChildren: './../pages/admin-create-or-edit-food-menu/admin-create-or-edit-food-menu.module#AdminCreateOrEditFoodMenuPageModule' },
-
+      { path: 'admin-new-post', loadChildren: './../pages/admin-new-post/admin-new-post.module#AdminNewPostPageModule' },
       { path: '**', redirectTo: 'dashboard'},
         ]
   },

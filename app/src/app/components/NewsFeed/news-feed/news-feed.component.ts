@@ -4,6 +4,8 @@ import { NewsFeedLoaderService } from 'src/app/services/httpServices/news-feed-l
 import { IonInfiniteScroll, AlertController } from '@ionic/angular';
 import { PostGroup } from 'src/app/models/PostGroup';
 import { MELoaderService } from 'src/app/services/httpServices/meloader.service';
+import { Router } from '@angular/router';
+import { ActivatedRouteGuard } from 'src/app/guards/activated-route.guard';
 
 @Component({
   selector: 'app-news-feed',
@@ -20,7 +22,11 @@ export class NewsFeedComponent implements OnInit {
 
   subscribedGroups: PostGroupSubscribtionPushSetting[];
 
-  constructor(private newsFeedLoader: NewsFeedLoaderService, private alert: AlertController, private meLoader: MELoaderService) { }
+  constructor(private newsFeedLoader: NewsFeedLoaderService, 
+    private alert: AlertController, 
+    private meLoader: MELoaderService, 
+    private router: Router,
+    public routeGuard: ActivatedRouteGuard) { }
 
   maxValue = 2147483000;
 
@@ -41,7 +47,6 @@ export class NewsFeedComponent implements OnInit {
    * @param amount 
    */
   loadFeed(start: number, amount: number) {
-    console.log('Load id: ', start);
     
     this.newsFeedLoader.load(start, amount).subscribe(data => {
 
@@ -62,7 +67,6 @@ export class NewsFeedComponent implements OnInit {
   private loadSubscribedPostGroups() {
     this.meLoader.getSubscribedPostGroups().subscribe(data => {
       this.subscribedGroups = data;
-      console.log('Subscribed PostGroups: ', this.subscribedGroups);
     });
   }
 
@@ -77,8 +81,11 @@ export class NewsFeedComponent implements OnInit {
     event.target.complete();
   }
  
+  /**
+   * Opens selection
+   * @author KreLou
+   */
   openSelection(){
-    console.log('open selection')
     var inputs = [];
     this.postGroups.forEach(group => {
       inputs.push({
@@ -108,8 +115,12 @@ export class NewsFeedComponent implements OnInit {
     })
   }
 
+  /**
+   * Handles user post group selection
+   * @author KreLou
+   * @param input 
+   */
   handleUserPostGroupSelection(input: number[]) {
-    console.log('SelectedIDs', input);
     var sendSubscribedGroups: PostGroupSubscribtionPushSetting[] = [];
     input.forEach(id => {
       sendSubscribedGroups.push({
@@ -119,15 +130,17 @@ export class NewsFeedComponent implements OnInit {
     });
 
     this.meLoader.setSubscribedPostGroups(sendSubscribedGroups).subscribe(data => {
-      console.log('Settings gespeichert');
       this.loadSubscribedPostGroups();
 
-      const end = this.getMinUsedID();
-      const length = Math.min(this.maxValue - end, this.maxValue);
 
-      this.loadFeed(this.maxValue, length);
+      this.loadFeed(this.maxValue, 10);
     })
   } 
+
+  createNewPost(){
+    console.log('New Post');
+    this.router.navigate(['tabs', 'admin-new-post'])
+  }
 
   /**
    * Gets min used id from newsList

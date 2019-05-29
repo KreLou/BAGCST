@@ -20,4 +20,9 @@ export class NewsFeedLoaderService {
   getAllPostGroups(): Observable<PostGroup[]> {
     return this.http.get<PostGroup[]>(environment.apiURL + '/api/postgroup', this.httpGlobal.AuthorizedHTTPOptions);
   }
+
+  postNewNewsItem(item: NewsItem): Observable<any> {
+    console.log('Send item', item);
+    return this.http.post<any>(environment.apiURL + `/api/news/${item.postGroup.postGroupID}`, item, this.httpGlobal.AuthorizedHTTPOptions);
+  }
 }
