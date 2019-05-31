@@ -2,15 +2,35 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using api.Models;
 using api.Selectors;
 using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 
 namespace api.offlineDB
 {
     public class offlineUserSettings : IUserSettingsDB
     {
         private string file_subscribedPostGroups = Environment.CurrentDirectory + "\\offlineDB\\Files\\postgroupuser.csv";
+
+        private PostGroupUserPushNotificationSetting convertLineTOItem(string line)
+        {
+            string[] args = line.Split(";");
+            long foundedUser = Convert.ToInt64(args[0]);
+            int foundPostGroup = Convert.ToInt32(args[1]);
+            bool active = Convert.ToBoolean(args[2]);
+
+            return new PostGroupUserPushNotificationSetting
+            {
+                PostGroupActive = active,
+                PostGroupID = foundPostGroup,
+                Type = PushNotificationType.Always
+            };
+        }
+
+        private string convertItemToLine(PostGroupUserPushNotificationSetting item)
+        {
+            return $"{item.PostGroupID};{item.PostGroupActive};{item.Type}";
+        }
 
         public PostGroupUserPushNotificationSetting[] getSubscribedPostGroupsSettings(long userID)
         {
@@ -22,17 +42,15 @@ namespace api.offlineDB
                 {
                     string[] args = currentLine.Split(";");
                     long foundedUser = Convert.ToInt64(args[0]);
-                    int foundPostGroup = Convert.ToInt32(args[1]);
-                    PushNotificationType notificationType = PushNotificationType.Always;
 
                     if (foundedUser == userID)
                     {
-                        PostGroupUserPushNotificationSetting setting = new PostGroupUserPushNotificationSetting
+                        PostGroupUserPushNotificationSetting setting = convertLineTOItem(currentLine);
+
+                        if (subscribedIDs.SingleOrDefault(x => x.PostGroupID == setting.PostGroupID) == null)
                         {
-                            PostGroupID = foundPostGroup,
-                            Type = notificationType
-                        };
-                        subscribedIDs.Add(setting);
+                            subscribedIDs.Add(setting);
+                        }
                     }
                 }
             }
@@ -41,12 +59,33 @@ namespace api.offlineDB
 
         public void setSubscribedPostGroupIDs(long userID, PostGroupUserPushNotificationSetting[] postGroupIDs)
         {
-            string[] lines = new string[postGroupIDs.Length];
-            for (int i = 0; i < postGroupIDs.Length; i++)
+            string path_temp = Path.GetTempFileName();
+
+            using (StreamReader sr = new StreamReader(file_subscribedPostGroups))
+            using (StreamWriter sw = new StreamWriter(path_temp))
             {
-                lines[i] = userID + ";" + postGroupIDs[i].PostGroupID + ";" + postGroupIDs[i].Type;
+                string line;
+                //Copy all other users
+                while((line = sr.ReadLine()) != null)
+                {
+                    string[] args = line.Split(";");
+                    long userIDFromLine = Convert.ToInt64(args[0]);
+
+                    if (userID != userIDFromLine)
+                    {
+                        sw.WriteLine(line);
+                    }
+
+                }
+
+                foreach(PostGroupUserPushNotificationSetting setting in postGroupIDs)
+                {
+                    line = userID + ";" + convertItemToLine(setting);
+                    sw.WriteLine(line);
+                }
             }
-            File.AppendAllLines(file_subscribedPostGroups, lines);
+            File.Delete(file_subscribedPostGroups);
+            File.Move(path_temp, file_subscribedPostGroups);
         }
     }
 }

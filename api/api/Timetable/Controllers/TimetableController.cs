@@ -89,8 +89,51 @@ namespace BAGCST.api.Timetable.Controllers
             calendarString.AppendLine("END:VCALENDAR");
 
             var bytes = Encoding.UTF8.GetBytes(calendarString.ToString());
+            
+            return File(bytes, "text/calendar", "bagcst_export.ics");
+        }
 
-            return File(bytes, "text/calendar", "bagcst_export.ics");  
+        private LectureItem[] getLectures(int userid)
+        {
+            LectureItem[] lectures = null;
+            //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
+            //TODO Ad Switch and Adapter for the UserItem
+            string studygroup = "WI16-1";
+            bool isStudent = true;
+
+            if (isStudent)
+            {
+                SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
+
+                if (currentSemester == null)
+                {
+                    //Create pseudo-semester
+                    currentSemester = new SemesterItem
+                    {
+                        Start = getFirstOfMonth(),
+                        End = getFirstOfMonth().AddMonths(3),
+                        StudyGroup = studygroup
+                    };
+                }
+                lectures = timetableDB.getSemesterLectures(studygroup, currentSemester);
+            }
+            else
+            {
+                string dozID = "Prof. Penzel";
+                DateTime startDate = getFirstOfMonth();
+                DateTime endDate = startDate.AddMonths(3);
+                lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
+
+            }
+
+            return lectures;
+        }
+
+        private DateTime getFirstOfMonth()
+        {
+            DateTime today = DateTime.Today;
+
+            return new DateTime(today.Year, today.Month, 1);
         }
     }
 }

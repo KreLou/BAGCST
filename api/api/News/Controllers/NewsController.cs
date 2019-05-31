@@ -7,6 +7,7 @@ using api.database;
 using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.News.Models;
+using BAGCST.api.User.Models;
 
 namespace BAGCST.api.News.Controllers
 {
@@ -36,14 +37,15 @@ namespace BAGCST.api.News.Controllers
         /// <param name="groups">Which group-id should loaded</param>
         /// <returns></returns>
         [HttpGet]
-        public NewsItem[] getAllNews([FromQuery] int start = int.MaxValue, [FromQuery] int amount = 10)
+        public NewsItem[] getAllNews([FromQuery] Int64 start = int.MaxValue, [FromQuery] int amount = 10)
         {
+
             long userID = 1; //TODO Get User-ID by Token
 
             PostGroupUserPushNotificationSetting[] settings = userSettingsDB.getSubscribedPostGroupsSettings(userID);
 
             //Only select the PostGroupID from the Fields
-            int[] groups = settings.Select(x => x.PostGroupID).ToArray();
+            int[] groups = settings.Where(x => x.PostGroupActive).Select(x => x.PostGroupID).ToArray();
             //TODO Groups settings should be stored in the database
             return newsDB.getPosts(amount, start, groups);
         }

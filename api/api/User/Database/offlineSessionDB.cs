@@ -107,7 +107,7 @@ namespace BAGCST.api.User.Database
 
         public SessionItem getSessionItemByActivationCode(string code)
         {
-            SessionItem item = this.getAllSessions().Where(x => x.ActivationCode == code).Single();
+            SessionItem item = this.getAllSessions().SingleOrDefault(x => x.ActivationCode == code);
             return item;
         }
 

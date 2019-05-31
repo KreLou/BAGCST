@@ -84,7 +84,7 @@ namespace BAGCST.api.News.Database
         /// <param name="startID">What is the startid, desc</param>
         /// <param name="groups">What groups should loaded</param>
         /// <returns></returns>
-        public NewsItem[] getPosts(int amount, int startID, int[] groups)
+        public NewsItem[] getPosts(int amount, Int64 startID, int[] groups)
         {
             sqlConnection = null;
             sqlConnection = TimeTableDatabase.getConnection();

@@ -35,7 +35,7 @@ namespace BAGCST.api.News.Database
         /// <param name="startID">What is the startid, desc</param>
         /// <param name="groups">What groups should loaded</param>
         /// <returns></returns>
-        NewsItem[] getPosts(int amount, int startID, int[] groups);
+        NewsItem[] getPosts(int amount, Int64 startID, int[] groups);
     }
 
 }
