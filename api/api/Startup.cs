@@ -28,6 +28,7 @@ using BAGCST.api.User.Controllers;
 using BAGCST.api.Timetable.Controllers;
 using BAGCST.api.Timetable.Database;
 using BAGCST.api.RightsSystem.Database;
+using BAGCST.api.Timetable.Services;
 
 namespace api
 {
@@ -100,6 +101,7 @@ namespace api
             //Configure Static Dependencies
             services.AddSingleton<SendMailService>();
             services.AddSingleton<MailContentLoader>();
+            services.AddSingleton<LectureService>();
 
 
             //Configure Environment Dependencies

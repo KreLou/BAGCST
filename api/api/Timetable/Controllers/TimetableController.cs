@@ -13,13 +13,13 @@ namespace BAGCST.api.Timetable.Controllers
     [ApiController]
     public class TimetableController : ControllerBase
     {
-        private IUserDB userDB;
-        private LectureService lectureService;
+        private readonly IUserDB userDB;
+        private readonly LectureService lectureService;
         
-        public TimetableController(IUserDB userDB, ITimetableDB timetableDB, ISemesterDB semesterDB)
+        public TimetableController(IUserDB userDB, ITimetableDB timetableDB, ISemesterDB semesterDB, LectureService lectureService)
         {
             this.userDB = userDB;
-            lectureService = new LectureService(userDB, timetableDB, semesterDB);
+            this.lectureService = lectureService;
         }
 
         [HttpGet]
