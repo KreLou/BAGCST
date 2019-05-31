@@ -17,7 +17,7 @@ namespace BAGCST.api.RightsSystem.Models
         /// <summary>
         /// Path of the app
         /// </summary>
-        //[Required]
+        [Required]
         public string Path { get; set; }
     }
 }

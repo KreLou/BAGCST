@@ -1,6 +1,7 @@
 ﻿using api.database;
 using api.Models;
 using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

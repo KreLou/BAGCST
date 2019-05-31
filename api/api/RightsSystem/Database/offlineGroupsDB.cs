@@ -160,9 +160,10 @@ namespace BAGCST.api.RightsSystem.Database
         //long userID = 1;
 
         private string groupUser_csv = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groupUser.csv");
-        public int[] getGroupsByUser(long userID)
+        public GroupItem[] getGroupsByUser(long userID)
         {
-            List<int> associatedGroups = new List<int>();
+            List<int> groupIDs = new List<int>();
+            List<GroupItem> groups = new List<GroupItem>();
 
             using (StreamReader sr = new StreamReader(groupUser_csv))
             {
@@ -175,11 +176,20 @@ namespace BAGCST.api.RightsSystem.Database
 
                     if (foundUser == userID)
                     {
-                        associatedGroups.Add(foundGroup);
+                        groupIDs.Add(foundGroup);
                     }
                 }
             }
-            return associatedGroups.Distinct().ToArray();
+
+            GroupItem[] allGroups = getAllGroups();
+
+            foreach(int id in groupIDs)
+            {
+                var foundedGroup = allGroups.SingleOrDefault(x => x.ID == id);
+                if (foundedGroup != null) groups.Add(foundedGroup);
+            }
+
+            return groups.ToArray();
         }
 
         public void setGroupsForUser(long userID, int[] groupIDs)

@@ -100,6 +100,7 @@ namespace api
             //Configure Static Dependencies
             services.AddSingleton<SendMailService>();
             services.AddSingleton<MailContentLoader>();
+            services.AddSingleton<TokenDecoderService>();
 
 
             //Configure Environment Dependencies
@@ -107,12 +108,12 @@ namespace api
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
-                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, offlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
                 services.AddSingleton<IPostGroupDB, offlinePostGroupDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
                 services.AddSingleton<ISemesterDB, offlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, offlineTimetableDB>();
@@ -127,12 +128,12 @@ namespace api
             {
                 //Production
                 services.AddSingleton<IContactsDB, onlineContactsDB>();
-                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, onlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
                 services.AddSingleton<IPostGroupDB, onlinePostGroupDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
                 services.AddSingleton<ISemesterDB, offlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, onlineTimetableDB>();
@@ -152,7 +153,7 @@ namespace api
         {
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:8100/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+                builder.WithOrigins("http://localhost:8100/", "http://192.168.43.34:55510").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             app.UseRequestLocalization(new RequestLocalizationOptions {DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(new System.Globalization.CultureInfo("de-DE"))});
             if (env.IsDevelopment())
             {
