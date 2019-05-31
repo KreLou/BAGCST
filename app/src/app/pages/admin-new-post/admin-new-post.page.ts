@@ -34,6 +34,10 @@ export class AdminNewPostPage implements OnInit {
   ngOnInit() {
     this.meLoader.getPostGroupsWhereIAmTheAuthor().subscribe(data => {
       this.postGroups = data;
+      if (this.postGroups.length === 0){
+        this.router.navigate(['']);
+        this.popup.showPermissionDeniedForNavigateToRoute('Keine PostGroup zum Posten gefunden');
+      }
       console.log('PostGroups: ', this.postGroups);
     })
   }
