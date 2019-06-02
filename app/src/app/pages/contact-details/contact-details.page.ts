@@ -27,8 +27,7 @@ export class ContactDetailsPage implements OnInit {
    }
 
   ngOnInit() {
-    this.contactLoader.getContact(this.contactID).subscribe(data => {console.log(data); }, error => {console.error(error); });
-    this.contactLoader.getContact(this.contactID).subscribe(data => {this.contactItem = data; });
+    this.contactItem = this.contactLoader.getContact(this.contactID);
   }
 
 }
