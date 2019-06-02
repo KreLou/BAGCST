@@ -97,6 +97,11 @@ namespace BAGCST.api.User.Controllers
             throw new NotImplementedException();
         }
 
+        public UserItem getUserByEmail(string email)
+        {//TODO ABU Bitte noch einbauen
+            throw new NotImplementedException();
+        }
+
         public UserItem getUserByName(string username)
         {
             return this.getUserItems().SingleOrDefault(x => x.Username == username);

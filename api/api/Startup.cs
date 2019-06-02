@@ -98,7 +98,9 @@ namespace api
         private void registerDependencies(IServiceCollection services)
         {
             //Configure Static Dependencies
-
+            services.AddSingleton<SendMailService>();
+            services.AddSingleton<MailContentLoader>();
+            services.AddSingleton<TokenDecoderService>();
 
 
             //Configure Environment Dependencies
@@ -106,12 +108,12 @@ namespace api
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
-                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IMealDB, offlineMealDB>();
                 services.AddSingleton<IMenuDB, OfflineMenuDB>();
                 services.AddSingleton<INewsDB, offlineNewsDB>();
                 services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
                 services.AddSingleton<IPostGroupDB, offlinePostGroupDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
                 services.AddSingleton<ISemesterDB, offlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, offlineTimetableDB>();
@@ -120,6 +122,8 @@ namespace api
                 services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
                 services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
                 services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
+                services.AddSingleton<IUserDeviceDB, offlineUserDeviceDB>();
+                services.AddSingleton<ISessionDB, offlineSessionDB>();
             }else
             {
                 //Production
@@ -130,6 +134,7 @@ namespace api
                 services.AddSingleton<INewsDB, onlineNewsDB>();
                 services.AddSingleton<IPlaceDB, onlinePlaceDB>();
                 services.AddSingleton<IPostGroupDB, onlinePostGroupDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
                 services.AddSingleton<ISemesterDB, onlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, onlineTimetableDB>();
@@ -138,6 +143,8 @@ namespace api
                 services.AddSingleton<IUserGroupBindingDB, offlineUserGroupBindingDB>();
                 services.AddSingleton<IStudyCourseDB, offlineStudyCourseDB>();
                 services.AddSingleton<IStudyGroupDB, offlineStudyGroupDB>();
+                services.AddSingleton<IUserDeviceDB, offlineUserDeviceDB>();
+                services.AddSingleton<ISessionDB, offlineSessionDB>();
             }
         }
 
@@ -145,9 +152,10 @@ namespace api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             app.UseCors(builder =>
-                    builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
-                    .UseRequestLocalization(new RequestLocalizationOptions {DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(new System.Globalization.CultureInfo("de-DE"))});
+                builder.WithOrigins("http://localhost:8100/", "http://192.168.43.34:55510").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+            app.UseRequestLocalization(new RequestLocalizationOptions {DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(new System.Globalization.CultureInfo("de-DE"))});
             if (env.IsDevelopment())
             {
                 //Enable Swagger

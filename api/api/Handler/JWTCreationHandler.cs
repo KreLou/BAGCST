@@ -41,13 +41,15 @@ namespace api.Handler
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(TokenFields.UserID, this.User.UserID.ToString()),
                     new Claim(TokenFields.Username, this.User.Username),
                     new Claim(TokenFields.Firstname, this.User.Firstname),
                     new Claim(TokenFields.Lastname, this.User.Lastname),
                     new Claim(TokenFields.DeviceID, this.Session.DeviceID.ToString()),
                     new Claim(TokenFields.SessionID, this.Session.InternalID.ToString())
                 }),
-                NotBefore = DateTime.UtcNow,
+                NotBefore = DateTime.Now,
+                Expires = DateTime.Now.AddMonths(36),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

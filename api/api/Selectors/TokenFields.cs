@@ -7,6 +7,7 @@ namespace api.Selectors
 {
     public static class TokenFields
     {
+        public static string UserID { get { return "userid"; } }
         public static string Username { get { return "username"; } }
         public static string Firstname { get { return "firstname"; } }
         public static string Lastname { get { return "lastname"; } }
