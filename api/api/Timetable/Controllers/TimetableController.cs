@@ -2,7 +2,7 @@
 using System.Text;
 using api.Models;
 using api.offlineDB;
-using BAGCST.api.Timetable.Controllers;
+//using BAGCST.api.Timetable.Controllers;
 using BAGCST.api.Timetable.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -108,9 +108,9 @@ namespace BAGCST.api.Timetable.Database
             }
             else
             {
-                string dozID = "Prof. Penzel";
-                DateTime startDate = getFirstOfMonth();
-                DateTime endDate = startDate.AddMonths(3);
+                string dozID = "Puck";
+                DateTime startDate = Convert.ToDateTime("01.01.2016"); //getFirstOfMonth();
+                DateTime endDate = DateTime.Now; // startDate.AddMonths(3);
                 lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
 
             }

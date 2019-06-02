@@ -25,7 +25,7 @@ using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.StudySystem.Database;
 using BAGCST.api.User.Controllers;
-using BAGCST.api.Timetable.Controllers;
+//using BAGCST.api.Timetable.Controllers;
 using BAGCST.api.Timetable.Database;
 using BAGCST.api.RightsSystem.Database;
 
@@ -104,7 +104,7 @@ namespace api
 
 
             //Configure Environment Dependencies
-            if (CurrentEnvironment.IsDevelopment())
+            if (!CurrentEnvironment.IsDevelopment())
             {
                 //Development
                 services.AddSingleton<IContactsDB, offlineContactsDB>();
@@ -128,14 +128,15 @@ namespace api
             {
                 //Production
                 services.AddSingleton<IContactsDB, onlineContactsDB>();
-                services.AddSingleton<IMealDB, offlineMealDB>();
-                services.AddSingleton<IMenuDB, OfflineMenuDB>();
+                services.AddSingleton<IGroupsDB, offlineGroupsDB>();
+                services.AddSingleton<IMealDB, onlineMealDB>();
+                services.AddSingleton<IMenuDB, onlineMenuDB>();
                 services.AddSingleton<INewsDB, onlineNewsDB>();
-                services.AddSingleton<IPlaceDB, OfflinePlaceDB>();
+                services.AddSingleton<IPlaceDB, onlinePlaceDB>();
                 services.AddSingleton<IPostGroupDB, onlinePostGroupDB>();
                 services.AddSingleton<IGroupsDB, offlineGroupsDB>();
                 services.AddSingleton<IRightsDB, offlineRightsDB>();
-                services.AddSingleton<ISemesterDB, offlineSemesterDB>();
+                services.AddSingleton<ISemesterDB, onlineSemesterDB>();
                 services.AddSingleton<ITimetableDB, onlineTimetableDB>();
                 services.AddSingleton<IUserDB, onlineUserDB>();
                 services.AddSingleton<IUserSettingsDB, onlineUserSettings>();

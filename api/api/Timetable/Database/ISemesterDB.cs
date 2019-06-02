@@ -1,6 +1,6 @@
 ﻿using BAGCST.api.Timetable.Models;
 
-namespace BAGCST.api.Timetable.Controllers
+namespace BAGCST.api.Timetable.Database
 {
     public interface ISemesterDB
     {
