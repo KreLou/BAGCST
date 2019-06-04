@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using api.Services;
+using api.Selectors;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
-using BAGCST.api.Timetable.Database;
 using BAGCST.api.Timetable.Models;
 using BAGCST.api.Timetable.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,18 +15,20 @@ namespace BAGCST.api.Timetable.Controllers
     {
         private readonly IUserDB userDB;
         private readonly LectureService lectureService;
+        private readonly TokenDecoderService tokenDecoderService;
         
-        public TimetableController(IUserDB userDB, ITimetableDB timetableDB, ISemesterDB semesterDB, LectureService lectureService)
+        public TimetableController(IUserDB userDB, LectureService lectureService, TokenDecoderService tokenDecoderService)
         {
             this.userDB = userDB;
             this.lectureService = lectureService;
+            this.tokenDecoderService = tokenDecoderService;
         }
 
         [HttpGet]
         public IActionResult getLectureFeed([FromQuery] string studentNumber = "", [FromQuery] string hash = "")
         {
-            LectureItem[] lectures = new LectureItem[0];
             long userID = 0;
+            LectureItem[] lectures = new LectureItem[0];
 
             UserItem userItem = userDB.getUserByName(studentNumber);
             if (userItem != null)
@@ -38,17 +40,19 @@ namespace BAGCST.api.Timetable.Controllers
             return Ok(lectures);
         }
 
-        [HttpGet("{userID}")]
-        public IActionResult getLectureView(long userID)
+        [HttpGet("view")]
+        public IActionResult getLectureView()
         {
+            long userID = getUserID(User);
             LectureItem[] lectures = lectureService.getLectures(userID);
 
             return Ok(lectures);
         }
 
-        [HttpGet("export/{userID}")]
-        public IActionResult getLectureExport(long userID)
+        [HttpGet("export")]
+        public IActionResult getLectureExport()
         {
+            long userID = getUserID(User);
             string calDateFormat = "yyyyMMddTHHmm00Z";
             var calendarString = new StringBuilder();
 
@@ -93,47 +97,21 @@ namespace BAGCST.api.Timetable.Controllers
             return File(bytes, "text/calendar", "bagcst_export.ics");
         }
 
-        private LectureItem[] getLectures(int userid)
+        private long getUserID(System.Security.Claims.ClaimsPrincipal User)
         {
-            LectureItem[] lectures = null;
-            //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
-            //TODO Ad Switch and Adapter for the UserItem
-            string studygroup = "WI16-1";
-            bool isStudent = true;
+            long userID = long.MinValue;
 
-            if (isStudent)
+            try
             {
-                SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
-
-                if (currentSemester == null)
-                {
-                    //Create pseudo-semester
-                    currentSemester = new SemesterItem
-                    {
-                        Start = getFirstOfMonth(),
-                        End = getFirstOfMonth().AddMonths(3),
-                        StudyGroup = studygroup
-                    };
-                }
-                lectures = timetableDB.getSemesterLectures(studygroup, currentSemester);
+                TokenInformation tokenInformation = tokenDecoderService.GetTokenInfo(User);
+                userID = tokenInformation.UserID;
             }
-            else
+            catch
             {
-                string dozID = "Prof. Penzel";
-                DateTime startDate = getFirstOfMonth();
-                DateTime endDate = startDate.AddMonths(3);
-                lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
 
             }
 
-            return lectures;
-        }
-
-        private DateTime getFirstOfMonth()
-        {
-            DateTime today = DateTime.Today;
-
-            return new DateTime(today.Year, today.Month, 1);
+            return userID;
         }
     }
 }

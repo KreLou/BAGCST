@@ -1,5 +1,4 @@
 ﻿using System;
-using api.Exception;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
 using BAGCST.api.Timetable.Database;
@@ -9,9 +8,9 @@ namespace BAGCST.api.Timetable.Services
 {
     public class LectureService
     {
-        private IUserDB userDB;
-        private ITimetableDB timetableDB;
-        private ISemesterDB semesterDB;
+        private readonly IUserDB userDB;
+        private readonly ITimetableDB timetableDB;
+        private readonly ISemesterDB semesterDB;
 
         public LectureService(IUserDB userDB, ITimetableDB timetableDB, ISemesterDB semesterDB)
         {
