@@ -5,3 +5,8 @@
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+.dashboardContent {
+    position: relative;
+    top: -14px;
+}

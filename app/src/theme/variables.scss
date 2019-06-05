@@ -188,7 +188,7 @@ a:link {
   left: -21px;
 }
 
-
+/** Styling for the lectures in lecture page and dashboard **/
 .weekday {
   color: var(--ion-color-dark);
   text-align: left;
@@ -205,6 +205,10 @@ a:link {
   transition: all 0.5s ease-out;
 }
 
+.dashboardlectures {
+  background-color: var(--ion-color-secondary);
+}
+
 .lecturecenter {
   text-align: center;
 }
@@ -213,6 +217,9 @@ a:link {
   background-color: var(--ion-color-primary-shade);
 }
 
+.dashboardlectures:hover {
+  background-color: var(--ion-color-secondary-shade)
+}
 
 /** Menüheaderlayout **/
 .menuheader {
