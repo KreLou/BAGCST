@@ -7,6 +7,7 @@ using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.User.Models;
 using Microsoft.AspNetCore.Authorization;
+using api.Services;
 
 namespace BAGCST.api.User.Controllers
 {
@@ -19,12 +20,14 @@ namespace BAGCST.api.User.Controllers
         private IUserDB userDB;
         private IUserSettingsDB userSettingsDB;
         private IPostGroupDB postGroupDB;
+        private readonly TokenDecoderService tokenDecoderService;
 
-        public UserController(IUserDB userDB, IUserSettingsDB userSettingsDB, IPostGroupDB postGroupDB)
+        public UserController(IUserDB userDB, IUserSettingsDB userSettingsDB, IPostGroupDB postGroupDB, TokenDecoderService tokenDecoderService)
         {
             this.userDB = userDB;
             this.userSettingsDB = userSettingsDB;
             this.postGroupDB = postGroupDB;
+            this.tokenDecoderService = tokenDecoderService;
         }
 
         [HttpGet]
@@ -47,6 +50,7 @@ namespace BAGCST.api.User.Controllers
         [HttpGet("me")]
         public ActionResult getMyUserInformation()
         {
+            var userInfo = tokenDecoderService.GetTokenInfo(User);
             long userID = 1; //TODO Change to Token
 
             UserItem user = getFullUserItem(userID);
