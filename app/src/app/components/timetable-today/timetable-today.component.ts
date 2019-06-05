@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimetableItem } from 'src/app/models/TimetableItem';
 import { TimetableLoaderService } from 'src/app/services/httpServices/timetable-loader.service';
+import { DateGeneratorService } from 'src/app/services/date-generator.service';
 
 @Component({
   selector: 'app-timetable-today',
@@ -11,26 +12,18 @@ export class TimetableTodayComponent implements OnInit {
 
   lectureItems: TimetableItem[];
 
-  today: Date;
+  beginOfDay: Date;
   endOfDay: Date;
 
-  constructor(private timetableLoader: TimetableLoaderService) {
-    this.today = new Date();
-    this.today.setHours(0,0,0,0);
-
-    this.endOfDay = new Date();
-    this.endOfDay.setHours(23, 59, 59, 59);
+  constructor(private timetableLoader: TimetableLoaderService, private dateGenerator: DateGeneratorService) {
+    this.beginOfDay = this.dateGenerator.getBeginningOfToday();
+    this.endOfDay = this.dateGenerator.getEndOfToday();
    }
 
   ngOnInit() {
-    this.timetableLoader.getTimetable().subscribe(data => {
-      data = data as TimetableItem[];
-      data.forEach(x => {
-        x.start = new Date(x.start);
-        x.end = new Date(x.end);
-      })
-      this.lectureItems = data.filter(x => x.start >= this.today).filter(x => x.end <= this.endOfDay);
-
+    this.timetableLoader.getSelectedTimetableItems(this.beginOfDay, this.endOfDay).subscribe(data => {
+      console.log('FIlter data: ', data);
+      this.lectureItems = data;
     })
   }
 
