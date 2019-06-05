@@ -3,6 +3,7 @@ import { TimetableItem } from "../../models/TimetableItem";
 import {TimetableLoaderService} from 'src/app/services/httpServices/timetable-loader.service';
 import {expand} from 'rxjs/operators';
 import { IonInfiniteScroll, AlertController } from '@ionic/angular';
+import { DateGeneratorService } from 'src/app/services/date-generator.service';
 
 @Component({
   selector: 'app-calendar',
@@ -23,7 +24,7 @@ export class CalendarPage implements OnInit {
     CONST_HowManyItemsAddedAtEndOfView = 3;
     CONST_HowManyMilliSecondsPerDay = 1000 * 60 * 60 * 24;
 
-    constructor(private timetableloader: TimetableLoaderService, private alertController: AlertController){
+    constructor(private timetableloader: TimetableLoaderService, private alertController: AlertController, private dateGenerator: DateGeneratorService){
         this.today = new Date();
         this.today.setHours(0,0,0,0);
         this.enddate = new Date(this.today.getTime() + (this.CONST_HowManyMilliSecondsPerDay * 8));
@@ -34,12 +35,12 @@ export class CalendarPage implements OnInit {
 
             this.listTimetable = data;
             this.displayTimetable = new Array();
-            var days = Array.from(new Set(this.listTimetable.map(x => x.start.toString().split('T')[0])));
+            var days = Array.from(new Set(this.listTimetable.map(x => x.start.setHours(0,0,0,0))));
 
             days.forEach(date => {
                 this.displayTimetable.push({
                     date: new Date(date),
-                    lectures: this.listTimetable.filter(x => x.start.toString().indexOf(date) > -1),
+                    lectures: this.listTimetable.filter(x => Math.abs(x.start.getTime() - new Date(date).getTime())/this.CONST_HowManyMilliSecondsPerDay < 1),
                     expand: false,
                 });
             });
