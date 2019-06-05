@@ -9,6 +9,7 @@ using BAGCST.api.User.Database;
 using BAGCST.api.News.Models;
 using BAGCST.api.User.Models;
 using Microsoft.AspNetCore.Authorization;
+using api.Services;
 
 namespace BAGCST.api.News.Controllers
 {
@@ -22,12 +23,14 @@ namespace BAGCST.api.News.Controllers
         private INewsDB newsDB;
         private IPostGroupDB postGroupDB;
         private IUserSettingsDB userSettingsDB;
-        
-        public NewsController(INewsDB newsDB, IPostGroupDB postGroupDB, IUserSettingsDB userrSettingsDB)
+        private readonly TokenDecoderService tokenDecoder;
+
+        public NewsController(INewsDB newsDB, IPostGroupDB postGroupDB, IUserSettingsDB userrSettingsDB, TokenDecoderService tokenDecoder)
         {
             this.newsDB = newsDB;
             this.postGroupDB = postGroupDB;
             this.userSettingsDB = userrSettingsDB;
+            this.tokenDecoder = tokenDecoder;
         }
         
 
@@ -41,8 +44,8 @@ namespace BAGCST.api.News.Controllers
         [HttpGet]
         public NewsItem[] getAllNews([FromQuery] Int64 start = int.MaxValue, [FromQuery] int amount = 10)
         {
-
-            long userID = 1; //TODO Get User-ID by Token
+            var userinfo = tokenDecoder.GetTokenInfo(User);
+            long userID = userinfo.UserID;//1; //TODO Get User-ID by Token
 
             int[] groupsID = new int[0];
 
@@ -64,7 +67,8 @@ namespace BAGCST.api.News.Controllers
         public IActionResult postNewsItem(NewsItem item, int postGroupID)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            long authorID = 1; //TODO Register the author id by the auth-token
+            var userinfo = tokenDecoder.GetTokenInfo(User);
+            long authorID = userinfo.UserID;//1; //TODO Register the author id by the auth-token
             item.Date = DateTime.Now;
             item.PostGroup = new PostGroupItem { PostGroupID = postGroupID };
             item.AuthorID = authorID;

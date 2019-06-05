@@ -2,6 +2,7 @@
 using System.Text;
 using api.Models;
 using api.offlineDB;
+using api.Services;
 using BAGCST.api.Timetable.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,21 +16,22 @@ namespace BAGCST.api.Timetable.Database
     {
         private ITimetableDB timetableDB;
         private ISemesterDB semesterDB;
-        
+        private readonly TokenDecoderService tokenDecoder;
 
-        public TimetableController(ITimetableDB timetableDB, ISemesterDB semesterDB)
+        public TimetableController(ITimetableDB timetableDB, ISemesterDB semesterDB, TokenDecoderService tokenDecoder)
         {
             this.timetableDB = timetableDB;
             this.semesterDB = semesterDB;
+            this.tokenDecoder = tokenDecoder;
         }
 
         [HttpGet]
         public IActionResult getLectureFeed()
         {
             //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
+            var userinfo = tokenDecoder.GetTokenInfo(User);
             //Alt: Forward the whole token to 'getLectures(token)', check for isStudent + studygroup/dozId at central place
-            int userid = 1;
-            LectureItem[] lectures = getLectures(userid);
+            LectureItem[] lectures = getLectures(Convert.ToInt32(userinfo.UserID)); //TODO beautify long <-> int
 
             return Ok(lectures);
         }
@@ -38,7 +40,9 @@ namespace BAGCST.api.Timetable.Database
         public IActionResult getLectureExport()
         {
             //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
-            int userid = 1;
+            var userinfo = tokenDecoder.GetTokenInfo(User);
+            
+            int userid = Convert.ToInt32(userinfo.UserID);
             string calDateFormat = "yyyyMMddTHHmm00Z";
             var calendarString = new StringBuilder();
 
@@ -87,6 +91,8 @@ namespace BAGCST.api.Timetable.Database
         {
             LectureItem[] lectures = null;
             //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
+            var userinfo = tokenDecoder.GetTokenInfo(User);
+            
             //TODO Ad Switch and Adapter for the UserItem
             string studygroup = "WI16-1";
             bool isStudent = true;

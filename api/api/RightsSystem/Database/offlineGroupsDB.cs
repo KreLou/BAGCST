@@ -156,9 +156,6 @@ namespace BAGCST.api.RightsSystem.Database
             File.Move(tempFile, csvFile);
         }
 
-        //TODO UserID from Token
-        //long userID = 1;
-
         private string groupUser_csv = Path.Combine(Environment.CurrentDirectory,"offlineDB","Files","groupUser.csv");
         public GroupItem[] getGroupsByUser(long userID)
         {

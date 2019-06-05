@@ -45,7 +45,8 @@ namespace api.User.Controllers
         [HttpGet("postGroups")]
         public IActionResult getMysubscribedPostGroups()
         {
-            long userID = 1; //TODO get from token
+            var UserInfo = tokenDecoder.GetTokenInfo(User);
+            long userID = UserInfo.UserID;//1; //TODO get from token
 
             var groups = userSettingsDB.getSubscribedPostGroupsSettings(userID);
 
@@ -57,7 +58,8 @@ namespace api.User.Controllers
         [HttpPost("postGroups")]
         public IActionResult setMysubscribedPostGroups([FromBody] PostGroupUserPushNotificationSetting[] settings)
         {
-            long userID = 1; //TODO get from token
+            var UserInfo = tokenDecoder.GetTokenInfo(User);
+            long userID = UserInfo.UserID;//1; //TODO get from token
             userSettingsDB.setSubscribedPostGroupIDs(userID, settings);
 
             return Ok();
@@ -66,7 +68,8 @@ namespace api.User.Controllers
         [HttpGet("author")]
         public IActionResult getPostGroupsWhereIAmTheAuthor()
         {
-            long userID = 1; //TODO get from token
+            var UserInfo = tokenDecoder.GetTokenInfo(User);
+            long userID = UserInfo.UserID;//1; //TODO get from token
 
             var groups = postGroupDB.getPostGroupsWhereUserIsAuthor(userID);
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BAGCST.api.News.Database;
 using BAGCST.api.News.Models;
 using Microsoft.AspNetCore.Authorization;
+using api.Services;
 
 namespace BAGCST.api.News.Controllers
 {
@@ -13,10 +14,12 @@ namespace BAGCST.api.News.Controllers
     public class PostGroupController : ControllerBase
     {
         private IPostGroupDB postGroupDB;
+        private readonly TokenDecoderService tokenDecoder;
 
-        public PostGroupController(IPostGroupDB postGroupDB)
+        public PostGroupController(IPostGroupDB postGroupDB, TokenDecoderService tokenDecoder)
         {
             this.postGroupDB = postGroupDB;
+            this.tokenDecoder = tokenDecoder;
         }
 
         /// <summary>
@@ -144,7 +147,8 @@ namespace BAGCST.api.News.Controllers
         [HttpGet("mygroups")]
         public IActionResult getMyPostGroups()
         {
-            long authorID = 1; //TODO Get userID from Token
+            var UserInfo = tokenDecoder.GetTokenInfo(User);
+            long authorID = UserInfo.UserID; //1; //TODO Get userID from Token
 
             PostGroupItem[] myGroups = postGroupDB.getPostGroupsWhereUserIsAuthor(authorID);
 

@@ -51,7 +51,7 @@ namespace BAGCST.api.User.Controllers
         public ActionResult getMyUserInformation()
         {
             var userInfo = tokenDecoderService.GetTokenInfo(User);
-            long userID = 1; //TODO Change to Token
+            long userID = userInfo.UserID;//1; //TODO Change to Token
 
             UserItem user = getFullUserItem(userID);
             if (user == null)
