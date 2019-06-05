@@ -21,13 +21,10 @@ export class TimetableLoaderService {
   private initializeTimetable() {
     this.loadOfflineTimetable();
     this.http.get<TimetableItem[]>(environment.apiURL + '/api/timetable', this.httpConfig.AuthorizedHTTPOptions).subscribe(data => {
-      console.log('Timetable', data);
       this.cache.setValue('timetable', data);
       this.formatAndSave(data as TimetableItem[]);
     }, error => {
       console.error(error);
-    }, () => {
-      console.log('Request done');
     })
   }
 

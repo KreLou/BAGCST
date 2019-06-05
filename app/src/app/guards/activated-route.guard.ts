@@ -15,12 +15,10 @@ export class ActivatedRouteGuard implements CanActivate, CanActivateChild {
   userRoutes: string[] = ['/tabs/dashboard'];
 
   constructor(private meLoader: MELoaderService, private router: Router, private popup: PopUpMessageService, private cache: CacheService) {
-    console.log('activated-route. constructur');
     const routes = this.cache.getValue(CONST_KEY);
 
     if (routes) {
       this.userRoutes = routes;
-      console.log('Set from cache: ', routes);
     }
 
     this.meLoader.getUserPermissionGroups().subscribe(data => {
@@ -32,7 +30,6 @@ export class ActivatedRouteGuard implements CanActivate, CanActivateChild {
           });
         });
       }
-      console.log('userRoutes: ', this.userRoutes);
       this.cache.setValue(CONST_KEY, this.userRoutes);
     });
 

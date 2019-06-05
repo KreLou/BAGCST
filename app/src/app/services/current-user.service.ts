@@ -7,7 +7,6 @@ import { TokenService } from './token.service';
 export class CurrentUserService {
 
   constructor(private tokenService: TokenService) {
-    console.log('CurrentUserService.Constuctur');
 
    }
 

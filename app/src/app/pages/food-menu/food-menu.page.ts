@@ -84,10 +84,8 @@ export class FoodMenuPage implements OnInit {
     }
     showFoodplan (id: number) {
         this.menuloader.getMenuForSpecialPlace(this.firstDayofWeek, this.lastDayofWeek, id).subscribe(data => {
-            console.log('Speiseplan: ', data);
             this.foodMenu = data;
         }, () => {}, () => {
-            console.log('FoodMenu', this.foodMenu);
         })
     }
     ngOnInit() {
