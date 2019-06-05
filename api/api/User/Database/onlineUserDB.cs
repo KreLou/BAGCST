@@ -72,7 +72,7 @@ namespace BAGCST.api.User.Controllers
                         "[mail]='" + item.Email + "'," +
                         "[lastname]='" + item.Lastname + "'," +
                         "[firstname]='" + item.Firstname + "'," +
-                        "[studentnumber]='" + item.Username + "',"+
+                        "[username]='" + item.Username + "',"+
                         "[groupid]='" + item.StudyGroup.ID.ToString() + "'," +
                         "[relationtypid]='" + item.UserType.ID.ToString() + "'," +
                         "[dsgvo]='" + item.DSGVO.ToString() + "'," +
@@ -123,7 +123,7 @@ namespace BAGCST.api.User.Controllers
                     SQLItem.StudyGroup.StudyCourse = new StudyCourse();
 
 
-                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[studentnumber], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
+                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[username], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
                         " [group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active], " +
                         " [coursetyp].[coursetypid],[coursetyp].[shortname],[coursetyp].[longname] " +
                         " FROM [user] " +
@@ -142,7 +142,7 @@ namespace BAGCST.api.User.Controllers
                         SQLItem.Email = myReader["mail"].ToString();
                         SQLItem.Firstname = myReader["firstname"].ToString();
                         SQLItem.Lastname = myReader["lastname"].ToString();
-                        SQLItem.Username = myReader["studentnumber"].ToString();
+                        SQLItem.Username = myReader["username"].ToString();
                         SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
                         SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
 
@@ -205,7 +205,7 @@ namespace BAGCST.api.User.Controllers
                     SQLItem.StudyGroup.StudyCourse = new StudyCourse();
                     
                     List<UserItem> list = new List<UserItem>();
-                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[studentnumber], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
+                    string SQL = "SELECT[userid],[mail],[lastname],[firstname],[dsgvo],[dsgvodate],[username], [relationtyp].[relationtypid], [relationtyp].[relationtypname]," +
                         " [group].[groupname], [group].[groupid],[group].[groupnameshort],[group].[active], " +
                         " [coursetyp].[coursetypid],[coursetyp].[shortname],[coursetyp].[longname] " +
                         " FROM [user] " +
@@ -223,7 +223,7 @@ namespace BAGCST.api.User.Controllers
                     SQLItem.Email = myReader["mail"].ToString();
                     SQLItem.Firstname = myReader["firstname"].ToString();
                     SQLItem.Lastname = myReader["lastname"].ToString();
-                    SQLItem.Username = myReader["studentnumber"].ToString();
+                    SQLItem.Username = myReader["username"].ToString();
                     SQLItem.UserID = Convert.ToInt32(myReader["userid"]);
                     SQLItem.DSGVO = Convert.ToBoolean(myReader["dsgvo"]);
 
@@ -280,7 +280,7 @@ namespace BAGCST.api.User.Controllers
                 {
                     //In der SQL Anweisung muss noch Contacttypid und CourseTypID und Verantwortlicher geändert werden.
                     string SQL = "INSERT INTO [contact] " +
-                        "([mail],[lastname],[firstname],[dsgvo],[studentnumber], [groupid],[relationtypid],[dsgvodate]) " +
+                        "([mail],[lastname],[firstname],[dsgvo],[username], [groupid],[relationtypid],[dsgvodate]) " +
                         "VALUES('" + item.Email + "','" + item.Lastname + "','" + item.Firstname + "','"+ item.DSGVO.ToString() +"','" + item.Username + "','"+item.StudyGroup.ID.ToString()+"','"+item.UserType.ID.ToString()+"','"+ item.DSGVODate.ToString() +"');" +
                         "SELECT SCOPE_IDENTITY();";
                     sqlConnection.Open();

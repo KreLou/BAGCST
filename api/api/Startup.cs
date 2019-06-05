@@ -25,7 +25,6 @@ using BAGCST.api.News.Database;
 using BAGCST.api.User.Database;
 using BAGCST.api.StudySystem.Database;
 using BAGCST.api.User.Controllers;
-using BAGCST.api.Timetable.Controllers;
 using BAGCST.api.Timetable.Database;
 using BAGCST.api.RightsSystem.Database;
 using BAGCST.api.Timetable.Services;
