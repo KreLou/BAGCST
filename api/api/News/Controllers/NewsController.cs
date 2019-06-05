@@ -23,9 +23,7 @@ namespace BAGCST.api.News.Controllers
         private INewsDB newsDB;
         private IPostGroupDB postGroupDB;
         private IUserSettingsDB userSettingsDB;
-        private readonly TokenDecoderService tokenDecoder;
 
-        public NewsController(INewsDB newsDB, IPostGroupDB postGroupDB, IUserSettingsDB userrSettingsDB, TokenDecoderService tokenDecoder)
         {
             this.newsDB = newsDB;
             this.postGroupDB = postGroupDB;
