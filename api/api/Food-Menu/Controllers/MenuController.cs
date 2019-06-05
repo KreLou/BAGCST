@@ -66,9 +66,8 @@ namespace BAGCST.api.FoodMenu.Controllers
             if (startDate == DateTime.MinValue) startDate = DateTime.Today;
             if (endDate == DateTime.MinValue) endDate = startDate.AddDays(7);
             if (placeIDs.Length == 0) placeIDs = placeDB.getPlaces().Select(x => x.PlaceID).ToArray();
-            //MenuItem[] items = menuDB.getFilterdMenus(startDate, endDate, placeIDs);
-            MenuItem[] items = menuDB.getFilterdMenus(Convert.ToDateTime("2018-01-01"), endDate, placeIDs);
-            //items = items.OrderBy(x => x.Date).ThenBy(x => x.Meal.Place.PlaceName).ThenBy(x => x.Meal.MealName).ToArray();
+            MenuItem[] items = menuDB.getFilterdMenus(startDate, endDate, placeIDs);
+            items = items.OrderBy(x => x.Date).ThenBy(x => x.Meal.Place.PlaceName).ThenBy(x => x.Meal.MealName).ToArray();
             return Ok(items);
         }
 
