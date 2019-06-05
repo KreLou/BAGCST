@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DateGeneratorService {
+  
+  MillisecondsPerDay = 1000 * 60 * 60 *24;
 
   constructor() { }
 
@@ -24,7 +26,17 @@ export class DateGeneratorService {
    * @returns date of end of today 
    */
   getEndOfToday(): Date {
-    const MillisecondsPerDay = 1000 * 60 * 60 *24;
-    return new Date(this.getBeginningOfToday().getTime() + MillisecondsPerDay);
+    return new Date(this.getBeginningOfToday().getTime() + this.MillisecondsPerDay);
+  }
+
+  /**
+   * Add number of days to given date
+   * @author KreLou
+   * @param date 
+   * @param days 
+   * @returns date of days to date 
+   */
+  addDaysToDate(date: Date, days: number): Date {
+    return new Date(date.getTime() + this.MillisecondsPerDay * days);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimetableItem } from "../../models/TimetableItem";
 import {TimetableLoaderService} from 'src/app/services/httpServices/timetable-loader.service';
-import {expand} from 'rxjs/operators';
+import {expand, filter} from 'rxjs/operators';
 import { IonInfiniteScroll, AlertController } from '@ionic/angular';
 import { DateGeneratorService } from 'src/app/services/date-generator.service';
 
@@ -25,25 +25,51 @@ export class CalendarPage implements OnInit {
     CONST_HowManyMilliSecondsPerDay = 1000 * 60 * 60 * 24;
 
     constructor(private timetableloader: TimetableLoaderService, private alertController: AlertController, private dateGenerator: DateGeneratorService){
-        this.today = new Date();
-        this.today.setHours(0,0,0,0);
-        this.enddate = new Date(this.today.getTime() + (this.CONST_HowManyMilliSecondsPerDay * 8));
+        this.today = this.dateGenerator.getBeginningOfToday();
+        this.enddate = this.dateGenerator.addDaysToDate(this.today, 8);
+        console.log('Enddate', this.enddate);
     }
 
   ngOnInit(): void {
         this.timetableloader.getTimetable().subscribe(data => {
 
-            this.listTimetable = data;
-            this.displayTimetable = new Array();
-            var days = Array.from(new Set(this.listTimetable.map(x => x.start.setHours(0,0,0,0))));
 
-            days.forEach(date => {
-                this.displayTimetable.push({
-                    date: new Date(date),
-                    lectures: this.listTimetable.filter(x => Math.abs(x.start.getTime() - new Date(date).getTime())/this.CONST_HowManyMilliSecondsPerDay < 1),
-                    expand: false,
-                });
+            this.listTimetable = Object.assign([], data);
+
+            this.displayTimetable = new Array();
+
+            const daysWithTime = data.map(x => x.start);
+
+            var days: any[] = [];
+            
+            daysWithTime.forEach(day => {
+                const date = new Date(day);
+                date.setHours(0,0,0,0);
+                const found =days.filter(x => x.getTime() === date.getTime()).length > 0;
+                if (!found) {
+                    days.push(date);
+                }
             });
+
+            console.log('days', days);
+
+
+            
+            days.forEach(date => {
+                const filteredEvents = this.listTimetable.filter(x => x.start.getDate() === date.getDate() && x.start.getMonth() === date.getMonth() && x.start.getFullYear() === date.getFullYear());
+                console.log('day', date);
+                console.log('Found', filteredEvents);
+                this.displayTimetable.push({
+                    date: date,
+                    lectures: filteredEvents,
+                    expand: false
+                });
+            })
+            console.log('DisplayTimetable', this.displayTimetable);
+
+            this.listUpcomingLectures = this.displayTimetable.filter(x => x.date >= this.today);
+
+            console.log('Upcomming', this.listUpcomingLectures);
             this.listUpcomingLectures = this.displayTimetable.filter(x => x.date >= this.today);
             this.displayTimetable = this.listUpcomingLectures.filter(x => x.date <= this.enddate);
             this.displayTimetable[0].expand = true;

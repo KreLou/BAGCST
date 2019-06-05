@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuLoaderService } from 'src/app/services/httpServices/menu-loader.service';
 import { Menu } from 'src/app/models/Menu';
+import { DateGeneratorService } from 'src/app/services/date-generator.service';
 
 @Component({
   selector: 'app-meal-today',
@@ -13,15 +14,12 @@ export class MealTodayComponent implements OnInit {
 
   today: Date;
 
-  constructor(private menuLoader: MenuLoaderService) {
-    this.today = new Date();
-    this.today.setHours(0, 0, 0, 0);
-    console.log('Today', this.today);
+  constructor(private menuLoader: MenuLoaderService, private dateGenerator: DateGeneratorService) {
+    this.today = this.dateGenerator.getBeginningOfToday();
    }
 
   ngOnInit() {
     this.menuLoader.getMenuForAllPlaces(this.today, this.today).subscribe(data => {
-      console.log('data', data);
 
       const places = Array.from(new Set(data.map(x => x.meal.place.placeID)));
       this.menuPlan = new Array();
@@ -32,7 +30,6 @@ export class MealTodayComponent implements OnInit {
         })
       });
 
-      console.log('Menu', this.menuPlan);
     })
   }
 
