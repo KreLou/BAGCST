@@ -42,12 +42,14 @@ namespace BAGCST.api.News.Controllers
 
             long userID = 1; //TODO Get User-ID by Token
 
+            int[] groupsID = new int[0];
+
             PostGroupUserPushNotificationSetting[] settings = userSettingsDB.getSubscribedPostGroupsSettings(userID);
 
-            //Only select the PostGroupID from the Fields
-            int[] groups = settings.Where(x => x.PostGroupActive).Select(x => x.PostGroupID).ToArray();
+            if (settings.Length > 0) groupsID = settings.Where(x => x.PostGroupActive).Select(x => x.PostGroupID).ToArray();
+
             //TODO Groups settings should be stored in the database
-            return newsDB.getPosts(amount, start, groups);
+            return newsDB.getPosts(amount, start, groupsID);
         }
         
         /// <summary>
