@@ -22,7 +22,6 @@ export class TimetableTodayComponent implements OnInit {
 
   ngOnInit() {
     this.timetableLoader.getSelectedTimetableItems(this.beginOfDay, this.endOfDay).subscribe(data => {
-      console.log('FIlter data: ', data);
       this.lectureItems = data;
     })
   }

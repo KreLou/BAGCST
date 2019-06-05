@@ -60,7 +60,6 @@ export class NewsFeedComponent implements OnInit {
       }else {
         this.newsList = data;
       }
-      console.log(this.newsList);
     });
   }
 
@@ -138,7 +137,6 @@ export class NewsFeedComponent implements OnInit {
   } 
 
   createNewPost(){
-    console.log('New Post');
     this.router.navigate(['tabs', 'admin-new-post'])
   }
 

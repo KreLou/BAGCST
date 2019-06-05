@@ -51,25 +51,21 @@ export class CalendarPage implements OnInit {
                 }
             });
 
-            console.log('days', days);
 
 
             
             days.forEach(date => {
                 const filteredEvents = this.listTimetable.filter(x => x.start.getDate() === date.getDate() && x.start.getMonth() === date.getMonth() && x.start.getFullYear() === date.getFullYear());
-                console.log('day', date);
-                console.log('Found', filteredEvents);
+
                 this.displayTimetable.push({
                     date: date,
                     lectures: filteredEvents,
                     expand: false
                 });
             })
-            console.log('DisplayTimetable', this.displayTimetable);
 
             this.listUpcomingLectures = this.displayTimetable.filter(x => x.date >= this.today);
 
-            console.log('Upcomming', this.listUpcomingLectures);
             this.listUpcomingLectures = this.displayTimetable.filter(x => x.date >= this.today);
             this.displayTimetable = this.listUpcomingLectures.filter(x => x.date <= this.enddate);
             this.displayTimetable[0].expand = true;
