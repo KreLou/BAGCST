@@ -1,28 +1,29 @@
 <h1>Speiseplan {{today | date : 'E dd.MM.yy'}}</h1>
 <ng-container *ngIf="menuPlan; else noMenuFoundBlock">
-    <ion-grid>
-        <ng-container *ngFor="let entry of menuPlan">
-          <ion-row>
-            <ion-label class="headerDate" color="dark">{{entry.meals[0].meal.place.placeName}}</ion-label>
-          </ion-row>
-  
-          <ng-container *ngFor="let menu of entry.meals" lines="none">
+  <ion-grid>
+    <ng-container *ngFor="let entry of menuPlan">
+      <ion-row>
+        <ion-label class="headerDate" color="dark">{{entry.meals[0].meal.place.placeName}}</ion-label>
+      </ion-row>
+
+      <ng-container *ngFor="let menu of entry.meals" lines="none">
+        <ion-row>
+          <ion-col size="12">
             <ion-row>
-              <ion-col size="12">
-                <ion-row>
-                  <ion-col class="mealname" size="9">{{menu.meal.mealName}}</ion-col>
-                  <ion-col class="pricetag" size="3">{{menu.price | currency: 'EUR': 'symbol': '1.2-2': 'de'}}</ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col size="12">{{menu.meal.description}}</ion-col>
-                </ion-row>
-              </ion-col>
+              <ion-col class="mealname" size="9">{{menu.meal.mealName}}</ion-col>
+              <ion-col class="pricetag" size="3">{{menu.price | currency: 'EUR': 'symbol': '1.2-2': 'de'}}</ion-col>
             </ion-row>
-          </ng-container>
-          <ion-row></ion-row>
-        </ng-container>
-      </ion-grid>
+            <ion-row>
+              <ion-col size="12">{{menu.meal.description}}</ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ng-container>
+  </ion-grid>
 </ng-container>
 <ng-template #noMenuFoundBlock>
-  <p>Kein Speiseplan gefunden...</p>
+  <ion-item color="danger">
+    Kein Speiseplan für heute gefunden.
+  </ion-item>
 </ng-template>
