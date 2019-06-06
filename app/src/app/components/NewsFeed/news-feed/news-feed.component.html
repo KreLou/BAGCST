@@ -3,7 +3,7 @@
   <ion-button class="funnelbutton" (click)="openSelection()">
     <ion-icon name="funnel"></ion-icon>
   </ion-button>
-  <ion-button (click)="createNewPost()" *ngIf="routeGuard.userIsAllowedToNavigateTo('/tabs/admin-new-post')">
+  <ion-button class="funnelbutton" (click)="createNewPost()" *ngIf="routeGuard.userIsAllowedToNavigateTo('/tabs/admin-new-post')">
     <ion-icon name="create"></ion-icon>
   </ion-button>
 </ion-item>
