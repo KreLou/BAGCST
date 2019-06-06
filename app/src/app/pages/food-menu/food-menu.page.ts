@@ -11,7 +11,6 @@ import { ActivatedRouteGuard } from 'src/app/guards/activated-route.guard';
 })
 export class FoodMenuPage implements OnInit {
     currentDate;
-    formattedDate;
     weekNumber;
     startEndDate;
     foodMenu: Menu[];
@@ -22,22 +21,11 @@ export class FoodMenuPage implements OnInit {
         public activationGuard: ActivatedRouteGuard
     ) {
         this.currentDate = new Date();
-        this.getFormattedDate();
+        
         this.weekNumber = this.getWeekNumber(new Date());
         this.startEndDate = this.startAndEndOfWeek(new Date());
     }
-    getFormattedDate() {
-        const dateObj = new Date();
 
-        const year = dateObj.getFullYear().toString();
-        const month = dateObj.getMonth().toString();
-        const date = dateObj.getDate().toString();
-
-        const monthArray = ['Januar', 'Februar', 'März' , 'April' , 'Mai' , 'Juni' , 'Juli' , 'August' , 'September' ,
-            'Oktober', 'November', 'Dezember'];
-
-        this.formattedDate = date + '. ' + monthArray[month] + ' ' + year;
-    }
     getWeekNumber(d) {
         // Copy date so don't modify original
         d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
