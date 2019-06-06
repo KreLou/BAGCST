@@ -1,6 +1,6 @@
 <ion-item lines="none">
   <h1>News Feed</h1>
-  <ion-button (click)="openSelection()">
+  <ion-button class="funnelbutton" (click)="openSelection()">
     <ion-icon name="funnel"></ion-icon>
   </ion-button>
   <ion-button (click)="createNewPost()" *ngIf="routeGuard.userIsAllowedToNavigateTo('/tabs/admin-new-post')">
@@ -9,9 +9,9 @@
 </ion-item>
 
 <ng-container *ngIf="newsList">
-  <ion-card *ngFor="let newsItem of newsList">
+  <ion-card color="primary" *ngFor="let newsItem of newsList">
     <ion-card-header>
-      <ion-card-title color="primary">{{newsItem.title}}</ion-card-title>
+      <ion-card-title color="secondary">{{newsItem.title}}</ion-card-title>
       <ion-card-subtitle>{{newsItem.postGroup.name}} am {{newsItem.date |date : 'dd.MM.yyyy hh:mm'}}</ion-card-subtitle>
     </ion-card-header>
 
@@ -20,11 +20,10 @@
     </ion-card-content>
   </ion-card>
 
-
   <ion-infinite-scroll (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Lade den weiteren Feed...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ng-container>

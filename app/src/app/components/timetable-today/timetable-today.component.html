@@ -1,7 +1,7 @@
 <h1>Heutige Vorlesungen</h1>
 <ng-container *ngIf="lectureItems">
   <ion-grid>
-      <div class="lectures" *ngFor="let lecture of lectureItems">
+      <div class="lectures dashboardlectures" *ngFor="let lecture of lectureItems">
           <ion-row>
               <ion-col class="lecturecenter">
                   {{lecture.start | date: 'HH:mm'}} - {{lecture.end | date: 'HH:mm'}}
