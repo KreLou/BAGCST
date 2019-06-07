@@ -9,3 +9,9 @@
 .loginfullwidth {
     width: 100%;
 }
+
+.logintext {
+    color: var(--ion-color-medium);
+    text-decoration: none;
+    font-size: smaller;
+}
