@@ -1,33 +1,52 @@
-﻿using System;
 using System.Text;
-using api.Models;
-using api.offlineDB;
+using api.Services;
+using api.Selectors;
+//using api.Models;
+//using api.offlineDB;
+using BAGCST.api.User.Database;
+using BAGCST.api.User.Models;
 using BAGCST.api.Timetable.Models;
+using BAGCST.api.Timetable.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BAGCST.api.Timetable.Database
+namespace BAGCST.api.Timetable.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TimetableController : ControllerBase
     {
-        private ITimetableDB timetableDB;
-        private ISemesterDB semesterDB;
+        private readonly IUserDB userDB;
+        private readonly LectureService lectureService;
+        private readonly TokenDecoderService tokenDecoderService;
         
-
-        public TimetableController(ITimetableDB timetableDB, ISemesterDB semesterDB)
+        public TimetableController(IUserDB userDB, LectureService lectureService, TokenDecoderService tokenDecoderService)
         {
-            this.timetableDB = timetableDB;
-            this.semesterDB = semesterDB;
+            this.userDB = userDB;
+            this.lectureService = lectureService;
+            this.tokenDecoderService = tokenDecoderService;
         }
 
         [HttpGet]
-        public IActionResult getLectureFeed()
+        public IActionResult getLectureFeed([FromQuery] string studentNumber = "", [FromQuery] string hash = "")
         {
-            //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
-            //Alt: Forward the whole token to 'getLectures(token)', check for isStudent + studygroup/dozId at central place
-            int userid = 1;
-            LectureItem[] lectures = getLectures(userid);
+            long userID = 0;
+            LectureItem[] lectures = new LectureItem[0];
+
+            UserItem userItem = userDB.getUserByName(studentNumber);
+            if (userItem != null)
+            {
+                userID = userItem.UserID;
+                lectures = lectureService.getLectures(userID);
+            }
+
+            return Ok(lectures);
+        }
+
+        [HttpGet("view")]
+        public IActionResult getLectureView()
+        {
+            long userID = getUserID(User);
+            LectureItem[] lectures = lectureService.getLectures(userID);
 
             return Ok(lectures);
         }
@@ -35,8 +54,7 @@ namespace BAGCST.api.Timetable.Database
         [HttpGet("export")]
         public IActionResult getLectureExport()
         {
-            //TODO: Get userid from Token (or better: Get isStudent + studygroup/dozId)
-            int userid = 1;
+            long userID = getUserID(User);
             string calDateFormat = "yyyyMMddTHHmm00Z";
             var calendarString = new StringBuilder();
 
@@ -62,7 +80,7 @@ namespace BAGCST.api.Timetable.Database
             calendarString.AppendLine("END:STANDARD");
             calendarString.AppendLine("END:VTIMEZONE");
 
-            foreach (LectureItem lecture in getLectures(userid))
+            foreach (LectureItem lecture in lectureService.getLectures(userID))
             {
                 calendarString.AppendLine("BEGIN:VEVENT");
                 calendarString.AppendLine("LOCATION:" + lecture.Place);
@@ -77,51 +95,25 @@ namespace BAGCST.api.Timetable.Database
             calendarString.AppendLine("END:VCALENDAR");
 
             var bytes = Encoding.UTF8.GetBytes(calendarString.ToString());
-
+            
             return File(bytes, "text/calendar", "bagcst_export.ics");
         }
 
-        private LectureItem[] getLectures(int userid)
+        private long getUserID(System.Security.Claims.ClaimsPrincipal User)
         {
-            LectureItem[] lectures = null;
-            //TODO: Get userinfo by userid (e.g. student/studygroup, lecturer)
-            //TODO Ad Switch and Adapter for the UserItem
-            string studygroup = "WI16-1";
-            bool isStudent = true;
+            long userID = long.MinValue;
 
-            if (isStudent)
+            try
             {
-                SemesterItem currentSemester = semesterDB.getCurrentSemesterByStudyGroup(studygroup);
-
-                if (currentSemester == null)
-                {
-                    //Create pseudo-semester
-                    currentSemester = new SemesterItem
-                    {
-                        Start = getFirstOfMonth(),
-                        End = getFirstOfMonth().AddMonths(3),
-                        StudyGroup = studygroup
-                    };
-                }
-                lectures = timetableDB.getSemesterLectures(studygroup, currentSemester);
+                TokenInformation tokenInformation = tokenDecoderService.GetTokenInfo(User);
+                userID = tokenInformation.UserID;
             }
-            else
+            catch
             {
-                string dozID = "Prof. Penzel";
-                DateTime startDate = getFirstOfMonth();
-                DateTime endDate = startDate.AddMonths(3);
-                lectures = timetableDB.getLecturesByLecturer(dozID, startDate, endDate);
 
             }
 
-            return lectures;
-        }
-
-        private DateTime getFirstOfMonth()
-        {
-            DateTime today = DateTime.Today;
-
-            return new DateTime(today.Year, today.Month, 1);
+            return userID;
         }
     }
 }
