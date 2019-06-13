@@ -1,0 +1,17 @@
+.logindiv {
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+    max-width: 550px;
+}
+
+.loginfullwidth {
+    width: 100%;
+}
+
+.logintext {
+    color: var(--ion-color-medium);
+    text-decoration: none;
+    font-size: smaller;
+}
