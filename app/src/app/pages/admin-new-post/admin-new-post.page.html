@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Neuer Post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="postGroups && postGroups.length === 0">
+    <ion-item lines="none">
+      <ion-label color="danger">Du darf nicht im Namen einer PostGroup posten</ion-label>
+    </ion-item>
+  </div>
+  
+  <ng-container *ngIf="postGroups">
+    <ion-item lines="full">
+      <ion-label>Gruppe:</ion-label>
+      <ion-select interface="popover" multiple="false" [(ngModel)]="newsItem.postGroupID">
+        <ion-select-option *ngFor="let group of postGroups" [value]="group.postGroupID">
+          {{group.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Titel:</ion-label>
+      <ion-input #titelInput required="true" inputmode="text" [(ngModel)]="newsItem.title"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Nachricht:</ion-label>
+      <ion-textarea #messageInput required="true" inputmode="text" rows="5" [(ngModel)]="newsItem.message"></ion-textarea>
+    </ion-item>
+
+    <ion-button (click)="save()">
+      Posten
+    </ion-button>
+  </ng-container>
+</ion-content>
