@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace BAGCST.api.User.Models
 {
     public class PostGroupUserPushNotificationSetting
     {

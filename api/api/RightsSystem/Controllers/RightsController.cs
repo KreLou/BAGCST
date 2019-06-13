@@ -93,7 +93,7 @@ namespace BAGCST.api.RightsSystem.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (right_in == null | right_in.Path == "")
+            if (right_in == null || right_in.Path == "")
             {
                 return BadRequest("Right not found");
             }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace BAGCST.api.User.Databasae
+namespace BAGCST.api.User.Database
 {
     public class offlineSessionDB : ISessionDB
     {
@@ -107,7 +107,7 @@ namespace BAGCST.api.User.Databasae
 
         public SessionItem getSessionItemByActivationCode(string code)
         {
-            SessionItem item = this.getAllSessions().Where(x => x.ActivationCode == code).Single();
+            SessionItem item = this.getAllSessions().SingleOrDefault(x => x.ActivationCode == code);
             return item;
         }
 

@@ -1,4 +1,6 @@
-﻿using api.Models;
+﻿
+
+using BAGCST.api.User.Models;
 
 namespace BAGCST.api.User.Database
 {

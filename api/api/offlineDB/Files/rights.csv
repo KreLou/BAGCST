@@ -1,8 +1,8 @@
-3;IbimsdererstePfadLolDochNich
-4;/
-5;/home
-6;/contacts
-7;/foodmenu
-8;
-9;IbimseingechangterPfad
-10;IbimseinincompleteObject
+1;/tabs/dashboard
+2;/tabs/contacts*
+3;/tabs/menu
+4;/tabs/calendar
+5;/settings
+6;/administrator
+7;/tabs/admin-food-planer*
+8;/tabs/admin-new-post

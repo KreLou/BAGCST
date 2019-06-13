@@ -48,7 +48,7 @@ namespace BAGCST.api.RightsSystem.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        int[] getGroupsByUser(long userID);
+        GroupItem[] getGroupsByUser(long userID);
 
         /// <summary>
         /// sets the given GroupIDs for the User, identified by the given UserID

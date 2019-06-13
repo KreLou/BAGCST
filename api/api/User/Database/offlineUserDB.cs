@@ -269,5 +269,10 @@ namespace BAGCST.api.User.Database
             }
             throw new System.Exception("Username no unique");
         }
+
+        public UserItem getUserByEmail(string email)
+        {
+            return this.getUserItems().SingleOrDefault(x => x.Email == email);
+        }
     }
 }
